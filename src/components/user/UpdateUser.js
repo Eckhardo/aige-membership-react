@@ -15,8 +15,8 @@ const UpdateUser = props => {
         address: "",
         zip: "",
         email: "",
-        is_active: false,
-        is_admin: false
+        is_active: true,
+        is_admin: "true"
     };
     const [currentUser, setCurrentUser] = useState(initialUserState);
     const [message, setMessage] = useState("");
@@ -51,11 +51,12 @@ const UpdateUser = props => {
                 props.history.push("/users");
             })
             .catch(e => {
-                if (e.response.data) {
+                if(e.response.data) {
                     setMessage(e.response.data);
                     console.log('error :', e);
                     console.log('error message data:', e.response.data);
-                } else {
+                }
+                else {
                     setMessage(e);
                     console.log('error:', e);
                 }
@@ -78,8 +79,7 @@ const UpdateUser = props => {
         <div className="text-center">
             <h4>User {currentUser.user_name}</h4>
             <form>
-                <div className="submit-form border border-success bg-light">
-
+                <div className="submit-form border border-success">
                     <div className="row">
                         <div className="col">
                             <label htmlFor="first_name" className="h6 small">First Name</label>
@@ -222,26 +222,25 @@ const UpdateUser = props => {
                         />
                     </div>
 
-                    <button className="btn btn-danger mr-2" onClick={deleteUser}>
-                        Delete
-                    </button>
-
-                    <button
-                        type="submit"
-                        className="btn btn-success ml-2"
-                        onClick={updateUser}
-                    >
-                        Update
-                    </button>
-                    <p>{message}</p>
-
                 </div>
-
             </form>
 
 
-        </div>
-    );
+            <button className="btn btn-danger mr-2" onClick={deleteUser}>
+                Delete
+            </button>
+
+            <button
+                type="submit"
+                className="btn btn-success ml-2"
+                onClick={updateUser}
+            >
+                Update
+            </button>
+            <p>{message}</p>
+
+
+        </div>);
 
 };
 

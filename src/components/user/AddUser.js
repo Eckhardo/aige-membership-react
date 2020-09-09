@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import UserService from "../../services/UserService";
 import UserForm from "./UserForm";
-import {Link} from "react-router-dom";
 
 const AddUser = props => {
     const initialUserState = {
@@ -57,24 +56,10 @@ const AddUser = props => {
 
             <div className="text-center">
                 <h3>Add new User:</h3>
-                <div className="submit-form border border-success">
-                    <form >
-
-                    <UserForm user={user}
+                <UserForm user={user}
                           handleInputChange={handleInputChange}
-                />
-                        <Link
-                            to={"/users/"}
-                            className="btn btn-info m-2"
-                        >
-                           List
-                        </Link>
-                        <button  onClick={saveUser} className="btn btn-success ml-5">
-                            Submit
-                        </button>
-                    </form>
-                </div>
-                {errorMessage ? (<div className="text-danger">{errorMessage}</div>): null
+                          saveUser={saveUser}/>
+                {errorMessage ? (<div>{errorMessage}</div>): null
                 }
             </div>
         </div>

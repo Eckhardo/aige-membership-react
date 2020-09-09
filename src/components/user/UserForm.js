@@ -1,10 +1,11 @@
 import React from "react";
 
 
-const UserForm = ({user, handleInputChange}) => {
+const UserForm = ({user, handleInputChange, saveUser}) => {
+
 
     return (
-        <div>
+        <div className="submit-form border border-success">
             <div className="row">
                 <div className="col">
                     <input
@@ -45,7 +46,7 @@ const UserForm = ({user, handleInputChange}) => {
                     />
                 </div>
                 <div class="col">
-                   <input
+                    <input
                         type="text"
                         className="form-control"
                         id="zip"
@@ -60,91 +61,94 @@ const UserForm = ({user, handleInputChange}) => {
             <div className="row">
                 <div className="col">
 
-                <input
-                    type="text"
-                    className="form-control"
-                    id="city"
-                    name="city"
-                    placeholder="City"
-                    value={user.city}
-                    required={true}
-                    onChange={handleInputChange}
-                />
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="city"
+                        name="city"
+                        placeholder="City"
+                        value={user.city}
+                        required={true}
+                        onChange={handleInputChange}
+                    />
                 </div>
                 <div class="col">
 
-                <input
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    name="address"
-                    placeholder="Address"
-                    value={user.address}
-                    required={true}
-                    onChange={handleInputChange}
-                />
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="address"
+                        name="address"
+                        placeholder="Address"
+                        value={user.address}
+                        required={true}
+                        onChange={handleInputChange}
+                    />
                 </div>
             </div>
             <div className="row">
                 <div className="col">
 
-                <input
-                    type="text"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    value={user.email}
-                    onChange={handleInputChange}
-                />
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        value={user.email}
+                        onChange={handleInputChange}
+                    />
                 </div>
                 <div class="col">
 
-                <input
-                    type="text"
-                    className="form-control"
-                    id="mobil"
-                    name="mobil"
-                    placeholder="Mobil"
-                    value={user.mobil}
-                    onChange={handleInputChange}
-                />
-                </div>
-            </div>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="phone"
-                    name="phone"
-                    placeholder="Phone"
-                    value={user.phone}
-                    onChange={handleInputChange}
-                />
-
-                <div className="inline ">
-                    <label htmlFor="is_active" className="p-2"> Active</label>
                     <input
-                        type="checkbox"
-                        className="form-check-inline "
-                        id="is_active"
-                        name="is_active"
-                        checked={user.is_active}
-                        value={user.is_active}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="is_admin" className="p-2"> Admin</label>
-                    <input
-                        type="checkbox"
-                        className="form-check-inline "
-                        id="is_admin"
-                        name="is_admin"
-                        checked={user.is_admin}
-                        value={user.is_admin}
+                        type="text"
+                        className="form-control"
+                        id="mobil"
+                        name="mobil"
+                        placeholder="Mobil"
+                        value={user.mobil}
                         onChange={handleInputChange}
                     />
                 </div>
             </div>
-            )
+            <input
+                type="text"
+                className="form-control"
+                id="phone"
+                name="phone"
+                placeholder="Phone"
+                value={user.phone}
+                onChange={handleInputChange}
+            />
 
-            }
-            export default UserForm;
+            <div className="inline ">
+                <label htmlFor="is_active" className="p-2"> Active</label>
+                <input
+                    type="checkbox"
+                    className="form-check-inline "
+                    id="is_active"
+                    name="is_active"
+                    checked={user.is_active}
+                    value={user.is_active}
+                    onChange={handleInputChange}
+                />
+                <label htmlFor="is_admin" className="p-2"> Admin</label>
+                <input
+                    type="checkbox"
+                    className="form-check-inline "
+                    id="is_admin"
+                    name="is_admin"
+                    checked={user.is_admin}
+                    value={user.is_admin}
+                    onChange={handleInputChange}
+                />
+            </div>
+            <button onClick={saveUser} className="btn btn-success ml-5">
+                Submit
+            </button>
+        </div>
+    )
+
+}
+export default UserForm;

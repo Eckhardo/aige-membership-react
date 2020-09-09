@@ -5,11 +5,12 @@ const getAll = () => {
 };
 
 const get = userName => {
-  console.log('GET username:', userName)
+  console.log('GET username:', userName);
   return http.get(`/user/${userName}`);
 };
 
 const create = data => {
+  console.log('POST username:', data);
   return http.post("/user", {item: data});
 };
 
