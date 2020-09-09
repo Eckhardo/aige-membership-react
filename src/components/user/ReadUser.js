@@ -6,14 +6,8 @@ const ReadUser = ({user}) => {
 
 
     return <div>
-        <h4>User</h4>
-        <div>
-            <label>
-                <strong>User Name:</strong>
-            </label>{" "}
-            {user.user_name}
-        </div>
-        <div>
+        <h4>User    {user.user_name}</h4>
+         <div>
             <label>
                 <strong>First Name:</strong>
             </label>{" "}
