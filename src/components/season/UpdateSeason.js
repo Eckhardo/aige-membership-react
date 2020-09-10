@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import UserService from "../../services/UserService";
 import SeasonService from "../../services/SeasonService";
+import {Link} from "react-router-dom";
 const UpdateSeason = props => {
     const initialUserState = {
          membership_name: "",
@@ -87,8 +88,21 @@ const UpdateSeason = props => {
             <h4>User {currentSeason.membership_name}</h4>
             <form>
                 <div className="submit-form border border-success">
-                    <div className="row">
-                        <div className="col">
+
+                        <div className="box">
+                            <label htmlFor="year" className="h6 small">Name</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="membership_name"
+                                name="membership_name"
+                                placeholder="Name"
+                                value={currentSeason.membership_name}
+                                required={true}
+                                onChange={ handleInputChange}
+                            />
+                        </div>
+                        <div className="box">
                             <label htmlFor="year" className="h6 small">Year</label>
                             <input
                                 type="text"
@@ -101,12 +115,9 @@ const UpdateSeason = props => {
                                 onChange={ handleInputChange}
                             />
                         </div>
-                    </div>
+
                         {currentSeason.comments && currentSeason.comments.map( (c,index) =>
-
-
                             <div className="box"   key={index} >
-
                                 <label htmlFor={index} className="h6 small">Comment-{index+1}</label>
                                 <input
                                     type="text"
@@ -136,21 +147,28 @@ const UpdateSeason = props => {
 
                 </div>
             </form>
+            <div className="submit-form border border-success mt-2">
+            <Link
+                to={"/seasons/"}
+                className="btn btn-warning mr-2 mt-2"
+            >
+               List
+            </Link>
 
 
-            <button className="btn btn-danger mr-2" onClick={deleteSeason}>
+            <button className="btn btn-danger mr-2 mt-2" onClick={deleteSeason}>
                 Delete
             </button>
 
             <button
                 type="submit"
-                className="btn btn-success ml-2"
+                className="btn btn-success ml-2 mt-2"
                 onClick={updateSeason}
             >
                 Update
             </button>
             <p>{message}</p>
-
+            </div>
 
         </div>);
 

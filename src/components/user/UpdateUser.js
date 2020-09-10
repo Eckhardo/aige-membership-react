@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import UserService from '../../services/UserService'
+import {Link} from "react-router-dom";
 
 const UpdateUser = props => {
     const initialUserState = {
@@ -220,21 +221,28 @@ const UpdateUser = props => {
 
                 </div>
             </form>
+            <div className="submit-form border border-success mt-2 mt-2">
 
+                <Link
+                    to={"/users/"}
+                    className="btn btn-warning mr-2 mt-2"
+                >
+                    List
+                </Link>
 
-            <button className="btn btn-danger mr-2" onClick={deleteUser}>
+                <button className="btn btn-danger mr-2 mt-2" onClick={deleteUser}>
                 Delete
             </button>
 
             <button
                 type="submit"
-                className="btn btn-success ml-2"
+                className="btn btn-success ml-2 mt-2"
                 onClick={updateUser}
             >
                 Update
             </button>
             <p>{message}</p>
-
+            </div>
 
         </div>);
 

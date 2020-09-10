@@ -8,6 +8,7 @@ import AddUser from './components/user/AddUser';
 import UsersList from "./components/user/UsersList";
 import SeasonList from "./components/season/SeasonList";
 import UpdateSeason from "./components/season/UpdateSeason";
+import AddSeason from "./components/season/AddSeason";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/user/:user_name" component={UpdateUser} />
             <Route path="/seasons" component={SeasonList} />
             <Route path="/season/:season_year" component={UpdateSeason} />
+            <Route  path="/addSeason" component={AddSeason} />
           </Switch>
         </div>
       </div>

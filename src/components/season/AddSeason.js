@@ -1,39 +1,31 @@
 import React, {useState} from "react";
-import UserService from "../../services/UserService";
-import UserForm from "./UserForm";
+import SeasonService from "../../services/SeasonService";
+import SeasonForm from "./SeasonForm";
 
-const AddUser = props => {
-    const initialUserState = {
-        user_name: "",
-        first_name: "",
-        last_name: "",
-        city: "",
-        mobil: "",
-        phone: "",
-        admission_date: "",
-        address: "",
-        zip: "",
-        email: "",
-        is_active: true,
-        is_admin: false
+const AddSeason = props => {
+    const initialState = {
+        membership_name: "",
+        membership_year: "",
+        comments :[],
+        is_active: true
     };
-    const [user, setUser] = useState(initialUserState);
+    const [season, setSeason] = useState(initialState);
     const [submitted, setSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleInputChange = event => {
         const {name, value} = event.target;
         console.log("handleInputChange:", value);
-        setUser({...user, [name]: value});
+        setSeason({...season, [name]: value});
     }
-    const saveUser = () => {
-        console.log("user save:", user);
-        UserService.create(user)
+    const saveSeason = () => {
+        console.log("season save:", season);
+        SeasonService.create(season)
             .then(response => {
                 console.log('response:', response);
-                setUser(response.data);
+                setSeason(response.data);
                 setSubmitted(true);
-                props.history.push("/users");
+                props.history.push("/seasons");
             })
             .catch((e) => {
 
@@ -55,10 +47,10 @@ const AddUser = props => {
         <div>
 
             <div className="text-center">
-                <h3>Add new User:</h3>
-                <UserForm user={user}
+                <h3>Add new Season:</h3>
+                <SeasonForm season={season}
                           handleInputChange={handleInputChange}
-                          saveUser={saveUser}/>
+                          saveSeason={saveSeason}/>
                 {errorMessage ? (<div>{errorMessage}</div>): null
                 }
             </div>
@@ -66,4 +58,4 @@ const AddUser = props => {
     )
 }
 
-export default AddUser;
+export default AddSeason;
