@@ -6,6 +6,8 @@ import "./App.css";
 import UpdateUser from "./components/user/UpdateUser";
 import AddUser from './components/user/AddUser';
 import UsersList from "./components/user/UsersList";
+import SeasonList from "./components/season/SeasonList";
+import UpdateSeason from "./components/season/UpdateSeason";
 
 function App() {
   return (
@@ -16,10 +18,14 @@ function App() {
             Eckhardo
           </a>
           <div className="navbar-nav mr-auto">
-
             <li className="nav-item">
               <Link to={"/users"} className="nav-link">
                 User
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/seasons"} className="nav-link">
+                Season
               </Link>
             </li>
           </div>
@@ -29,9 +35,10 @@ function App() {
           <Switch>
             <Route exact path={["/", "/users"]} component={UsersList} />
             <Route path="/users" component={UsersList} />
-
             <Route  path="/addUser" component={AddUser} />
             <Route path="/user/:user_name" component={UpdateUser} />
+            <Route path="/seasons" component={SeasonList} />
+            <Route path="/season/:season_year" component={UpdateSeason} />
           </Switch>
         </div>
       </div>

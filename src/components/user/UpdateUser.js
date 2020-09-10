@@ -204,21 +204,17 @@ const UpdateUser = props => {
                         <input
                             type="checkbox"
                             className="form-check-inline "
-                            id="is_active"
-                            name="is_active"
                             checked={JSON.parse(currentUser.is_active)}
                             disabled={true}
-                            onChange={handleInputChange}
+                            readOnly={true}
                         />
                         <label htmlFor="is_admin" className="h6 small p-2">Admin</label>
                         <input
                             type="checkbox"
                             className="form-check-inline "
-                            id="is_admin"
-                            name="is_admin"
                             checked={JSON.parse(currentUser.is_admin)}
                             disabled={true}
-                            onChange={handleInputChange}
+                            readOnly={true}
                         />
                     </div>
 

@@ -8,6 +8,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
         <div className="submit-form border border-success">
             <div className="row">
                 <div className="col">
+                    <label htmlFor="user_name" className="h6 small"> User Name</label>
                     <input
                         type="text"
                         className="form-control"
@@ -20,6 +21,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
                 <div class="col">
+                    <label htmlFor="first_name" className="h6 small"> First Name</label>
                     <input
                         type="text"
                         className="form-control"
@@ -34,6 +36,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
             </div>
             <div className="row">
                 <div className="col">
+                    <label htmlFor="last_name" className="h6 small"> Last Name</label>
                     <input
                         type="text"
                         className="form-control"
@@ -46,6 +49,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
                 <div class="col">
+                    <label htmlFor="zip" className="h6 small"> Zip</label>
                     <input
                         type="text"
                         className="form-control"
@@ -60,7 +64,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
             </div>
             <div className="row">
                 <div className="col">
-
+                    <label htmlFor="city" className="h6 small"> City</label>
                     <input
                         type="text"
                         className="form-control"
@@ -73,7 +77,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
                 <div class="col">
-
+                    <label htmlFor="address" className="h6 small"> Address</label>
                     <input
                         type="text"
                         className="form-control"
@@ -88,7 +92,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
             </div>
             <div className="row">
                 <div className="col">
-
+                    <label htmlFor="email" className="h6 small"> Email</label>
                     <input
                         type="text"
                         className="form-control"
@@ -100,7 +104,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
                 <div class="col">
-
+                    <label htmlFor="mobil" className="h6 small"> Mobil</label>
                     <input
                         type="text"
                         className="form-control"
@@ -112,6 +116,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
             </div>
+            <label htmlFor="phone" className="h6 small"> Phone</label>
             <input
                 type="text"
                 className="form-control"
@@ -123,25 +128,22 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
             />
 
             <div className="inline ">
-                <label htmlFor="is_active" className="p-2"> Active</label>
+                <label htmlFor="is_active" className="h6 small p-2"> Active</label>
                 <input
                     type="checkbox"
                     className="form-check-inline "
-                    id="is_active"
-                    name="is_active"
-                    checked={user.is_active}
-                    value={user.is_active}
-                    onChange={handleInputChange}
+                    checked={JSON.parse(user.is_active)}
+                    disabled={true}
+                    readOnly={true}
+
                 />
-                <label htmlFor="is_admin" className="p-2"> Admin</label>
+                <label htmlFor="is_admin" className="h6 small p-2"> Admin</label>
                 <input
                     type="checkbox"
                     className="form-check-inline "
-                    id="is_admin"
-                    name="is_admin"
-                    checked={user.is_admin}
-                    value={user.is_admin}
-                    onChange={handleInputChange}
+                    checked={JSON.parse(user.is_admin)}
+                    disabled={true}
+                    readOnly={true}
                 />
             </div>
             <button onClick={saveUser} className="btn btn-success ml-5">
