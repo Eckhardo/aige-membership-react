@@ -37,7 +37,7 @@ const SeasonForm = ({season, handleInputChange, saveSeason}) => {
                         className="form-control"
                         id="comment"
                         name="comment"
-                        placeholder="First Name"
+                        placeholder="My Comment"
                         value={season.comment}
                         required={true}
                         onChange={handleInputChange}

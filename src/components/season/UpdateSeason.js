@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import UserService from "../../services/UserService";
 import SeasonService from "../../services/SeasonService";
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
+
 const UpdateSeason = props => {
     const initialUserState = {
-         membership_name: "",
+        membership_name: "",
         membership_year: "",
-        comments :[],
+        comments: [],
         is_active: true
     };
     const [currentSeason, setCurrentSeason] = useState(initialUserState);
@@ -15,13 +15,13 @@ const UpdateSeason = props => {
     useEffect(() => {
         console.log('useEffect', props.match.params.season_year);
         getSeason(props.match.params.season_year);
-    }, [props.match.params.season_year]);
+    }, []);
     const getSeason = year => {
         console.log("get Season...");
         SeasonService.get(year)
             .then(response => {
                 setCurrentSeason(response.data);
-               console.log(response.data.comments);
+                console.log(response.data.comments);
             })
             .catch(e => {
                 console.log(e);
@@ -30,24 +30,23 @@ const UpdateSeason = props => {
 
     const handleInputChange = event => {
         const {name, value} = event.target;
-        console.log("handleInputChange:",name,value);
+        console.log("handleInputChange:", name, value);
         setCurrentSeason({...currentSeason, [name]: value});
     };
     const handleInputChangeArray = (e, index) => {
-        const { name, value } = e.target;
-        console.log("get Season...",name,value);
+        const {name, value} = e.target;
+        console.log("get Season...", name, value);
         setComment(value);
 
 
-        const comments= [...currentSeason.comments];
-
+        const comments = [...currentSeason.comments];
 
 
         comments[index] = value;
 
         console.log("get", comments);
-        currentSeason.comments=comments;
-        console.log("get Season...",comments);
+        currentSeason.comments = comments;
+        console.log("get Season...", comments);
         setCurrentSeason(currentSeason);
     };
 
@@ -59,12 +58,11 @@ const UpdateSeason = props => {
                 props.history.push("/seasons");
             })
             .catch(e => {
-                if(e.response.data) {
+                if (e.response.data) {
                     setMessage(e.response.data);
                     console.log('error :', e);
                     console.log('error message data:', e.response.data);
-                }
-                else {
+                } else {
                     setMessage(e);
                     console.log('error:', e);
                 }
@@ -81,95 +79,129 @@ const UpdateSeason = props => {
                 console.log(e);
             });
     };
+    // handle click event of the Remove button
+    const handleRemoveClick = index => {
+        const list = [...currentSeason.comments];
+        list.splice(index, 1);
+        const mySeason = {...currentSeason};
+        mySeason.comments = list;
+        setCurrentSeason(mySeason);
+    };
+
+    // handle click event of the Add button
+    const handleAddClick = () => {
+        const list = [...currentSeason.comments];
+        list.push('New Comment');
+        const mySeason = {...currentSeason};
+        mySeason.comments = list;
+        setCurrentSeason(mySeason);
+    };
 
     return (
 
         <div className="text-center">
             <h4>User {currentSeason.membership_name}</h4>
-            <form>
-                <div className="submit-form border border-success">
+            <div className="submit-form border border-success">
+                <div className="box">
+                    <label htmlFor="year" className="h6 small">Name</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="membership_name"
+                        name="membership_name"
+                        placeholder="Name"
+                        value={currentSeason.membership_name}
+                        required={true}
+                        onChange={handleInputChange}
+                    />
+                    <label htmlFor="year" className="h6 small">Year</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="membership_year"
+                        name="membership_year"
+                        placeholder="Year"
+                        value={currentSeason.membership_year}
+                        required={true}
+                        onChange={handleInputChange}
+                    />
 
-                        <div className="box">
-                            <label htmlFor="year" className="h6 small">Name</label>
+                    <label htmlFor="is_active" className="h6 small p-2"> Active</label>
+                    <input
+                        type="checkbox"
+                        className="form-check-inline "
+                        checked={JSON.parse(currentSeason.is_active)}
+                        disabled={true}
+                        readOnly={true}
+                    />
+
+
+                    {currentSeason.comments && currentSeason.comments.map((c, index) =>
+                        <div key={index}>
+                            <label htmlFor={index} className="h6 small">Comment-{index + 1}</label>
                             <input
                                 type="text"
+                                placeholder="Comment"
+                                value={c}
                                 className="form-control"
-                                id="membership_name"
-                                name="membership_name"
-                                placeholder="Name"
-                                value={currentSeason.membership_name}
-                                required={true}
-                                onChange={ handleInputChange}
+                                onChange={(e) => handleInputChangeArray(e, index)}
                             />
+
+                            {currentSeason.comments.length !== 1 &&
+                            <button
+                                className="badge badge-primary mr-2"
+                                onClick={() => handleRemoveClick(index)}>Remove
+                            </button>}
+
+                            {currentSeason.comments.length - 1 === index &&
+                            (<button
+                                className="badge badge-primary mr-2"
+                                onClick={handleAddClick}>Add
+                            </button>)}
                         </div>
-                        <div className="box">
-                            <label htmlFor="year" className="h6 small">Year</label>
+                    )}
+                    {!currentSeason.comments ||
+                    currentSeason.comments.length === 0 && (
+                        <div>
+                            <label htmlFor="comment" className="h6 small">Comment </label>
                             <input
                                 type="text"
+                                placeholder="Comment"
+                                value="Hallo Comment"
+                                name="comment"
                                 className="form-control"
-                                id="membership_year"
-                                name="membership_year"
-                                placeholder="Year"
-                                value={currentSeason.membership_year}
-                                required={true}
-                                onChange={ handleInputChange}
+                                onChange={(e) => handleInputChangeArray(e, 0)}
                             />
-                        </div>
 
-                        {currentSeason.comments && currentSeason.comments.map( (c,index) =>
-                            <div className="box"   key={index} >
-                                <label htmlFor={index} className="h6 small">Comment-{index+1}</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Comment"
-                                    value={c}
-                                    onChange={(e) => handleInputChangeArray(e, index)}
-                                />
-
-                            </div>
-
-                        )}
+                        </div>)}
 
 
+                    <div className="submit-form border border-success mt-2">
+                        <Link
+                            to={"/seasons/"}
+                            className="btn btn-warning mr-2 mt2"
+                        >
+                            List
+                        </Link>
 
-                    <div className="inline">
-                        <label htmlFor="is_active" className="h6 small p-2">Active</label>
-                        <input
-                            type="checkbox"
-                            className="form-check-inline "
-                            checked={JSON.parse(currentSeason.is_active)}
-                            disabled={true}
-                            readOnly={true}
-                        />
 
+                        <button className="btn btn-danger mr-2 mt2" onClick={deleteSeason}>
+                            Delete
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="btn btn-success ml-2 mt2"
+                            onClick={updateSeason}
+                        >
+                            Update
+                        </button>
+                        <p>{message}</p>
                     </div>
 
                 </div>
-            </form>
-            <div className="submit-form border border-success mt-2">
-            <Link
-                to={"/seasons/"}
-                className="btn btn-warning mr-2 mt-2"
-            >
-               List
-            </Link>
 
-
-            <button className="btn btn-danger mr-2 mt-2" onClick={deleteSeason}>
-                Delete
-            </button>
-
-            <button
-                type="submit"
-                className="btn btn-success ml-2 mt-2"
-                onClick={updateSeason}
-            >
-                Update
-            </button>
-            <p>{message}</p>
             </div>
-
         </div>);
 
 }

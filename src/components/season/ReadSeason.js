@@ -6,12 +6,12 @@ const ReadSeason = ({season}) => {
 
 
     return <div>
-        <h4>Season Name   {season.membership_name}</h4>
+        <h4>Season  {season.membership_year}:</h4>
         <div>
             <label>
-                <strong>Year:</strong>
+                <strong>Name:</strong>
             </label>{" "}
-            {season.membership_year}
+            {season.membership_name}
         </div>
          <div>
             <label>
