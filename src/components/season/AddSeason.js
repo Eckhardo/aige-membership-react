@@ -10,7 +10,6 @@ const AddSeason = props => {
         is_active: true
     };
     const [season, setSeason] = useState(initialState);
-    const [submitted, setSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleInputChange = event => {
@@ -24,7 +23,6 @@ const AddSeason = props => {
             .then(response => {
                 console.log('response:', response);
                 setSeason(response.data);
-                setSubmitted(true);
                 props.history.push("/seasons");
             })
             .catch((e) => {

@@ -1,9 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Link} from "react-router-dom";
 
 
 const ReadSeason = ({season}) => {
-
 
     return <div>
         <h4>Season  {season.membership_year}:</h4>
@@ -47,4 +46,4 @@ const ReadSeason = ({season}) => {
         </Link>
     </div>
 }
-export default ReadSeason;
+export default React.memo(ReadSeason);

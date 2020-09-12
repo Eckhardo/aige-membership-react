@@ -10,12 +10,14 @@ const UpdateSeason = props => {
         is_active: true
     };
     const [currentSeason, setCurrentSeason] = useState(initialUserState);
-    const [comment, setComment] = useState("");
+    const [comment, setComment] = useState("New Comment");
     const [message, setMessage] = useState("");
+
     useEffect(() => {
-        console.log('useEffect', props.match.params.season_year);
+        console.log('[UpdateSeason]useEffect', props.match.params.season_year);
         getSeason(props.match.params.season_year);
-    }, []);
+    }, [props.match.params.season_year]);
+
     const getSeason = year => {
         console.log("get Season...");
         SeasonService.get(year)
@@ -35,7 +37,8 @@ const UpdateSeason = props => {
     };
     const handleInputChangeArray = (e, index) => {
         const {name, value} = e.target;
-        console.log("get Season...", name, value);
+
+        console.log("get Season...", name,value);
         setComment(value);
 
 
@@ -130,7 +133,7 @@ const UpdateSeason = props => {
                     <input
                         type="checkbox"
                         className="form-check-inline "
-                        checked={JSON.parse(currentSeason.is_active)}
+                        defaultChecked={JSON.parse(currentSeason.is_active)}
                         disabled={true}
                         readOnly={true}
                     />
@@ -160,14 +163,14 @@ const UpdateSeason = props => {
                             </button>)}
                         </div>
                     )}
-                    {!currentSeason.comments ||
+                    {
                     currentSeason.comments.length === 0 && (
                         <div>
                             <label htmlFor="comment" className="h6 small">Comment </label>
                             <input
                                 type="text"
                                 placeholder="Comment"
-                                value="Hallo Comment"
+                                value={comment}
                                 name="comment"
                                 className="form-control"
                                 onChange={(e) => handleInputChangeArray(e, 0)}

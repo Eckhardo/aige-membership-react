@@ -54,4 +54,4 @@ const ReadUser = ({user}) => {
         </Link>
     </div>
 }
-export default ReadUser;
+export default React.memo(ReadUser);

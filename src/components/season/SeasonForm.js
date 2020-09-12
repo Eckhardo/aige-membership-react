@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 
 const SeasonForm = ({season, handleInputChange, saveSeason}) => {
 
+    useEffect(() => {
+        console.log('[SeasonForm] useEffect');
 
+    }, []);
     return (
         <div className="submit-form border border-success">
             <div className="box">
@@ -48,8 +51,9 @@ const SeasonForm = ({season, handleInputChange, saveSeason}) => {
                     type="checkbox"
                     className="form-check-inline "
                     name="is_active"
-                    checked={JSON.parse(season.is_active)}
+                    defaultChecked={JSON.parse(season.is_active)}
                     value={season.is_active}
+                    onChange={handleInputChange}
 
 
                 />
