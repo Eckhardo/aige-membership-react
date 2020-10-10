@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import SeasonService from "../../services/SeasonService";
 import SeasonForm from "./SeasonForm";
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 
 const AddSeason = props => {
     const initialState = {
@@ -46,9 +47,9 @@ const AddSeason = props => {
 
             <div className="text-center">
                 <h3>Add new Season:</h3>
-                <SeasonForm season={season}
+               <ErrorBoundary> <SeasonForm season={season}
                           handleInputChange={handleInputChange}
-                          saveSeason={saveSeason}/>
+                          saveSeason={saveSeason}/></ErrorBoundary>
                 {errorMessage ? (<div>{errorMessage}</div>): null
                 }
             </div>

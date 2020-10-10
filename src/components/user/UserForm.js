@@ -11,7 +11,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     <label htmlFor="user_name" className="h6 small"> User Name</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className="form-control "
                         id="user_name"
                         name="user_name"
                         placeholder="User Name"
@@ -116,6 +116,8 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                     />
                 </div>
             </div>
+            <div className="row">
+                <div className="col">
             <label htmlFor="phone" className="h6 small"> Phone</label>
             <input
                 type="text"
@@ -127,25 +129,30 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                 onChange={handleInputChange}
             />
 
-            <div className="inline ">
-                <label htmlFor="is_active" className="h6 small p-2"> Active</label>
-                <input
-                    type="checkbox"
-                    className="form-check-inline "
-                    checked={JSON.parse(user.is_active)}
-                    disabled={true}
-                    readOnly={true}
+                </div>
+                <div className="col">
+                    <div className="inline ">
+                        <label htmlFor="is_active" className="h6 small p-2"> Active</label>
+                        <input
+                            type="checkbox"
+                            className="form-check-inline "
+                            checked={JSON.parse(user.is_active)}
+                            disabled={true}
+                            readOnly={true}
 
-                />
-                <label htmlFor="is_admin" className="h6 small p-2"> Admin</label>
-                <input
-                    type="checkbox"
-                    className="form-check-inline "
-                    checked={JSON.parse(user.is_admin)}
-                    disabled={true}
-                    readOnly={true}
-                />
+                        />
+                        <label htmlFor="is_admin" className="h6 small p-2"> Admin</label>
+                            type="checkbox"
+                            className="form-check-inline "
+                            checked={JSON.parse(user.is_admin)}
+                            disabled={true}
+                            readOnly={true}
+                        />
+                    </div>
+                </div>
+
             </div>
+
             <button onClick={saveUser} className="btn btn-success ml-5">
                 Submit
             </button>

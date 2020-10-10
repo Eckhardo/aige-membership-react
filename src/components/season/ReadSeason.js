@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const ReadSeason = ({season}) => {
 
-    return <div>
+    return <>
         <h4>Season  {season.membership_year}:</h4>
         <div>
             <label>
@@ -44,6 +44,6 @@ const ReadSeason = ({season}) => {
         >
             Edit
         </Link>
-    </div>
+    </>
 }
 export default React.memo(ReadSeason);

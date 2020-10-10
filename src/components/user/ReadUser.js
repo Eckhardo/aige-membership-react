@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 const ReadUser = ({user}) => {
 
 
-    return <div>
+    return <>
         <h4>User    {user.user_name}</h4>
          <div>
             <label>
@@ -52,6 +52,6 @@ const ReadUser = ({user}) => {
         >
             Edit
         </Link>
-    </div>
+    </>
 }
 export default React.memo(ReadUser);

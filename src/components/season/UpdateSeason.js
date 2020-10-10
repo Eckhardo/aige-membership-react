@@ -23,33 +23,22 @@ const UpdateSeason = props => {
         SeasonService.get(year)
             .then(response => {
                 setCurrentSeason(response.data);
-                console.log(response.data.comments);
             })
             .catch(e => {
-                console.log(e);
+                console.error(e);
             });
     };
 
     const handleInputChange = event => {
         const {name, value} = event.target;
-        console.log("handleInputChange:", name, value);
         setCurrentSeason({...currentSeason, [name]: value});
     };
     const handleInputChangeArray = (e, index) => {
         const {name, value} = e.target;
-
-        console.log("get Season...", name,value);
         setComment(value);
-
-
         const comments = [...currentSeason.comments];
-
-
         comments[index] = value;
-
-        console.log("get", comments);
         currentSeason.comments = comments;
-        console.log("get Season...", comments);
         setCurrentSeason(currentSeason);
     };
 
@@ -57,17 +46,15 @@ const UpdateSeason = props => {
     const updateSeason = () => {
         SeasonService.update(currentSeason)
             .then(response => {
-                console.log(response.data);
                 props.history.push("/seasons");
             })
             .catch(e => {
                 if (e.response.data) {
                     setMessage(e.response.data);
-                    console.log('error :', e);
-                    console.log('error message data:', e.response.data);
+                    console.error('error :', e);
                 } else {
                     setMessage(e);
-                    console.log('error:', e);
+                    console.error('error:', e);
                 }
             });
     };
@@ -75,11 +62,10 @@ const UpdateSeason = props => {
     const deleteSeason = () => {
         SeasonService.remove(currentSeason.membership_year)
             .then(response => {
-                console.log(response.data);
                 props.history.push("/seasons");
             })
             .catch(e => {
-                console.log(e);
+                console.error(e);
             });
     };
     // handle click event of the Remove button
@@ -164,21 +150,19 @@ const UpdateSeason = props => {
                         </div>
                     )}
                     {
-                    currentSeason.comments.length === 0 && (
-                        <div>
-                            <label htmlFor="comment" className="h6 small">Comment </label>
-                            <input
-                                type="text"
-                                placeholder="Comment"
-                                value={comment}
-                                name="comment"
-                                className="form-control"
-                                onChange={(e) => handleInputChangeArray(e, 0)}
-                            />
+                        currentSeason.comments.length === 0 && (
+                            <div>
+                                <label htmlFor="comment" className="h6 small">Comment </label>
+                                <input
+                                    type="text"
+                                    placeholder="Comment"
+                                    value={comment}
+                                    name="comment"
+                                    className="form-control"
+                                    onChange={(e) => handleInputChangeArray(e, 0)}
+                                />
 
-                        </div>)}
-
-
+                            </div>)}
                     <div className="submit-form border border-success mt-2">
                         <Link
                             to={"/seasons/"}
@@ -186,12 +170,9 @@ const UpdateSeason = props => {
                         >
                             List
                         </Link>
-
-
                         <button className="btn btn-danger mr-2 mt2" onClick={deleteSeason}>
                             Delete
                         </button>
-
                         <button
                             type="submit"
                             className="btn btn-success ml-2 mt2"
@@ -201,12 +182,9 @@ const UpdateSeason = props => {
                         </button>
                         <p>{message}</p>
                     </div>
-
                 </div>
-
             </div>
         </div>);
-
 }
 
 

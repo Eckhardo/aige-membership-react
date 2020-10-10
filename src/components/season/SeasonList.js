@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import SeasonService from "../../services/SeasonService";
 
 import ReadSeason from "./ReadSeason";
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 
 const SeasonList = () => {
     const [seasons, setSeasons] = useState([]);
@@ -115,7 +116,7 @@ const SeasonList = () => {
             <div className="col-md-6">
 
                 {currentSeason ? (
-                    <ReadSeason season={currentSeason}/>
+                   <ReadSeason season={currentSeason}/>
 
                 ) : (
                     <div>
