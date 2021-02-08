@@ -3,13 +3,13 @@ import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import UpdateUser from "./components/user/UpdateUser";
-import AddUser from './components/user/AddUser';
-import UsersList from "./components/user/UsersList";
-import SeasonList from "./components/season/SeasonList";
-import UpdateSeason from "./components/season/UpdateSeason";
-import AddSeason from "./components/season/AddSeason";
-import EventList from "./components/event/EventList";
+import UpdateUser from "../components/user/UpdateUser";
+import AddUser from '../components/user/AddUser';
+import UsersList from "../components/user/UsersList";
+import SeasonList from "../components/season/SeasonList";
+import UpdateSeason from "../components/season/UpdateSeason";
+import AddSeason from "../components/season/AddSeason";
+import EventList from "../components/event/EventList";
 
 function App() {
     return (

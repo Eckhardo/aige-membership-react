@@ -23,21 +23,27 @@ const AddUser = props => {
 
     const handleInputChange = event => {
         const {name, value} = event.target;
-        console.log("handleInputChange:", value);
         setUser({...user, [name]: value});
     }
     const saveUser = () => {
-        console.log("user save:", user);
         UserService.create(user)
             .then(response => {
-                console.log('response:', response);
+                 setUser(response.data);
                 setSubmitted(true);
                 props.history.push("/users");
             })
             .catch((e) => {
-                   setErrorMessage(e);
+
+                if(e.response.data) {
+                    setErrorMessage(e.response.data);
+                    console.log('error :', e);
+                }
+                else {
+                    setErrorMessage(e);
                     console.log('error:', e);
-             });
+                }
+
+            });
     };
 
 

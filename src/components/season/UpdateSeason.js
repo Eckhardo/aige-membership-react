@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import SeasonService from "../../services/SeasonService";
 import {Link} from 'react-router-dom';
-import Comments from "./functions/Comments";
+import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
+import SeasonForm from "./functions/SeasonForm";
 
 const UpdateSeason = props => {
     const initialUserState = {
@@ -70,6 +71,7 @@ const UpdateSeason = props => {
     };
     // handle click event of the Remove button
     const handleRemoveComment = index => {
+
         // const list = currentSeason.comments.slice();
         const list = [...currentSeason.comments];
         list.splice(index, 1);
@@ -89,66 +91,35 @@ const UpdateSeason = props => {
     };
     return (
         <div className="text-center">
-            <h4>User {currentSeason.membership_name}</h4>
-            <div className="submit-form border border-success">
-                <div className="box">
-                    <label htmlFor="year" className="h6 small">Name</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="membership_name"
-                        name="membership_name"
-                        placeholder="Name"
-                        value={currentSeason.membership_name}
-                        required={true}
-                        onChange={handleInputChange}
-                    />
-                    <label htmlFor="year" className="h6 small">Year</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="membership_year"
-                        name="membership_year"
-                        placeholder="Year"
-                        value={currentSeason.membership_year}
-                        required={true}
-                        onChange={handleInputChange}
-                    />
-
-                    <label htmlFor="is_active" className="h6 small p-2"> Active</label>
-                    <input
-                        type="checkbox"
-                        className="form-check-inline "
-                        defaultChecked={JSON.parse(currentSeason.is_active)}
-                        disabled={true}
-                        readOnly={true}
-                    />
-                    <Comments
-                        comment={comment}
-                        comments={currentSeason.comments}
-                        handleInputChangeComments={handleInputChangeComments}
-                        handleRemoveComment={handleRemoveComment}
-                        handleAddComment={handleAddComment}/>
-                    <div className="submit-form border border-success mt-2">
-                        <Link
-                            to={"/seasons/"}
-                            className="btn btn-warning mr-2 mt2" >
-                            List
-                        </Link>
-                        <button className="btn btn-danger mr-2 mt2" onClick={deleteSeason}>
-                            Delete
-                        </button>
-                        <button
-                            type="submit"
-                            className="btn btn-success ml-2 mt2"
-                            onClick={updateSeason}>
-                            Update
-                        </button>
-                        <p>{message}</p>
-                    </div>
-                </div>
+            <h4>Current Season {currentSeason.membership_name}</h4>
+            <ErrorBoundary>
+                <SeasonForm
+                    comment={comment}
+                    season={currentSeason}
+                    handleInputChange={handleInputChange}
+                    handleAddComment={handleAddComment}
+                    handleRemoveComment={handleRemoveComment}
+                    handleInputChangeComments={handleInputChangeComments}
+                /></ErrorBoundary>
+            {message ? (<div>{message}</div>) : null}
+            <div className="submit-form border border-success mt-2">
+                <Link
+                    to={"/seasons/"}
+                    className="btn btn-warning mr-2 mt2">
+                    List
+                </Link>
+                <button className="btn btn-danger mr-2 mt2" onClick={deleteSeason}>
+                    Delete
+                </button>
+                <button
+                    type="submit"
+                    className="btn btn-success ml-2 mt2"
+                    onClick={updateSeason}>
+                    Update
+                </button>
+                <p>{message}</p>
             </div>
-        </div>);
+      </div>);
 }
 
 

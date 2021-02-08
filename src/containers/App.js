@@ -5,13 +5,13 @@
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import React from "react";
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
-import UsersList from "./components/user/UsersList";
-import AddUser from "./components/user/AddUser";
-import UpdateUser from "./components/user/UpdateUser";
-import SeasonList from "./components/season/SeasonList";
-import UpdateSeason from "./components/season/UpdateSeason";
-import AddSeason from "./components/season/AddSeason";
-import EventList from "./components/event/EventList";
+import UsersList from "../components/user/UsersList";
+import AddUser from "../components/user/AddUser";
+import UpdateUser from "../components/user/UpdateUser";
+import SeasonList from "../components/season/SeasonList";
+import UpdateSeason from "../components/season/UpdateSeason";
+import AddSeason from "../components/season/AddSeason";
+import EventList from "../components/event/EventList";
 
 const  App2 = () => {
   return (

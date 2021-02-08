@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import SeasonService from "../../services/SeasonService";
 
 import ReadSeason from "./functions/ReadSeason";
-import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
+
 import SearchSeason from "./functions/SearchSeason";
 
 const SeasonList = () => {
@@ -43,7 +43,6 @@ const SeasonList = () => {
     };
 
     const setActiveSeason = (season, index) => {
-        console.log('setActiveSeason:');
         setCurrentSeason(season);
         setCurrentIndex(index);
     };
@@ -60,14 +59,14 @@ const SeasonList = () => {
 
     return (
         <div className="list row">
-            <ErrorBoundary>
+
            <SearchSeason
            seasonYear={seasonYear}
            onChangeSearchSeason={onChangeSearchSeason}
            findBySeasonYear={findBySeasonYear}
            refreshList={refreshList}
            />
-                </ErrorBoundary>
+
             <div className="col-md-6">
                 <h4>Seasons List</h4>
                 <ul className="list-group">

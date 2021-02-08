@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 
 const Comments = ({comment, comments, handleInputChangeComments, handleRemoveComment, handleAddComment}) => {
 
+    useEffect(() => {
+        console.log('[Comments] useEffect');
+
+    }, []);
     return (
         <div>
             {comments && comments.map((c, index) =>
