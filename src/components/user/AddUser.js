@@ -31,23 +31,13 @@ const AddUser = props => {
         UserService.create(user)
             .then(response => {
                 console.log('response:', response);
-                setUser(response.data);
                 setSubmitted(true);
                 props.history.push("/users");
             })
             .catch((e) => {
-
-                if(e.response.data) {
-                    setErrorMessage(e.response.data);
-                    console.log('error :', e);
-                    console.log('error message data:', e.response.data);
-                }
-                else {
-                    setErrorMessage(e);
+                   setErrorMessage(e);
                     console.log('error:', e);
-                }
-
-            });
+             });
     };
 
 

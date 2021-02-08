@@ -1,0 +1,5 @@
+npm install -g create-react-app
+create-react-app myApp
+npm start
+
+EntryPoint: index.js (references React Component 'App');

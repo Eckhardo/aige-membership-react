@@ -12,7 +12,8 @@ import SeasonList from "./components/season/SeasonList";
 import UpdateSeason from "./components/season/UpdateSeason";
 import AddSeason from "./components/season/AddSeason";
 import EventList from "./components/event/EventList";
-function App2() {
+
+const  App2 = () => {
   return (
       <Router>
         <div>
@@ -47,7 +48,7 @@ function App2() {
               <Route  path="/addUser" component={AddUser} />
               <Route path="/user/:user_name" component={UpdateUser} />
               <Route path="/seasons" component={SeasonList} />
-              <Route path="/season/:season_year" component={UpdateSeason} />
+              <Route path="/updateSeason/:season_year" component={UpdateSeason} />
               <Route  path="/addSeason" component={AddSeason} />
               <Route path="/events" component={EventList} />
             </Switch>
