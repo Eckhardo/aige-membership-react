@@ -23,7 +23,7 @@ const ReadSeason = ({season}) => {
         <label><strong>Comments:</strong></label>
         <ul className="list-group">
         {season.comments && season.comments.map( (comment, index ) =>
-            <li className= "list-group-item " key={index} >
+            <li className= "list-group-item " key={comment} >
                 {comment}
             </li>
         )}

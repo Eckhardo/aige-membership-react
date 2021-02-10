@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
 
+const Comments = ({comment, comments, handleChange, handleRemove, handleAdd}) => {
 
-const Comments = ({comment, comments, handleInputChangeComments, handleRemoveComment, handleAddComment}) => {
+    // combines componentDidMount and componentDidUpdate
+    useEffect( () =>{
 
-    useEffect(() => {
-        console.log('[Comments] useEffect');
-
-    }, []);
+        console.log(' [Comments] useEffect');
+    },[])
     return (
         <div>
             {comments && comments.map((c, index) =>
@@ -19,19 +20,19 @@ const Comments = ({comment, comments, handleInputChangeComments, handleRemoveCom
                     name={"comment"}
                     key={index}
                     className="form-control"
-                    onChange={(e) => handleInputChangeComments(e, index)}
+                    onChange={(e) => handleChange(e, index)}
                 />
 
                 {comments.length !== 1 &&
                 <button
                     className="badge badge-primary mr-2"
-                    onClick={() => handleRemoveComment(index)}>Remove
+                    onClick={() => handleRemove(index)}>Remove
                 </button>}
 
                 {comments.length - 1 === index &&
                 (<button
                     className="badge badge-primary mr-2"
-                    onClick={handleAddComment}>Add
+                    onClick={handleAdd}>Add
                 </button>)}
             </div>
         )}
@@ -45,12 +46,18 @@ const Comments = ({comment, comments, handleInputChangeComments, handleRemoveCom
                             value={comment}
                             name="comment"
                             className="form-control"
-                            onChange={(e) => handleInputChangeComments(e, 0)}
+                            onChange={(e) => handleChange(e, 0)}
                         />
 
                     </div>)}
         </div>)
 
 }
-
-export default Comments;
+Comments.propTypes= {
+ comment:PropTypes.string,
+ comments:PropTypes.array,
+ handleChange: PropTypes.func,
+ handleAdd: PropTypes.func,
+ handleRemove: PropTypes.func
+}
+export default React.memo(Comments);

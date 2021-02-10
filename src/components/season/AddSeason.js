@@ -1,15 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import SeasonService from "../../services/SeasonService";
 import SeasonForm from "./functions/SeasonForm";
-import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 import {Link} from "react-router-dom";
 
 const AddSeason = props => {
 
-    useEffect(() => {
-        console.log('[AddSeason] useEffect');
-
-    }, []);
     const initialState = {
         membership_name: "",
         membership_year: "",
@@ -26,7 +21,7 @@ const AddSeason = props => {
 
     }
     const handleInputChangeComments = (event, index) => {
-        const {name, value} = event.target;
+        const { value} = event.target;
         setComment(value);
         const comments = [...season.comments];
         comments[index] = value;
@@ -61,24 +56,23 @@ const AddSeason = props => {
                 setErrorMessage(e);
             });
     };
+
     const refreshList = () => {
         setSeason(initialState);
-
     }
 
     return (
         <div>
             <div className="text-center">
                 <h4>Add new Season:</h4>
-                <ErrorBoundary>
-                    <SeasonForm
+                   <SeasonForm
                         comment={comment}
                         season={season}
                         handleInputChange={handleInputChange}
                         handleAddComment={handleAddComment}
                         handleRemoveComment={handleRemoveComment}
                         handleInputChangeComments={handleInputChangeComments}
-                    /></ErrorBoundary>
+                    />
                 {errorMessage ? (<div>{errorMessage}</div>) : null}
                 <button onClick={saveSeason} className="btn btn-success ml-5">
                     Submit

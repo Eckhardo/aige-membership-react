@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 
 const SearchSeason = ({seasonYear, onChangeSearchSeason, findBySeasonYear, refreshList}) => {
@@ -35,4 +35,4 @@ const SearchSeason = ({seasonYear, onChangeSearchSeason, findBySeasonYear, refre
     )
 }
 
-export default  SearchSeason;
+export default   React.memo(SearchSeason);

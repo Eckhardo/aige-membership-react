@@ -1,10 +1,6 @@
-
-
-
-
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import React from "react";
-import {Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import UsersList from "../components/user/UsersList";
 import AddUser from "../components/user/AddUser";
 import UpdateUser from "../components/user/UpdateUser";

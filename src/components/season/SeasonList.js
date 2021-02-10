@@ -13,9 +13,9 @@ const SeasonList = () => {
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [seasonYear, setSeasonYear] = useState('');
 
-
+    // combines componentDidMount and componentDidUpdate
     useEffect(() => {
-        console.log('retrieveSeasons');
+        console.log(' [SeasonList] useEffect');
         retrieveSeasons();
     }, []);
 
@@ -23,13 +23,12 @@ const SeasonList = () => {
     const onChangeSearchSeason = e => {
         const seasonName = e.target.value;
         setSeasonYear(seasonName);
-        console.log('seasonYear:',seasonName);
+        console.log('seasonYear:', seasonName);
     };
     const retrieveSeasons = () => {
         SeasonService.getAll().then(response => {
-                setSeasons(response.data);
-                console.log(response.data);
-            })
+            setSeasons(response.data);
+        })
             .catch(e => {
                 console.log(e);
             });
@@ -48,48 +47,52 @@ const SeasonList = () => {
     };
 
     const findBySeasonYear = () => {
-        console.log('season name:', seasonYear);
+        console.log('season name:', seasonYear)
+        if(!seasonYear) {
+            return;
+        }
         SeasonService.get(seasonYear).then(response => {
-                 setSeasons([response.data]);
-            })
+            if(response.data) {
+                setSeasons([response.data]);
+            }
+        })
             .catch(e => {
-                console.log('findBySeasonYear: ',e);
-             });
+                console.log('findBySeasonYear: ', e);
+            });
     };
 
     return (
         <div className="list row">
 
-           <SearchSeason
-           seasonYear={seasonYear}
-           onChangeSearchSeason={onChangeSearchSeason}
-           findBySeasonYear={findBySeasonYear}
-           refreshList={refreshList}
-           />
+            <SearchSeason
+                seasonYear={seasonYear}
+                onChangeSearchSeason={onChangeSearchSeason}
+                findBySeasonYear={findBySeasonYear}
+                refreshList={refreshList}
+            />
 
             <div className="col-md-6">
                 <h4>Seasons List</h4>
                 <ul className="list-group">
-                    {seasons &&
-                    seasons.map((season, index) => (
-                        <li  className={"list-group-item " + (index === currentIndex ? "active" : "")}
+                    {seasons && seasons.map((season, index) => (
+                        <li  key={season.membership_year} className={"list-group-item " + (index === currentIndex ? "active" : "")}
                             onClick={() => setActiveSeason(season, index)}
-                            key={season.PK}
+
                         >
                             {season.membership_name}
                         </li>
                     ))}
                 </ul>
-                <Link to={"/addSeason/"} className="btn btn-warning m-2" >
+                <Link to={"/addSeason/"} className="btn btn-warning m-2">
                     Add
                 </Link>
             </div>
             <div className="col-md-6">
                 {currentSeason ? (
-                   <ReadSeason season={currentSeason}/>
+                    <ReadSeason season={currentSeason}/>
                 ) : (
                     <div>
-                        <br />
+                        <br/>
                         <p>Please click on a Season...</p>
                     </div>
                 )}
