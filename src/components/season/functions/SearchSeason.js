@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 
 
-const SearchSeason = ({seasonYear, onChangeSearchSeason, findBySeasonYear, refreshList}) => {
+const SearchSeason = ({findBySeasonYear, refreshList}) => {
 
-    return(
+    const [seasonYear, setSeasonYear] = useState('');
+
+    const onChangeSearchSeason = e => {
+        const seasonName = e.target.value;
+        setSeasonYear(seasonName);
+        console.log('seasonYear:', seasonName);
+    };
+    return (
         <div className="col-md-8">
             <div className="input-group mb-3">
                 <input
@@ -17,7 +24,7 @@ const SearchSeason = ({seasonYear, onChangeSearchSeason, findBySeasonYear, refre
                     <button
                         className="btn btn-outline-secondary"
                         type="button"
-                        onClick={findBySeasonYear}
+                        onClick={ () => findBySeasonYear(seasonYear)}
                     >
                         Search
                     </button>
@@ -31,8 +38,8 @@ const SearchSeason = ({seasonYear, onChangeSearchSeason, findBySeasonYear, refre
                 </div>
             </div>
         </div>
-
     )
+
 }
 
 export default   React.memo(SearchSeason);

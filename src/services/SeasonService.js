@@ -1,6 +1,7 @@
 import http from "./http-common";
 
 const getAll = () => {
+  console.log('GET membershipALL:');
   return http.get("/membership");
 };
 

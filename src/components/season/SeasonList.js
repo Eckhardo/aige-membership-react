@@ -11,20 +11,14 @@ const SeasonList = () => {
     const [seasons, setSeasons] = useState([]);
     const [currentSeason, setCurrentSeason] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(-1);
-    const [seasonYear, setSeasonYear] = useState('');
 
     // combines componentDidMount and componentDidUpdate
     useEffect(() => {
         console.log(' [SeasonList] useEffect');
         retrieveSeasons();
-    }, []);
+    }, [seasons]);
 
 
-    const onChangeSearchSeason = e => {
-        const seasonName = e.target.value;
-        setSeasonYear(seasonName);
-        console.log('seasonYear:', seasonName);
-    };
     const retrieveSeasons = () => {
         SeasonService.getAll().then(response => {
             setSeasons(response.data);
@@ -34,41 +28,26 @@ const SeasonList = () => {
             });
     };
 
-    const refreshList = () => {
-        retrieveSeasons();
-        setCurrentSeason(null);
-        setCurrentIndex(-1);
-        setSeasonYear('');
-    };
-
     const setActiveSeason = (season, index) => {
         setCurrentSeason(season);
         setCurrentIndex(index);
     };
-
-    const findBySeasonYear = () => {
-        console.log('season name:', seasonYear)
-        if(!seasonYear) {
-            return;
+    const onLoadFilteredSeasons = filteredSeasons => {
+        if(filteredSeasons && filteredSeasons.length !==0) {
+            console.log(' [SeasonList] filtered success');
+            setSeasons(filteredSeasons);
         }
-        SeasonService.get(seasonYear).then(response => {
-            if(response.data) {
-                setSeasons([response.data]);
-            }
-        })
-            .catch(e => {
-                console.log('findBySeasonYear: ', e);
-            });
-    };
+        else{
+            console.log(' [SeasonList] filtered failure');
+       //     setSeasons([]);
+        }
+    }
+
 
     return (
         <div className="list row">
-
             <SearchSeason
-                seasonYear={seasonYear}
-                onChangeSearchSeason={onChangeSearchSeason}
-                findBySeasonYear={findBySeasonYear}
-                refreshList={refreshList}
+                onLoadSeasons={onLoadFilteredSeasons}
             />
 
             <div className="col-md-6">

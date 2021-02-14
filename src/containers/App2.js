@@ -43,14 +43,14 @@ function App() {
 
                 <div className="container mt-3">
                     <Switch>
-                        <Route exact path={["/", "/users"]} component={UsersList} />
-                        <Route path="/users" component={UsersList} />
-                        <Route  path="/addUser" component={AddUser} />
-                        <Route path="/user/:user_name" component={UpdateUser} />
-                        <Route path="/seasons" component={SeasonList} />
-                        <Route path="/season/:season_year" component={UpdateSeason} />
-                        <Route  path="/addSeason" component={AddSeason} />
-                        <Route path="/events" component={EventList} />
+                        <Route exact path={["/", "/users"]} component={UsersList}/>
+                        <Route path="/users" component={UsersList}/>
+                        <Route path="/addUser" component={AddUser}/>
+                        <Route path="/user/:user_name" component={UpdateUser}/>
+                        <Route path="/seasons" component={SeasonList}/>
+                        <Route path="/season/:season_year" component={UpdateSeason}/>
+                        <Route path="/addSeason" component={AddSeason}/>
+                        <Route path="/events" component={EventList}/>
                     </Switch>
                 </div>
             </div>
