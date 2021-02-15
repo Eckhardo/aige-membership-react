@@ -20,7 +20,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div class="col">
+                <div className="col">
                     <label htmlFor="first_name" className="h6 small"> First Name</label>
                     <input
                         type="text"

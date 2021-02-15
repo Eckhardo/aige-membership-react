@@ -26,19 +26,19 @@ const AddUser = props => {
         setUser({...user, [name]: value});
     }
     const saveUser = () => {
+        console.log('saveUser :');
         UserService.create(user)
             .then(response => {
-                 setUser(response.data);
+                setUser(response.data);
                 setSubmitted(true);
+                console.log('saveUser OK :');
                 props.history.push("/users");
             })
             .catch((e) => {
-
-                if(e.response.data) {
+                if (e.response) {
                     setErrorMessage(e.response.data);
                     console.log('error :', e);
-                }
-                else {
+                } else {
                     setErrorMessage(e);
                     console.log('error:', e);
                 }
@@ -55,7 +55,7 @@ const AddUser = props => {
                 <UserForm user={user}
                           handleInputChange={handleInputChange}
                           saveUser={saveUser}/>
-                {errorMessage ? (<div>{errorMessage}</div>): null
+                {errorMessage ? (<div>{errorMessage}</div>) : null
                 }
             </div>
         </div>
