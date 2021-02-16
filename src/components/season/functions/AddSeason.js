@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import SeasonService from "../../services/SeasonService";
-import SeasonForm from "./functions/SeasonForm";
+import SeasonService from "../../../services/SeasonService";
+import SeasonForm from "./SeasonForm";
 import {Link} from "react-router-dom";
 
 const AddSeason = props => {

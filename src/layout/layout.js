@@ -5,9 +5,9 @@ import UsersList from "../components/user/UsersList";
 import AddUser from "../components/user/AddUser";
 import UpdateUser from "../components/user/UpdateUser";
 import SeasonList from "../components/season/SeasonList";
-import UpdateSeason from "../components/season/UpdateSeason";
-import AddSeason from "../components/season/AddSeason";
-import EventList from "../components/event/EventList";
+import UpdateSeason from "../components/season/functions/UpdateSeason";
+import AddSeason from "../components/season/functions/AddSeason";
+import Events from "../components/newEvent/Events";
 import classes from "./layout.css";
 const Layout = (props) => {
 
@@ -43,7 +43,7 @@ const Layout = (props) => {
                         <Route path="/seasons" component={SeasonList}/>
                         <Route path="/updateSeason/:season_year" component={UpdateSeason}/>
                         <Route path="/addSeason" component={AddSeason}/>
-                        <Route path="/events" component={EventList}/>
+                        <Route path="/events" component={Events}/>
                     </Switch>
                 </div>
                 {props.children}

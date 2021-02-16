@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import SeasonService from "../../../services/SeasonService";
 
 
 const SearchSeason = ({findBySeasonYear, refreshList}) => {
@@ -10,6 +11,7 @@ const SearchSeason = ({findBySeasonYear, refreshList}) => {
         setSeasonYear(seasonName);
         console.log('seasonYear:', seasonName);
     };
+
     return (
         <div className="col-md-8">
             <div className="input-group mb-3">
@@ -32,6 +34,7 @@ const SearchSeason = ({findBySeasonYear, refreshList}) => {
                         className="btn btn-outline-secondary"
                         type="button"
                         onClick={refreshList}
+
                     >
                         Clear
                     </button>

@@ -7,9 +7,9 @@ import UpdateUser from "../components/user/UpdateUser";
 import AddUser from '../components/user/AddUser';
 import UsersList from "../components/user/UsersList";
 import SeasonList from "../components/season/SeasonList";
-import UpdateSeason from "../components/season/UpdateSeason";
-import AddSeason from "../components/season/AddSeason";
-import EventList from "../components/event/EventList";
+import UpdateSeason from "../components/season/functions/UpdateSeason";
+import AddSeason from "../components/season/functions/AddSeason";
+import Events from "../components/newEvent/Events"
 
 function App() {
     return (
@@ -50,7 +50,7 @@ function App() {
                         <Route path="/seasons" component={SeasonList}/>
                         <Route path="/season/:season_year" component={UpdateSeason}/>
                         <Route path="/addSeason" component={AddSeason}/>
-                        <Route path="/events" component={EventList}/>
+                        <Route path="/events" component={Events}/>
                     </Switch>
                 </div>
             </div>

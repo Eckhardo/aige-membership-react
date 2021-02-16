@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import SeasonService from "../../services/SeasonService";
+import SeasonService from "../../../services/SeasonService";
 import {Link} from 'react-router-dom';
-import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
-import SeasonForm from "./functions/SeasonForm";
+import ErrorBoundary from "../../../ErrorBoundary/ErrorBoundary";
+import SeasonForm from "./SeasonForm";
 
 const UpdateSeason = props => {
     const initialUserState = {

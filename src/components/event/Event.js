@@ -1,16 +1,22 @@
-import React from "react";
-import {Link} from "react-router-dom";
+import React, {useEffect} from "react";
+import "./Event.css"
 
 
-const SeasonEvent = ({event_name}) =>{
+const SeasonEvent = ({name, short, clicked}) => {
+
+
+    useEffect(() => {
+        console.log('[SeasonEvent]:: useEffect');
+    })
+
 
     return (
-        <div>
-            {event_name}
-        </div>
-
-    )
-
+        <article className="Event" onClick={clicked}>
+            <h4>{short} </h4>
+            <div className="Info">
+                <div className="EventName">{name} </div>
+            </div>
+        </article>
+    );
 }
-
 export default SeasonEvent;
