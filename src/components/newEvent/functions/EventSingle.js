@@ -10,7 +10,11 @@ const eventSingle = ({selectedEvent}) =>{
                 <label><strong>Name:</strong></label>{" "}
                 {selectedEvent.event_name}
             </div>
-            <Link to={"/updateEvent/" + selectedEvent.event_short} className="btn btn-warning">
+
+            <Link
+                to={"/event/" +selectedEvent.event_short}
+                className="btn btn-warning"
+            >
                 Edit
             </Link>
         </>

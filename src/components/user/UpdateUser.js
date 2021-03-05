@@ -21,6 +21,12 @@ const UpdateUser = props => {
     };
     const [currentUser, setCurrentUser] = useState(initialUserState);
     const [message, setMessage] = useState("");
+
+
+    useEffect(() => {
+        console.log('useEffect');
+        getUser(props.match.params.user_name);
+    }, [props.match.params.user_name]);
     const getUser = userName => {
         UserService.get(userName)
             .then(response => {
@@ -31,12 +37,6 @@ const UpdateUser = props => {
                 console.log(e);
             });
     };
-
-    useEffect(() => {
-        console.log('useEffect');
-        getUser(props.match.params.user_name);
-    }, [props.match.params.user_name]);
-
     const handleInputChange = event => {
         const {name, value} = event.target;
         console.log('name', name);

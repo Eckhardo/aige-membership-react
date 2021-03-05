@@ -8,7 +8,9 @@ import SeasonList from "../components/season/SeasonList";
 import UpdateSeason from "../components/season/functions/UpdateSeason";
 import AddSeason from "../components/season/functions/AddSeason";
 import Events from "../components/newEvent/Events";
-import classes from "./layout.css";
+import AddEvent from "../components/newEvent/functions/AddEvent";
+import UpdateEvent from "../components/newEvent/functions/UpdateEvent";
+
 const Layout = (props) => {
 
 
@@ -44,6 +46,8 @@ const Layout = (props) => {
                         <Route path="/updateSeason/:season_year" component={UpdateSeason}/>
                         <Route path="/addSeason" component={AddSeason}/>
                         <Route path="/events" component={Events}/>
+                        <Route path="/addEvent" component={AddEvent}/>
+                        <Route path="/event/:event_short" component={UpdateEvent}/>
                     </Switch>
                 </div>
                 {props.children}

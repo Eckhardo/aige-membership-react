@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
-import {Link} from 'react-router-dom';
 import SeasonService from "../../services/SeasonService";
 
 import Seasons from "./functions/Seasons";

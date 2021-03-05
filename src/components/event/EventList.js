@@ -4,6 +4,7 @@ import SeasonEvent from "./Event";
 import NewEvent from "./NewEvent";
 
 import ModifyEvent from './ModifyEvent';
+
 class EventList extends Component {
 
     state = {

@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 
 
-const SearchSeason = ({findBySeasonYear, refreshList}) => {
+const SearchEvent = ({findByEventName, refreshList}) => {
 
-    const [seasonYear, setSeasonYear] = useState('');
+    const [eventName, setEventName] = useState('');
 
-    const onChangeSearchSeason = e => {
-        const seasonName = e.target.value;
-        setSeasonYear(seasonName);
-        console.log('seasonYear:', seasonName);
+    const onChangeSearchEvent = e => {
+        const eventName = e.target.value;
+        setEventName(eventName);
+        console.log('seasonYear:', eventName);
     };
 
     return (
@@ -17,15 +17,15 @@ const SearchSeason = ({findBySeasonYear, refreshList}) => {
                 <input
                     type="text"
                     className="form-control"
-                    placeholder="Search by season year"
-                    value={seasonYear}
-                    onChange={onChangeSearchSeason}
+                    placeholder="Search by event name"
+                    value={eventName}
+                    onChange={onChangeSearchEvent}
                 />
                 <div className="input-group-append">
                     <button
                         className="btn btn-outline-secondary"
                         type="button"
-                        onClick={ () => findBySeasonYear(seasonYear)}
+                        onClick={ () => findByEventName(eventName)}
                     >
                         Search
                     </button>
@@ -44,4 +44,4 @@ const SearchSeason = ({findBySeasonYear, refreshList}) => {
 
 }
 
-export default   React.memo(SearchSeason);
+export default   React.memo(SearchEvent);

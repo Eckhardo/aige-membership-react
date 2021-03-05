@@ -48,7 +48,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div class="col">
+                <div className="col">
                     <label htmlFor="zip" className="h6 small"> Zip</label>
                     <input
                         type="text"
@@ -76,7 +76,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div class="col">
+                <div className="col">
                     <label htmlFor="address" className="h6 small"> Address</label>
                     <input
                         type="text"
@@ -103,7 +103,7 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <div class="col">
+                <div className="col">
                     <label htmlFor="mobil" className="h6 small"> Mobil</label>
                     <input
                         type="text"
@@ -118,16 +118,16 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
             </div>
             <div className="row">
                 <div className="col">
-            <label htmlFor="phone" className="h6 small"> Phone</label>
-            <input
-                type="text"
-                className="form-control"
-                id="phone"
-                name="phone"
-                placeholder="Phone"
-                value={user.phone}
-                onChange={handleInputChange}
-            />
+                    <label htmlFor="phone" className="h6 small"> Phone</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="phone"
+                        name="phone"
+                        placeholder="Phone"
+                        value={user.phone}
+                        onChange={handleInputChange}
+                    />
 
                 </div>
                 <div className="col">
@@ -142,11 +142,11 @@ const UserForm = ({user, handleInputChange, saveUser}) => {
 
                         />
                         <label htmlFor="is_admin" className="h6 small p-2"> Admin</label>
-                            type="checkbox"
-                            className="form-check-inline "
-                            checked={JSON.parse(user.is_admin)}
-                            disabled={true}
-                            readOnly={true}
+                        <input type="checkbox"
+                               className="form-check-inline "
+                               checked={JSON.parse(user.is_admin)}
+                               disabled={true}
+                               readOnly={true}
                         />
                     </div>
                 </div>
