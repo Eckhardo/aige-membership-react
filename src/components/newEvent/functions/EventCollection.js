@@ -17,17 +17,22 @@ const EventCollection = (props) => {
     return (
         <>
             <div className="col-md-6">
-                <h4>Seasons List</h4>
+                <h4>Event List</h4>
                 <ul className="list-group">
                     {props.events && props.events.map((myEvent, index) => (
-                        <li key={myEvent.event_short}
+                        <li key={index}
                             className={"list-group-item " + (index === currentIndex ? "active" : "")}
                             onClick={() => setActiveEvent(myEvent, index)}>
                             {myEvent.event_name}
                         </li>
                     ))}
                 </ul>
-                <Link to={"/addEvent/"}>Add </Link>
+                <Link
+                    to={"/addEvent/"}
+                    className="btn btn-warning m-2"
+                >
+                    Add
+                </Link>
             </div>
             <div className="col-md-6">
                 {currentEvent ? (<EventSingle selectedEvent={currentEvent}/>) :

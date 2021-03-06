@@ -12,7 +12,7 @@ const eventSingle = ({selectedEvent}) =>{
             </div>
 
             <Link
-                to={"/event/" +selectedEvent.event_short}
+                to={"/event/" +selectedEvent.SK}
                 className="btn btn-warning"
             >
                 Edit

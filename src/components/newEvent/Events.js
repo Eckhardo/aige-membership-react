@@ -23,11 +23,11 @@ const Events = () => {
         })
     }
 
-    const findByEventName = (name) => {
-        EventService.get(name)
+    const findByEventName = (searchTerm) => {
+        EventService.search(searchTerm)
             .then(response => {
-                console.log(' [SeasonList] findBySeasonYear searchSeason()');
-                setEvents([response.data]);
+                 setEvents(response.data);
+
 
             })
             .catch(e => {

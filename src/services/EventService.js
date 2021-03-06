@@ -4,9 +4,9 @@ const getAll = () => {
     return http.get(`/event`);
 };
 
-const get = (name) => {
-    console.log('GET event:',  name );
-    return http.get(`/event/${name}`);
+const get = (SK) => {
+    console.log('GET event:',  SK );
+    return http.get(`/event/${SK}`);
 };
 
 const create = data => {
@@ -19,8 +19,8 @@ const update = (data) => {
     return http.put(`/event`, {item: data});
 };
 
-const remove = event_name => {
-    return http.delete(`/event/${event_name}`);
+const remove = SK => {
+    return http.delete(`/event/${SK}`);
 };
 
 const removeAll = () => {
@@ -28,11 +28,17 @@ const removeAll = () => {
 };
 
 
+const search = (searchTerm) => {
+    console.log('Search event:',  searchTerm );
+    return http.get(`/event/search/${searchTerm}`);
+};
+
 export default {
     getAll,
     get,
     create,
     update,
     remove,
-    removeAll
+    removeAll,
+    search
 };

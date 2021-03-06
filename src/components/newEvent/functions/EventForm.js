@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import Comments from "../../season/functions/Comments";
+
 import PropTypes from "prop-types";
 
 

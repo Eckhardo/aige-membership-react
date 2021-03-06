@@ -19,10 +19,8 @@ const UpdateEvent = props => {
     }, [props.match.params.event_short]);
 
     const getEvent = event_short => {
-        console.log("get Event...");
-        EventService.get(event_short)
+         EventService.get(event_short)
             .then(response => {
-                console.log("get Event...", JSON.stringify(response.data));
                 setCurrentEvent(response.data);
             })
             .catch(e => {
@@ -31,7 +29,6 @@ const UpdateEvent = props => {
     };
 
     const handleInputChange = event => {
-        console.log("handleInputChange::", event.target);
         const {name, value} = event.target;
         setCurrentEvent({...currentEvent, [name]: value});
     };
@@ -39,7 +36,6 @@ const UpdateEvent = props => {
 
     const updateEvent = () => {
         EventService.update(currentEvent).then(response => {
-            console.log('update successful :', JSON.stringify(response));
             props.history.push("/events");
         })
             .catch(e => {
@@ -54,8 +50,7 @@ const UpdateEvent = props => {
     };
 
     const deleteEvent = () => {
-        let name = currentEvent.event_short;
-        EventService.remove(name).then(response => {
+        EventService.remove(currentEvent.SK).then(response => {
             props.history.push("/events");
         })
             .catch(e => {
@@ -87,7 +82,6 @@ const UpdateEvent = props => {
                     onClick={updateEvent}>
                     Update
                 </button>
-
             </div>
         </div>);
 }

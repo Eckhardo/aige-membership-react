@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import EventService from "../../../services/EventService";
+import EventForm from "./EventForm";
 
 const AddEvent = (props) => {
     const initialState = {
@@ -13,7 +14,6 @@ const AddEvent = (props) => {
 
     const saveEvent = () => {
         EventService.create(newEvent).then(response => {
-            console.log("Event saved...");
             props.history.push("/events");
         }).catch(error => {
             console.log(error);
@@ -22,6 +22,10 @@ const AddEvent = (props) => {
 
         })
     }
+    const handleInputChange = event => {
+        const {name, value} = event.target;
+        setNewEvent({...newEvent, [name]: value});
+    };
 
 
     const refreshList = () => {
@@ -32,7 +36,10 @@ const AddEvent = (props) => {
             <div className="text-center">
                 <h4>Add new Event:</h4>
                 {errorMessage ? (<div>{errorMessage}</div>) : null}
-
+                <EventForm
+                    myEvent={newEvent}
+                    handleInputChange={handleInputChange}
+                />
                 <button onClick={saveEvent} className="btn btn-success ml-5">
                     Submit
                 </button>
