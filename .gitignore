@@ -4,7 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-
+.idea
+.idea/inspectionProfiles/Project_Default.xml
+.idea/vcs.xml
 # testing
 /coverage
 

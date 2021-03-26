@@ -1,0 +1,14 @@
+To update all packages to its latest (major) version, we need to install a new global package
+ called npm-check-updates.
+
+        npm install -g npm-check-updates
+
+
+Now, run this command.
+
+        ncu -u
+
+This command will update your package.json file dependencies to the latest version.
+At final, run this command to update the packages.
+
+        npm install

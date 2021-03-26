@@ -1,0 +1,23 @@
+
+// Font Style: Roboto
+npm i --save fontsource-roboto
+
+npm i --save @material-ui/core
+
+npm i --save @material-ui/icons
+
+
+
+npm i --save @material-ui/pickers
+
+
+npm i --save @material-ui/lab
+
+npm i --save axios
+
+
+npm i -s react-dom
+
+npm i -s react-router-dom
+
+npm i -s underscore

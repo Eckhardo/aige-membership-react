@@ -28,7 +28,7 @@ const removeAll = () => {
 };
 
 
-export default {
+const UserService= {
   getAll,
   get,
   create,
@@ -36,3 +36,4 @@ export default {
   remove,
   removeAll
 };
+export default UserService;
