@@ -20,8 +20,8 @@ const update = (data) => {
   return http.put(`/season`, {item: data});
 };
 
-const remove = (season_name) => {
-  return http.delete(`/season/${season_name}`);
+const remove = (season_year) => {
+  return http.delete(`/season/${season_year}`);
 };
 
 const removeAll = () => {
@@ -29,7 +29,7 @@ const removeAll = () => {
 };
 
 
-export default {
+const SeasonService ={
   getAll,
   get,
   create,
@@ -37,3 +37,5 @@ export default {
   remove,
   removeAll
 };
+
+export default SeasonService;

@@ -11,6 +11,8 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Popup from "../Popup";
 import SeasonStepsForm from "./SeasonStepsForm";
+import Notification from "../controls/Notification";
+import ConfirmDialog from "../controls/ConfirmDialog";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -63,13 +65,19 @@ const Seasons = () => {
     const retrieveSeasons = () => {
         SeasonService.getAll().then(response => {
             setRecords(response.data);
+            console.log("SEASONS:", JSON.stringify(response.data));
         }).catch(e => {
             console.log(e);
         })
     }
-    const onDelete = item =>{
-        SeasonService.remove(item.season_year).then( response =>{
+    const onDelete = season_year =>{
+        setConfirmDialog({
+            ...confirmDialog,
+            isOpen: false
+        })
+        SeasonService.remove(season_year).then( response =>{
             retrieveSeasons();
+
             setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
 
 
@@ -163,9 +171,9 @@ const Seasons = () => {
                     <TableBody>
                         {
                             recordsAfterPagingAndSorting().map(item => (
-                                <TableRow key={item.season_year}>
+                                <TableRow key={item.season_name}>
                                     <TableCell>{item.season_name}</TableCell>
-                                    <TableCell>{item.season_year}</TableCell>
+                                    <TableCell>{new Date(item.season_year).getFullYear()}</TableCell>
                                     <TableCell>{item.is_active === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>
@@ -187,11 +195,11 @@ const Seasons = () => {
                                         <Control.ActionButton color="secondary" onClick={() =>
                                             setConfirmDialog({
                                                 isOpen: true,
-                                                title: "Are you sure to delete this item?",
+                                                title: "Sure to delete this item?",
                                                 subTitle: "You can undo this operation",
 
                                                 onConfirm: () => {
-                                                    onDelete(item.user_name)
+                                                    onDelete(item.season_year.getFullYear())
                                                 }
                                             })}
                                         >
@@ -207,9 +215,14 @@ const Seasons = () => {
                 </TblContainer>
 
             </Paper>
-            <Popup title="Add Season" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+            <Popup title="Update Season" openPopup={openPopup} setOpenPopup={setOpenPopup}>
                 <SeasonStepsForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} /></Popup>
+            <Notification notify={notify} setNotify={setNotify}/>
+            <ConfirmDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}>
 
+            </ConfirmDialog>
         </>
 
     )

@@ -1,11 +1,9 @@
-Trying to integrate auth0 and JWT-based server-side authorization by a lambda authorizer 
-function, I faile:
-- Examples provided by auth0 are quite a few and omit a CRUD example that
-show how to integrate the JWT within the http request.
-- I tried several times, the example provided by Ariel Weinberger was working
-but was so sophisticated that I did not understand the code.
+##### AIGE Membership SPA #######
 
-Thus I decide to ditch the auth= integration completely and instead will integrate
-a simple login with username/password instead.
 
-The scaffold of this project is provided by BezCoder: React with Axios ReactHooks CRUD app.
+A React Hook-based frontend application using the Promise based HTTP client AXIOS  to connect to an AWS-Cloud-based REST API called "aws-nodejs-membership-api".
+
+Further Libraries in use are:
+Material-UI is used for building customizable components
+ReactRouter to enable routing in the SPA
+

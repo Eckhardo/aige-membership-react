@@ -1,13 +1,12 @@
 import {React, useEffect, useState} from "react";
-import {Grid, makeStyles, Paper, Typography} from "@material-ui/core";
+import {Grid, Paper, Typography} from "@material-ui/core";
 import Controls from "../../controls/Controls";
 import {Form} from "../../useForm";
-import _ from "underscore";
 import UserService from "../../../services/UserService";
 
 const StepMembers = (props) => {
 
-    const {values, setValues, errors, handleInputChange, resetForm, validate,useStyles} = props;
+    const {values,  errors, handleInputChange,useStyles} = props;
     const [members, setMembers] = useState([])
     const classes = useStyles();
 
@@ -18,20 +17,9 @@ const StepMembers = (props) => {
     }, []);
 
     const getMembers = () => {
-
          UserService.getAll().then( response =>{
-
-             let theMembers=response.data;
-             const nonActiveMembers = _.intersection(theMembers.map((member) => {
-                 return member.user_name }), values.members);
-             console.log("nonActiveMembers::", JSON.stringify(nonActiveMembers));
-
-             const items = theMembers.filter(member => !nonActiveMembers.includes(member.user_name));
-             console.log("items::", JSON.stringify(items));
-
-             setMembers(items);
-         }).
-             catch (err=> {
+             setMembers( response.data);
+         }).catch (err=> {
              console.log(err);
          }) ;
 

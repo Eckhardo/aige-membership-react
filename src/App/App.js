@@ -6,6 +6,7 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import Users from "../components/Users/Users";
 import Events from "../components/Events/Events"
 import Seasons from "../components/Seasons/Seasons";
+
 const useStyles = makeStyles(theme => ({
     appMain: {
         paddingLeft: '100px',

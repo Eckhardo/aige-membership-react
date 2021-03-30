@@ -6,10 +6,15 @@ import App from "./App/App";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
 
-        <App />,
+
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+
 
     document.getElementById("root")
 );

@@ -33,7 +33,7 @@ const search = (searchTerm) => {
     return http.get(`/event/search/${searchTerm}`);
 };
 
-export default {
+const EventService= {
     getAll,
     get,
     create,
@@ -42,3 +42,4 @@ export default {
     removeAll,
     search
 };
+export default EventService;

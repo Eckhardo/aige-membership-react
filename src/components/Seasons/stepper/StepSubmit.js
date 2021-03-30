@@ -15,7 +15,7 @@ const StepSubmit = props => {
                         {values.season_name} {errors.season_name}
                     </Paper>
                     <Paper className={classes.pageContent}>
-                        {values.season_year.getFullYear()}
+                        {new Date(values.season_year).getFullYear()}
                     </Paper>
                     <Paper className={classes.pageContent}>
                         {values.is_active}

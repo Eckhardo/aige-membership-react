@@ -3,8 +3,9 @@ import {
     Checkbox,
     FormControl,
     FormHelperText,
-    FormLabel,
-    Input,InputLabel, ListItemText,
+    Input,
+    InputLabel,
+    ListItemText,
     MenuItem,
     Select as MuiSelect
 } from "@material-ui/core";

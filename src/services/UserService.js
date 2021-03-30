@@ -9,6 +9,10 @@ const get = userName => {
   return http.get(`/user/${userName}`);
 };
 
+const search = (searchTerm) => {
+  console.log('Search user:',  searchTerm );
+  return http.get(`/user/search/${searchTerm}`);
+};
 const create = data => {
   console.log('POST username:', data);
   return http.post("/user", {item: data});
@@ -34,6 +38,7 @@ const UserService= {
   create,
   update,
   remove,
-  removeAll
+  removeAll,
+  search
 };
 export default UserService;

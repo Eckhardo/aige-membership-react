@@ -8,7 +8,6 @@ import StepEvents from "./stepper/StepEvents";
 import StepMembers from "./stepper/StepMembers";
 import {useForm} from "../useForm";
 import StepSubmit from "./stepper/StepSubmit";
-import SeasonService from "../../services/SeasonService";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +57,7 @@ const SeasonStepsForm = props => {
      */
     useEffect(() => {
         console.log("SeasonStepsForm#useEffect::");
+
         if (recordForEdit != null) {
             setValues({...recordForEdit});
         }

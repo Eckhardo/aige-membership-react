@@ -196,7 +196,7 @@ const Events = props => {
                                         <Control.ActionButton color= "secondary" onClick={() =>
                                             setConfirmDialog({
                                                 isOpen: true,
-                                                title: "Are you sure to delete this item?",
+                                                title: "Sure to delete this item?",
                                                 subTitle: "You can undo this operation",
                                                 onConfirm: () => {
                                                     onDelete(item.SK)
