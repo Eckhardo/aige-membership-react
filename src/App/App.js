@@ -6,6 +6,7 @@ import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import Users from "../components/Users/Users";
 import Events from "../components/Events/Events"
 import Seasons from "../components/Seasons/Seasons";
+import Season from "../components/Season/Season";
 
 const useStyles = makeStyles(theme => ({
     appMain: {
@@ -55,7 +56,7 @@ const muiTheme = createMuiTheme({
 
 function App(props) {
     const classes = useStyles();
-    const routes = ["/users", "/events", "/seasons", "/submit"];
+    const routes = ["/users", "/events", "/seasons", "/season"];
     return (
         <>
             <MuiThemeProvider theme={muiTheme}>
@@ -88,13 +89,13 @@ function App(props) {
                                         />
                                         <Tab
                                             value={routes[2]}
-                                            label="SeasonStepsForm"
+                                            label="Seasons"
                                             component={Link}
                                             to={routes[2]}
                                         />
                                         <Tab
                                             value={routes[3]}
-                                            label="Submit"
+                                            label="Current Season"
                                             component={Link}
                                             to={routes[3]}
                                         />
@@ -107,6 +108,7 @@ function App(props) {
                             <Route path="/users" component={Users}/>
                             <Route path="/events" component={Events}/>
                             <Route path="/seasons" component={Seasons}/>
+                            <Route path="/season" component={Season}/>
                         </Switch>
                     </BrowserRouter>
                 </div>

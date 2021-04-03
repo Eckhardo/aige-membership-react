@@ -2,6 +2,7 @@ import Input from "./Input";
 import RadioGroup from "./RadioGroup";
 import Select from "./Select";
 import SelectMultipleCheckbox from "./SelectMultiCheckbox";
+import SelectMultipleChip from "./SelectMultiChip";
 import Checkbox from "./Checkbox";
 import DatePicker from "./DatePicker";
 import YearPicker from "./YearPicker";
@@ -16,6 +17,7 @@ const Controls = {
     Checkbox,
     Select,
     SelectMultipleCheckbox,
+    SelectMultipleChip,
     DatePicker,
     YearPicker,
     Button,

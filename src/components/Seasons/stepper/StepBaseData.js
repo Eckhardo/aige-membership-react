@@ -12,7 +12,7 @@ const StepBaseData = props => {
         <Paper className={classes.pageContent}>
 
             <Form>
-                <Typography variant="h5" c style={{color: "#999", textAlign: "center"}}>
+                <Typography variant="h5"  style={{color: "#999", textAlign: "center"}}>
                     Season Base Data
                 </Typography>
                 <Grid container className={classes.root} alignItems="center" justify="center">

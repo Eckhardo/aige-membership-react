@@ -44,15 +44,13 @@ const StepEvents = props => {
             </Typography>
             <Grid container className={classes.root} alignItems="center" justify="center">
                 <Grid item xs={6}>
-                <Controls.Input label="Season Name" name="season_name" value={values.season_name}
-                                    onChange={handleInputChange} error={errors.season_name}/>
-                    <Controls.SelectMultipleCheckbox
+                     <Controls.SelectMultipleCheckbox
                         name="events"
                         value={values.events}
                         label="Events"
                         color="primary"
                         onChange={handleInputChange}
-                        options={events.map(member => (member.event_name))}
+                        options={events.map(event => (event.event_name))}
                         error={errors.events}
 
                     >

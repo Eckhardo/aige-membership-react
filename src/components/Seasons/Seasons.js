@@ -140,6 +140,7 @@ const Seasons = () => {
         <>
             <PageHeader elevation={3} icon={<PeopleOutlined/>} title="Season list" subTitle="AIGE seasons"/>
             <Paper className={classes.pageContent}>
+
                 <Toolbar>
                     <Control.Input
                         className={classes.searchInput}
@@ -199,7 +200,7 @@ const Seasons = () => {
                                                 subTitle: "You can undo this operation",
 
                                                 onConfirm: () => {
-                                                    onDelete(item.season_year.getFullYear())
+                                                    onDelete(item.season_year)
                                                 }
                                             })}
                                         >

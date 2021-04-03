@@ -126,6 +126,7 @@ const SeasonStepsForm = props => {
             case 0:
                 return <StepBaseData
                     values={values}
+                    id="StepBaseData-ID"
                     setValues={setValues}
                     errors={errors}
                     setErrors={setErrors}
@@ -190,12 +191,12 @@ const SeasonStepsForm = props => {
                 <div>
                     {activeStep === steps.length ? (
                         <div>
-                            <Typography className={classes.instructions}>All steps completed</Typography>
+                            <Typography component={'div'} className={classes.instructions}>All steps completed</Typography>
                             <Button onClick={handleReset}>Reset</Button>
                         </div>
                     ) : (
                         <div>
-                            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                            <Typography component={'div'} className={classes.instructions}>{getStepContent(activeStep)}</Typography>
                             <div>
                                 <Button
                                     disabled={activeStep === 0}
