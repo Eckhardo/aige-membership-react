@@ -1,12 +1,12 @@
 import './App.css';
-
-import {AppBar, createMuiTheme, CssBaseline, makeStyles, MuiThemeProvider, Tab, Tabs} from "@material-ui/core";
+import {createMuiTheme, makeStyles, MuiThemeProvider} from '@material-ui/core/styles';
+import {AppBar, CssBaseline, Tab, Tabs} from "@material-ui/core";
 import React from "react";
 import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
 import Users from "../components/Users/Users";
 import Events from "../components/Events/Events"
 import Seasons from "../components/Seasons/Seasons";
-import Season from "../components/Season/Season";
+import SeasonUsers from "../components/SeasonUser/SeasonUsers";
 
 const useStyles = makeStyles(theme => ({
     appMain: {
@@ -56,7 +56,7 @@ const muiTheme = createMuiTheme({
 
 function App(props) {
     const classes = useStyles();
-    const routes = ["/users", "/events", "/seasons", "/season"];
+    const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents"];
     return (
         <>
             <MuiThemeProvider theme={muiTheme}>
@@ -77,7 +77,7 @@ function App(props) {
                                         {console.log(history.location.pathname)}
                                         <Tab
                                             value={routes[0]}
-                                            label="Users"
+                                            label="Members"
                                             component={Link}
                                             to={routes[0]}
                                         />
@@ -95,9 +95,15 @@ function App(props) {
                                         />
                                         <Tab
                                             value={routes[3]}
-                                            label="Current Season"
+                                            label="Season Members"
                                             component={Link}
                                             to={routes[3]}
+                                        />
+                                        <Tab
+                                            value={routes[4]}
+                                            label="Season Events"
+                                            component={Link}
+                                            to={routes[4]}
                                         />
                                     </Tabs>
                                 </AppBar>
@@ -108,7 +114,8 @@ function App(props) {
                             <Route path="/users" component={Users}/>
                             <Route path="/events" component={Events}/>
                             <Route path="/seasons" component={Seasons}/>
-                            <Route path="/season" component={Season}/>
+                            <Route path="/seasonUsers" component={SeasonUsers}/>
+                            <Route path="/seasonEvents" component={SeasonUsers}/>
                         </Switch>
                     </BrowserRouter>
                 </div>

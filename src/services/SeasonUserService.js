@@ -16,8 +16,8 @@ const update = (data) => {
     return http.put(`/seasonUser`, {item: data});
 };
 
-const remove = user_name => {
-    return http.delete(`/seasonUser/${user_name}`);
+const remove = (year, user_name) => {
+    return http.delete(`/seasonUser/${year}/${user_name}`);
 };
 
 const removeAll = () => {

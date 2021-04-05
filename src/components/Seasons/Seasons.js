@@ -138,7 +138,7 @@ const Seasons = () => {
 
     return (
         <>
-            <PageHeader elevation={3} icon={<PeopleOutlined/>} title="Season list" subTitle="AIGE seasons"/>
+            <PageHeader elevation={3} icon={<PeopleOutlined/>} title="AIGE" subTitle="Seasons"/>
             <Paper className={classes.pageContent}>
 
                 <Toolbar>
@@ -214,7 +214,7 @@ const Seasons = () => {
 
                     </TableBody>
                 </TblContainer>
-
+                <TblPagination/>
             </Paper>
             <Popup title="Update Season" openPopup={openPopup} setOpenPopup={setOpenPopup}>
                 <SeasonStepsForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} /></Popup>

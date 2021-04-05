@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         textTransform: "none"
     }
 }))
-
+// ..other can be used to set properties like 'type=submit',
 const Button = props => {
     const {text, variant, color, size, onClick, ...other} = props;
     const classes = useStyles();

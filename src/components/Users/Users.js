@@ -148,8 +148,8 @@ const Users = () => {
     return (
         <>
             <PageHeader
-                title="User list"
-                subTitle="AIGE Members"
+                title="AIGE"
+                subTitle=" Members"
                 icon={<PeopleOutlined/>}/>
             <Paper className={classes.pageContent}>
 

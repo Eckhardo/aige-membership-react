@@ -62,8 +62,7 @@ const EventForm = (props) => {
         e.preventDefault();
         if (validate()) {
             addOrEdit(values, resetForm);
-        }
-        ;
+        } ;
     }
 
     return (

@@ -8,21 +8,22 @@ const Select = props => {
 
     return (
         <FormControl variant="outlined" className={className}
-                        // fill properties error and helperText
+            // fill properties error and helperText
                      {...(error && {error: true})}
         >
-            <FormLabel >{label}</FormLabel>
+            <FormLabel>{label}</FormLabel>
             <MuiSelect label={label}
                        name={name}
+                       color="primary"
                        value={value}
                        onChange={onChange}
             >
                 <MenuItem value="">None</MenuItem>
                 {
                     options.map((option, index) => (
-                        <MenuItem color={color} key={index} value={option.id}>{option.title}</MenuItem>
-                    ))
-
+                            <MenuItem color={color} key={index} value={option.id}>{option.title}</MenuItem>
+                        )
+                    )
                 }
             </MuiSelect>
             {error && <FormHelperText>{error}</FormHelperText>}

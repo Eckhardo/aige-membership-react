@@ -1,7 +1,8 @@
 import React from 'react'
-import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles, Typography} from '@material-ui/core'
+import {Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography} from '@material-ui/core'
 import Controls from "./Controls"
 import NotListedLocationIcon from '@material-ui/icons/NotListedLocation';
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 
 const useStyles = makeStyles(theme => ({

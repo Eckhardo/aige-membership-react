@@ -30,7 +30,7 @@ const  ActionButton = (props) =>{
         <Button
             className={`${classes.root} ${classes[color]}`}
             onClick={onClick}>
-            {children}
+             {children}
         </Button>
     )
 }

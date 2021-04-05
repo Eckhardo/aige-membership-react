@@ -6,15 +6,15 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: "#fdfdff",
     },
     pageHeader: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
         display: "flex",
         marginBottom: theme.spacing(2),
-        marginTop:  theme.spacing(2),
+        marginTop:  theme.spacing(5),
 
     },
     pageIcon:{
         display:"inline-block",
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
         color:"#3c44b1"
     },
     pageTitle:{
@@ -31,22 +31,18 @@ const PageHeader = (props) => {
 
     const classes = useStyles();
     return (
-        <Paper elevation={0} square className={classes.root}>
+        <Paper elevation={3} square className={classes.root} >
             <div className={classes.pageHeader}>
                 <Card className={classes.pageIcon}>
                     {icon}
                 </Card>
                 <div className={classes.pageTitle}>
                     <Typography
-                        variant="h6"
+                      variant="h6"
                         component="div">
-                        {title}
+                        {title}  {subTitle}
                     </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        component="div">
-                        {subTitle}
-                    </Typography>
+
                 </div>
             </div>
         </Paper>

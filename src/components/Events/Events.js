@@ -148,8 +148,8 @@ const Events = props => {
     return (
         <>
             <PageHeader
-                title="Event list"
-                subTitle="AIGE Events"
+                title="AIGE"
+                subTitle=" Events"
                 icon={<PeopleOutlined/>}/>
             <Paper className={classes.pageContent}>
 
@@ -186,14 +186,15 @@ const Events = props => {
                                     <TableCell>{item.event_name} </TableCell>
                                     <TableCell>{item.event_short} </TableCell>
                                     <TableCell>{item.comments} </TableCell>
-
                                     <TableCell>
                                         <Control.ActionButton
                                             color="primary"
-                                            onClick={() => openInPopup(item)}>
+                                            onClick={() => openInPopup(item)}
+                                        >
                                             <EditOutlinedIcon fontSize="small"/>
                                         </Control.ActionButton>
-                                        <Control.ActionButton color= "secondary" onClick={() =>
+
+                                        <Control.ActionButton color="secondary" onClick={() =>
                                             setConfirmDialog({
                                                 isOpen: true,
                                                 title: "Sure to delete this item?",
@@ -204,7 +205,8 @@ const Events = props => {
                                             })}
                                         >
                                             <CloseIcon fontSize="small"/>
-                                        </Control.ActionButton></TableCell>
+                                        </Control.ActionButton>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         }
@@ -212,7 +214,7 @@ const Events = props => {
                 </TblContainer>
                 <TblPagination/>
             </Paper>
-            <Popup title="Add User" openPopup={openPopup}
+            <Popup title="Add Event" openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>
                 <EventForm recordForEdit={recordForEdit} addOrEdit={addOrEdit}/>
             </Popup>

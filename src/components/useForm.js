@@ -14,7 +14,7 @@ export const useForm = (initialFieldValues, validateOnChange=false, validate) =>
         console.log("value::", value);
         console.log("name::", name);
 
-        setValues({...values, [name]: value})
+        setValues({...values, [name]: value});
         if (validateOnChange){
             validate({[name]:value});
         }
