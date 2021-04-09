@@ -20,8 +20,8 @@ const StepBaseData = props => {
                         <Controls.Input label="Season Name" name="season_name" value={values.season_name}
                                         onChange={handleInputChange} error={errors.season_name}/>
                         <Controls.YearPicker
-                            name="season_year"
-                            value={values.season_year}
+                            name="season_date"
+                            value={values.season_date}
                             label="Season Year"
                             color="primary"
                             onChange={handleInputChange}/>

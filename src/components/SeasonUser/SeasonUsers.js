@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 
 }))
 
-const Season = () => {
+const SeasonUsers = () => {
 
     const classes = useStyles();
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -111,9 +111,11 @@ const Season = () => {
     const retrieveSeasonYears = () => {
         SeasonService.getAll().then((response) => {
             let seasons = response.data;
+            console.log("seasons:", JSON.stringify(response.data));
             let myTuple = seasons.map(s => {
-                return {id: new Date(s.season_year).getFullYear(), title: new Date(s.season_year).getFullYear()}
+                return {id: new Date(s.season_date).getFullYear(), title: new Date(s.season_date).getFullYear()}
             })
+            console.log("years", JSON.stringify(myTuple));
             setSeasonYears(myTuple);
         }).catch(err => {
             setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
@@ -144,8 +146,30 @@ const Season = () => {
         setRecordForEdit(item);
         setOpenPopup(true);
     }
-    const addOrEdit = () =>{
-
+    const addOrEdit = (item,resetForm) =>{
+       if(item.PK) {
+           SeasonUserService.update(item).then(response=>{
+               resetForm();
+               retrieveSeasonUsers();
+               setOpenPopup(false);
+               setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
+           }).catch(err=>{
+               console.log("Error=", JSON.stringify(err));
+               setNotify({isOpen: true, message: "Update Season User failed", type: "error"});
+           })
+       }
+       else{
+           SeasonUserService.create(item).then(response=>{
+               console.log("Response=", JSON.stringify(response));
+               resetForm();
+               retrieveSeasonUsers();
+               setOpenPopup(false);
+               setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
+           }).catch(err=>{
+               console.log("Error=", JSON.stringify(err.message));
+               setNotify({isOpen: true, message: "Create Season User failed", type: "error"});
+           })
+       }
     }
 
     const onDelete = (userName) => {
@@ -179,11 +203,12 @@ const Season = () => {
             <PageHeader elevation={3} icon={< PeopleIcon/>} title="AIGE Members for Season"
                         subTitle={selectedYear}/>
             <Paper className={classes.pageContent}>
+
                 <Toolbar>
                     <Grid container>
                         <Grid item xs={3}>
                             <Control.Select
-                                className={classes.formControl}
+                                className={classes.root}
                                 label="Select Year"
                                 name="selectedYear"
                                 value={selectedYear}
@@ -193,13 +218,13 @@ const Season = () => {
                         </Grid>
                         <Grid item xs={5} style={{ padding: 4, marginTop:15}}>
                             <TextField
-
                                 id="filled-read-only-input"
                                 label="Season Name"
                                 value={season && season.season_name}
                                 InputProps={{
                                     readOnly: true,
                                 }}
+                                defaultValue="Season Name"
                                 variant="outlined"
                             />
                             <FormControl className={classes.selectControl}>
@@ -225,7 +250,7 @@ const Season = () => {
                         startIcon={<PersonAddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
-                            setRecordForEdit({"season_year":selectedYear})
+                            setRecordForEdit({"season_year":selectedYear, is_active:false, fees_paid:false})
                         }}/>
 
                 </Toolbar>
@@ -272,9 +297,9 @@ const Season = () => {
                 <TblPagination/>
             </Paper>
             <Notification notify={notify} setNotify={setNotify}/>
-            <Popup title={ recordForEdit ? "Update Season Member": "Add Season Member"} openPopup={openPopup}
+            <Popup title={ recordForEdit.PK ? "Update Season Member": "Add Season Member"} openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>
-                <SeasonUserForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} seasonYear={selectedYear}/>
+                <SeasonUserForm seasonUsers={seasonUsers.map(s => s.user_name)} recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
             </Popup>
             <ConfirmDialog
                 confirmDialog={confirmDialog}
@@ -283,4 +308,4 @@ const Season = () => {
         </>
     )
 }
-export default Season;
+export default SeasonUsers;

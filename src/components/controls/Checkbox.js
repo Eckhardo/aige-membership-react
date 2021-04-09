@@ -21,7 +21,7 @@ const Checkbox = props => {
                     control={<MuiCheckbox color={color} checked={checked}
                                           onChange={e => onChange(convertToDefEventParam(name, e.target.checked))}
                                           name={name}/>}
-                    label={label}
+
                 />
             </FormGroup>
         </FormControl>

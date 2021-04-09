@@ -11,7 +11,7 @@ const Select = props => {
             // fill properties error and helperText
                      {...(error && {error: true})}
         >
-            <FormLabel>{label}</FormLabel>
+            <FormLabel >{label}</FormLabel>
             <MuiSelect label={label}
                        name={name}
                        color="primary"

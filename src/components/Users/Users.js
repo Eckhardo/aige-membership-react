@@ -41,6 +41,7 @@ const headCells = [
 const Users = () => {
 
     const classes = useStyles();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [records, setRecords] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
@@ -145,80 +146,84 @@ const Users = () => {
 
     }
 
+
     return (
         <>
             <PageHeader
-                title="AIGE"
-                subTitle=" Members"
+                title={user ? "AIGE" : "You are not authenticated:"}
+                subTitle={user ? "Members" : "Please login"}
                 icon={<PeopleOutlined/>}/>
-            <Paper className={classes.pageContent}>
+            {user &&
+                <Paper className={classes.pageContent}>
+                    <Toolbar>
+                        <Control.Input
+                            className={classes.searchInput}
+                            label="Search Users"
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search/>
+                                    </InputAdornment>
+                                ),
+                            }}
+                            onChange={handleSearch}
+                        >
+                        </Control.Input>
+                        <Control.Button
+                            className={classes.newButton}
+                            text="Add new"
+                            variant="outlined"
+                            startIcon={<AddIcon/>}
+                            onClick={() => {
+                                setOpenPopup(true);
+                                setRecordForEdit(null)
+                            }}/>
+                    </Toolbar>
+                    <TblContainer>
+                        <TblHead/>
+                        <TableBody>
+                            {
+                                recordsAfterPagingAndSorting().map(item => (
+                                    <TableRow key={item.user_name}>
+                                        <TableCell>{item.user_name}  {user.is_admin}</TableCell>
+                                        <TableCell>{item.first_name} </TableCell>
+                                        <TableCell>{item.last_name} </TableCell>
+                                        <TableCell>{item.mobil} </TableCell>
 
-                <Toolbar>
-                    <Control.Input
-                        className={classes.searchInput}
-                        label="Search Users"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search/>
-                                </InputAdornment>
-                            ),
-                        }}
-                        onChange={handleSearch}
-                    >
+                                        <TableCell>{item.email} </TableCell>
+                                        <TableCell>{item.city} </TableCell>
+                                        <TableCell>{item.admission_date} </TableCell>
+                                        {(user.user_name===item.user_name  || user.is_admin ) &&
+                                        <TableCell>
 
-                    </Control.Input>
-                    <Control.Button
-                        className={classes.newButton}
-                        text="Add new"
-                        variant="outlined"
-                        startIcon={<AddIcon/>}
-                        onClick={() => {
-                            setOpenPopup(true);
-                            setRecordForEdit(null)
-                        }}/>
-                </Toolbar>
-                <TblContainer>
-                    <TblHead/>
-                    <TableBody>
-                        {
-                            recordsAfterPagingAndSorting().map(item => (
-                                <TableRow key={item.user_name}>
-                                    <TableCell>{item.user_name} </TableCell>
-                                    <TableCell>{item.first_name} </TableCell>
-                                    <TableCell>{item.last_name} </TableCell>
-                                    <TableCell>{item.mobil} </TableCell>
+                                            <Control.ActionButton
+                                                color="primary"
+                                                onClick={() => openInPopup(item)}>
+                                                <EditOutlinedIcon fontSize="small"/>
+                                            </Control.ActionButton>
+                                            <Control.ActionButton color="secondary" onClick={() =>
+                                                setConfirmDialog({
+                                                    isOpen: true,
+                                                    title: "Are you sure to delete this item?",
+                                                    subTitle: "You can undo this operation",
+                                                    onConfirm: () => {
+                                                        onDelete(item.user_name)
+                                                    }
+                                                })}
+                                            >
+                                                <CloseIcon fontSize="small"/>
+                                            </Control.ActionButton>
 
-                                    <TableCell>{item.email} </TableCell>
-                                    <TableCell>{item.city} </TableCell>
-                                    <TableCell>{item.admission_date} </TableCell>
-                                    <TableCell>
-                                        <Control.ActionButton
-                                            color="primary"
-                                            onClick={() => openInPopup(item)}>
-                                            <EditOutlinedIcon fontSize="small"/>
-                                        </Control.ActionButton>
-                                        <Control.ActionButton color="secondary" onClick={() =>
-                                            setConfirmDialog({
-                                                isOpen: true,
-                                                title: "Are you sure to delete this item?",
-                                                subTitle: "You can undo this operation",
-
-                                                onConfirm: () => {
-                                                    onDelete(item.user_name)
-                                                }
-                                            })}
-                                        >
-                                            <CloseIcon fontSize="small"/>
-                                        </Control.ActionButton>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        }
-                    </TableBody>
-                </TblContainer>
-                <TblPagination/>
-            </Paper>
+                                        </TableCell>
+                                           }
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </TblContainer>
+                    <TblPagination/>
+                </Paper>
+               }
             <Popup title="Add User" openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>
                 <UserForm recordForEdit={recordForEdit} addOrEdit={addOrEdit}/>

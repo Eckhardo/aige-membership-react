@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 const headCells = [
     {id: 'season_name', label: 'Seasons Name'},
-    {id: 'season_year', label: 'Season year'},
+    {id: 'season_date', label: 'Season year'},
     {id: 'is_active', label: 'Is active'},
     {id: 'members', label: 'Members'},
     {id: 'events', label: 'Events'}
@@ -70,12 +70,12 @@ const Seasons = () => {
             console.log(e);
         })
     }
-    const onDelete = season_year =>{
+    const onDelete = season_date =>{
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        SeasonService.remove(season_year).then( response =>{
+        SeasonService.remove(season_date).then( response =>{
             retrieveSeasons();
 
             setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
@@ -174,7 +174,7 @@ const Seasons = () => {
                             recordsAfterPagingAndSorting().map(item => (
                                 <TableRow key={item.season_name}>
                                     <TableCell>{item.season_name}</TableCell>
-                                    <TableCell>{new Date(item.season_year).getFullYear()}</TableCell>
+                                    <TableCell>{new Date(item.season_date).getFullYear()}</TableCell>
                                     <TableCell>{item.is_active === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>
@@ -200,7 +200,7 @@ const Seasons = () => {
                                                 subTitle: "You can undo this operation",
 
                                                 onConfirm: () => {
-                                                    onDelete(item.season_year)
+                                                    onDelete(item.season_date)
                                                 }
                                             })}
                                         >

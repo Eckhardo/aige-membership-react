@@ -41,7 +41,7 @@ const initialSeasonState = {
 
     PK: "",
     SK: "",
-    season_year: new Date(),
+    season_date: new Date(),
     season_name: "",
     is_active: true,
     members: [],
@@ -68,8 +68,8 @@ const SeasonStepsForm = props => {
         if ('season_name' in fieldValues) {
             temp.season_name = fieldValues.season_name ? "" : "This field is required";
         }
-        if ('season_year' in fieldValues) {
-            temp.season_year = fieldValues.season_year ? "" : "This field is required";
+        if ('season_date' in fieldValues) {
+            temp.season_date = fieldValues.season_date ? "" : "This field is required";
         }
 
         setErrors({

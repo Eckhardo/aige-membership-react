@@ -1,12 +1,9 @@
 import './App.css';
 import {createMuiTheme, makeStyles, MuiThemeProvider} from '@material-ui/core/styles';
-import {AppBar, CssBaseline, Tab, Tabs} from "@material-ui/core";
+import {CssBaseline} from "@material-ui/core";
 import React from "react";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
-import Users from "../components/Users/Users";
-import Events from "../components/Events/Events"
-import Seasons from "../components/Seasons/Seasons";
-import SeasonUsers from "../components/SeasonUser/SeasonUsers";
+import Router from "./Router";
+
 
 const useStyles = makeStyles(theme => ({
     appMain: {
@@ -54,70 +51,16 @@ const muiTheme = createMuiTheme({
     }
 })
 
-function App(props) {
+
+const App = props => {
     const classes = useStyles();
-    const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents"];
+
     return (
         <>
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
                 <div className={classes.appMain}>
-                    <BrowserRouter>
-                        <Route
-                            path="/"
-                            render={(history) => (
-                                <AppBar>
-                                    <Tabs
-                                        value={
-                                            history.location.pathname !== "/"
-                                                ? history.location.pathname
-                                                : false
-                                        }
-                                    >
-                                        {console.log(history.location.pathname)}
-                                        <Tab
-                                            value={routes[0]}
-                                            label="Members"
-                                            component={Link}
-                                            to={routes[0]}
-                                        />
-                                        <Tab
-                                            value={routes[1]}
-                                            label="Events"
-                                            component={Link}
-                                            to={routes[1]}
-                                        />
-                                        <Tab
-                                            value={routes[2]}
-                                            label="Seasons"
-                                            component={Link}
-                                            to={routes[2]}
-                                        />
-                                        <Tab
-                                            value={routes[3]}
-                                            label="Season Members"
-                                            component={Link}
-                                            to={routes[3]}
-                                        />
-                                        <Tab
-                                            value={routes[4]}
-                                            label="Season Events"
-                                            component={Link}
-                                            to={routes[4]}
-                                        />
-                                    </Tabs>
-                                </AppBar>
-                            )}
-                        />
-
-                        <Switch>
-                            <Route path="/users" component={Users}/>
-                            <Route path="/events" component={Events}/>
-                            <Route path="/seasons" component={Seasons}/>
-                            <Route path="/seasonUsers" component={SeasonUsers}/>
-                            <Route path="/seasonEvents" component={SeasonUsers}/>
-                        </Switch>
-                    </BrowserRouter>
+                    <Router/>
                 </div>
             </MuiThemeProvider>
         </>

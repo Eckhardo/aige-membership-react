@@ -9,7 +9,7 @@ const initialUserState = {
     SK: "",
     event_name: "Anangeln",
     event_short: "A-1",
-    comments: "Kommentar",
+    comments: "",
 
 };
 
