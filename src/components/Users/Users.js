@@ -12,6 +12,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import Notification from "../controls/Notification";
 import ConfirmDialog from "../controls/ConfirmDialog";
+import UserContext from "../../App/context/UserContext";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -39,6 +40,7 @@ const headCells = [
 
 ]
 const Users = () => {
+    const context = React.useContext(UserContext);
 
     const classes = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
@@ -82,6 +84,7 @@ const Users = () => {
     useEffect(() => {
         console.log("Users#useEffect::");
         retrieveUsers();
+        console.log("conztext", JSON.stringify(context));
     }, [])
 
     /**
@@ -150,10 +153,10 @@ const Users = () => {
     return (
         <>
             <PageHeader
-                title={user ? "AIGE" : "You are not authenticated:"}
-                subTitle={user ? "Members" : "Please login"}
+                title={context.currentUser ? "AIGE" : "You are not authenticated:"}
+                subTitle={context.currentUser ? "Members" : "Please login"}
                 icon={<PeopleOutlined/>}/>
-            {user &&
+            {context.currentUser &&
                 <Paper className={classes.pageContent}>
                     <Toolbar>
                         <Control.Input
@@ -185,7 +188,7 @@ const Users = () => {
                             {
                                 recordsAfterPagingAndSorting().map(item => (
                                     <TableRow key={item.user_name}>
-                                        <TableCell>{item.user_name}  {user.is_admin}</TableCell>
+                                        <TableCell>{item.user_name} </TableCell>
                                         <TableCell>{item.first_name} </TableCell>
                                         <TableCell>{item.last_name} </TableCell>
                                         <TableCell>{item.mobil} </TableCell>
@@ -193,7 +196,7 @@ const Users = () => {
                                         <TableCell>{item.email} </TableCell>
                                         <TableCell>{item.city} </TableCell>
                                         <TableCell>{item.admission_date} </TableCell>
-                                        {(user.user_name===item.user_name  || user.is_admin ) &&
+                                        {(context.currentUser.user_name===item.user_name  || context.currentUser.is_admin ) &&
                                         <TableCell>
 
                                             <Control.ActionButton

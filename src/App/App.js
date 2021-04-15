@@ -1,9 +1,11 @@
 import './App.css';
 import {createMuiTheme, makeStyles, MuiThemeProvider} from '@material-ui/core/styles';
 import {CssBaseline} from "@material-ui/core";
-import React from "react";
+import React, {createContext, useState} from "react";
 import Router from "./Router";
-
+import UserService from "../services/UserService";
+import LoginForm from "../components/Login/LoginForm";
+import UserContext from "./context/UserContext";
 
 const useStyles = makeStyles(theme => ({
     appMain: {
@@ -52,19 +54,60 @@ const muiTheme = createMuiTheme({
 })
 
 
+const initialUserState = {
+    user_name: "Eckhardo",
+    password: "abc"
+
+};
 const App = props => {
+    const context = React.useContext(UserContext);
+
+
+
     const classes = useStyles();
+    const [currentUser, setCurrentUser] = useState();
+    const [authenticated, setAuthenticated] = useState(currentUser===null);
+
+    const [openPopup, setOpenPopup] = useState(true);
+    const [values, setValues] = useState(initialUserState);
+    const [isLoggedIn,setIsLoggedIn] = useState(false)
+
+
+    const login =  (e) => {
+      e.preventDefault();
+        UserService.checkLogin(values).then(response => {
+            console.log("isLoggedIn",authenticated);
+                if (response) {
+                    console.log("response");
+                    setCurrentUser(response.data);
+                    setAuthenticated(true);
+                    setOpenPopup(false);
+
+                }
+            }
+        ).catch(err => {
+
+        })
+    }
+
 
     return (
         <>
+
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
-                <div className={classes.appMain}>
-                    <Router/>
-                </div>
+                <UserContext.Provider value={{ currentUser: currentUser, setCurrentUser:setCurrentUser}}>
+                    <div className={classes.appMain}>
+                        {authenticated ? <Router/> : <LoginForm onSubmit={login}
+                                                                openPopup={openPopup}
+                                                                setOpenPopup={setOpenPopup}
+                                                                values={values}
+                                                                setValues={setValues}/>}
+                    </div>
+                </UserContext.Provider>
             </MuiThemeProvider>
+
         </>
     )
 }
-
 export default App;

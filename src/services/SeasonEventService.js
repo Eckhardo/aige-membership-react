@@ -4,11 +4,12 @@ const getAll = (year) => {
     return http.get(`/seasonEvent/${year}`);
 };
 
-const get = (year,eventName) => {
-     return http.get(`/seasonEvent/${year}/${eventName}`);
+const get = (year, eventName) => {
+    return http.get(`/seasonEvent/${year}/${eventName}`);
 };
 
 const create = data => {
+    console.log("SeasonEventService::create: ", JSON.stringify(data));
     return http.post("/seasonEvent", {item: data});
 };
 
@@ -16,8 +17,8 @@ const update = (data) => {
     return http.put(`/seasonEvent`, {item: data});
 };
 
-const remove = user_name => {
-    return http.delete(`/seasonEvent/${user_name}`);
+const remove = (year, event_name) => {
+    return http.delete(`/seasonEvent/${year}/${event_name}`);
 };
 
 const removeAll = () => {
@@ -25,7 +26,7 @@ const removeAll = () => {
 };
 
 
-const SeasonEventService= {
+const SeasonEventService = {
     getAll,
     get,
     create,
@@ -34,4 +35,4 @@ const SeasonEventService= {
     removeAll
 
 };
-export default  SeasonEventService;
+export default SeasonEventService;

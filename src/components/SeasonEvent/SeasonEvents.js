@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PageHeader from "../PageHeader";
-import {CheckBox, CheckBoxOutlineBlank} from "@material-ui/icons";
+import PeopleIcon from "@material-ui/icons/People";
 import {
     Checkbox,
     FormControl,
@@ -14,35 +14,36 @@ import {
     TextField,
     Toolbar
 } from "@material-ui/core";
-import Control from "../controls/Controls";
 import SeasonService from "../../services/SeasonService";
-import Notification from "../controls/Notification";
-import SeasonUserService from "../../services/SeasonUserService";
-
+import UtilityService from "../../util";
+import SeasonEventService from "../../services/SeasonEventService";
 import useTable from "../useTable";
+import Control from "../controls/Controls";
+import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import {CheckBox, CheckBoxOutlineBlank} from "@material-ui/icons";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
-
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PeopleIcon from '@material-ui/icons/People';
-import ConfirmDialog from "../controls/ConfirmDialog";
+import Notification from "../controls/Notification";
 import Popup from "../Popup";
-import SeasonUserForm from "./SeasonUserForm";
-import UtilityService from "../../util";
+import SeasonEventForm from "./SeasonEventForm";
+import ConfirmDialog from "../controls/ConfirmDialog";
 
 const icon = <CheckBoxOutlineBlank fontSize="small"/>;
 const checkedIcon = <CheckBox fontSize="small"/>;
 
 
 const headCells = [
-    {id: 'user_name', label: 'User Name'},
+    {id: 'event_name', label: 'Event Name'},
     {id: 'season_year', label: "Year"},
-    {id: 'position_role', label: 'Position'},
-    {id: 'fees_paid', label: 'Fees paid'},
-    {id: 'is_active', label: 'Is active'},
+    {id: 'meeting_point', label: 'Meeting Point'},
+    {id: 'finished', label: 'Fees paid'},
+    {id: 'start_date', label: 'Start'},
+    {id: 'end_date', label: 'End'},
+    {id: 'comments', label: 'Comments'},
     {id: 'actions', label: 'Actions', disableSorting: true}
 
 ]
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -68,20 +69,20 @@ const useStyles = makeStyles(theme => ({
         right: '10px'
     }
 
-}))
+}));
 
-const SeasonUsers = () => {
-
-    const classes = useStyles();
+const SeasonEvents = props => {
+    const [seasonEvents, setSeasonEvents] = useState([]);
+     const [seasonYears, setSeasonYears] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [seasonYears, setSeasonYears] = useState([]);
     const [season, setSeason] = useState();
-    const [seasonUsers, setSeasonUsers] = useState([]);
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
-    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle: ""});
 
+
+    const classes = useStyles();
 
 
     const {
@@ -89,26 +90,17 @@ const SeasonUsers = () => {
         TblHead,
         TblPagination,
         recordsAfterPagingAndSorting
-    } = useTable(seasonUsers, headCells, null);
+    } = useTable(seasonEvents, headCells, null);
 
     useEffect(() => {
-        console.log("Seasons::useEffect()");
         retrieveSeasonYears();
         retrieveSeason();
-        retrieveSeasonUsers();
-
+        retrieveSeasonEvents();
     }, [])
-    useEffect(() => {
-        console.log("Season::useEffect()");
-        retrieveSeason();
-        retrieveSeasonUsers();
-
-    }, [selectedYear])
 
     const retrieveSeasonYears = () => {
         SeasonService.getAll().then((response) => {
-            let myTuple=   UtilityService.extractYears(response.data);
-            setSeasonYears(myTuple);
+            setSeasonYears(UtilityService.extractYears(response.data));
         }).catch(err => {
             setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
         })
@@ -122,55 +114,59 @@ const SeasonUsers = () => {
         })
     }
 
-    const retrieveSeasonUsers = () => {
-        SeasonUserService.getAll(selectedYear).then(response => {
-            setSeasonUsers(response.data);
-            console.log("Season Users::", response.data);
-
+    const retrieveSeasonEvents = () => {
+        SeasonEventService.getAll(selectedYear).then(response => {
+            setSeasonEvents(response.data);
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Season Users failed", type: "error"});
 
         })
     }
-
+    /**
+     * Writes changed form control value into the corresponding key of  the user object
+     * @param event the event object
+     */
+    const handleInputChange = event => {
+        setSelectedYear(event.target.value);
+    }
 
     const openInPopup = (item) => {
         setRecordForEdit(item);
         setOpenPopup(true);
     }
+
     const addOrEdit = (item, resetForm) => {
         if (item.PK) {
-            SeasonUserService.update(item).then(response => {
+            SeasonEventService.update(item).then(response => {
                 resetForm();
-                retrieveSeasonUsers();
+                retrieveSeasonEvents();
                 setOpenPopup(false);
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
                 console.log("Error=", JSON.stringify(err));
-                setNotify({isOpen: true, message: "Update Season User failed", type: "error"});
+                setNotify({isOpen: true, message: "Update Season Event failed", type: "error"});
             })
         } else {
-            SeasonUserService.create(item).then(response => {
-                console.log("Response=", JSON.stringify(response));
+            SeasonEventService.create(item).then(response => {
                 resetForm();
-                retrieveSeasonUsers();
+                retrieveSeasonEvents();
                 setOpenPopup(false);
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
-                console.log("Error=", JSON.stringify(err.message));
-                setNotify({isOpen: true, message: "Create Season User failed", type: "error"});
+                console.error("Create process failed!", err);
+                setNotify({isOpen: true, message: "Create Season Event failed", type: "error"});
             })
         }
     }
 
-    const onDelete = (userName) => {
+    const onDelete = (eventName) => {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        SeasonUserService.remove(selectedYear, userName)
+        SeasonEventService.remove(selectedYear, eventName)
             .then(response => {
-                retrieveSeasonUsers()
+                retrieveSeasonEvents()
                 setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
 
             })
@@ -179,22 +175,11 @@ const SeasonUsers = () => {
             });
 
     }
-    /**
-     * Writes changed form control value into the corresponding key of  the user object
-     * @param event the event object
-     */
-    const handleInputChange = event => {
-        console.log("name::", event.target.name);
-        console.log("value::", event.target.value);
-        setSelectedYear(event.target.value);
-
-    }
     return (
         <>
-            <PageHeader elevation={3} icon={< PeopleIcon/>} title="AIGE Members for Season"
+            <PageHeader elevation={3} icon={< PeopleIcon/>} title="AIGE Events for Season"
                         subTitle={selectedYear}/>
             <Paper className={classes.pageContent}>
-
                 <Toolbar>
                     <Grid container>
                         <Grid item xs={3}>
@@ -236,12 +221,13 @@ const SeasonUsers = () => {
 
                     <Control.Button
                         className={classes.newButton}
-                        text="Add new Member"
+                        text="Add new Season Event"
                         variant="outlined"
                         startIcon={<PersonAddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
-                            setRecordForEdit(null)
+                            setRecordForEdit(null);
+
                         }}/>
 
                 </Toolbar>
@@ -251,14 +237,17 @@ const SeasonUsers = () => {
                     <TableBody>
                         {
                             recordsAfterPagingAndSorting().map(item => (
-                                <TableRow key={item.user_name}>
-                                    <TableCell>{item.user_name} </TableCell>
+                                <TableRow key={item.event_name}>
+                                    <TableCell>{item.event_name} </TableCell>
                                     <TableCell>{item.season_year} </TableCell>
-                                    <TableCell>{item.position_role} </TableCell>
-                                    <TableCell>{item.fees_paid === true ? <Checkbox checked={true}/> :
+                                    <TableCell>{item.meeting_point} </TableCell>
+                                    <TableCell>{item.finished === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
-                                    <TableCell>{item.is_active === true ? <Checkbox checked={true}/> :
-                                        <Checkbox checked={false}/>}</TableCell>
+
+
+                                    <TableCell>{new Date(item.starting_date).toLocaleDateString('de-DE')}, {item.starting_time} </TableCell>
+                                    <TableCell>{new Date(item.ending_date).toLocaleDateString()}, {item.ending_time} </TableCell>
+                                    <TableCell> {item.comments} </TableCell>
                                     <TableCell>
                                         <Control.ActionButton
                                             color="primary"
@@ -272,7 +261,7 @@ const SeasonUsers = () => {
                                                 subTitle: "You can undo this operation",
 
                                                 onConfirm: () => {
-                                                    onDelete(item.user_name)
+                                                    onDelete(item.event_name)
                                                 }
                                             })}
                                         >
@@ -286,18 +275,20 @@ const SeasonUsers = () => {
 
                 </TblContainer>
                 <TblPagination/>
+
+                <Notification notify={notify} setNotify={setNotify}/>
+                <Popup title={recordForEdit ? "Update Season Event" : "Add Season Event"} openPopup={openPopup}
+                       setOpenPopup={setOpenPopup}>
+                    <SeasonEventForm recordForEdit={recordForEdit}
+                                     addOrEdit={addOrEdit}
+                                     selectedYear={selectedYear}/>
+                </Popup>
+                <ConfirmDialog
+                    confirmDialog={confirmDialog}
+                    setConfirmDialog={setConfirmDialog}>
+                </ConfirmDialog>
             </Paper>
-            <Notification notify={notify} setNotify={setNotify}/>
-            <Popup title={recordForEdit ? "Update Season Member" : "Add Season Member"} openPopup={openPopup}
-                   setOpenPopup={setOpenPopup}>
-                <SeasonUserForm seasonUsers={seasonUsers.map(s => s.user_name)} recordForEdit={recordForEdit}
-                                addOrEdit={addOrEdit}/>
-            </Popup>
-            <ConfirmDialog
-                confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog}>
-            </ConfirmDialog>
         </>
     )
 }
-export default SeasonUsers;
+export default SeasonEvents;

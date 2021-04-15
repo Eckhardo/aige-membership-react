@@ -27,8 +27,8 @@ const useStyles = makeStyles(theme => ({
  * @param headCells
  * @returns {{TblHead: (function(): JSX.Element), TblContainer: (function(*): JSX.Element), recordsAfterPagingAndSorting: (function(): *), TblPagination: (function(): JSX.Element)}}
  */
-const useTable = (records, headCells,filterFn) => {
-console.log("useTable::");
+const useTable = (records, headCells, filterFn) => {
+
     const classes = useStyles();
     const pages = [3, 5, 10];
     const [page, setPage] = useState(0);
@@ -71,17 +71,17 @@ console.log("useTable::");
                     {
                         headCells.map(headCell => (
                             <TableCell key={headCell.id}
-                                       sortDirection={orderBy === headCell.id ? order: false}
+                                       sortDirection={orderBy === headCell.id ? order : false}
                             >
-                                {headCell.disableSorting ? headCell.label:
-                                <TableSortLabel
-                                    active={orderBy === headCell.id}
-                                    direction={orderBy === headCell.id ? order : "asc"}
-                                    onClick={() => {
-                                        handleSortRequest(headCell.id)
-                                    }}>
-                                    {headCell.label}
-                                </TableSortLabel>
+                                {headCell.disableSorting ? headCell.label :
+                                    <TableSortLabel
+                                        active={orderBy === headCell.id}
+                                        direction={orderBy === headCell.id ? order : "asc"}
+                                        onClick={() => {
+                                            handleSortRequest(headCell.id)
+                                        }}>
+                                        {headCell.label}
+                                    </TableSortLabel>
                                 }
                             </TableCell>
                         ))
@@ -90,8 +90,6 @@ console.log("useTable::");
             </TableHead>
         )
     }
-
-
 
 
     function descendingComparator(a, b, orderBy) {
@@ -110,7 +108,7 @@ console.log("useTable::");
             : (a, b) => -descendingComparator(a, b, orderBy);
     }
 
-    const stableSort= (array, comparator) =>{
+    const stableSort = (array, comparator) => {
         const stabilizedThis = array.map((el, index) => [el, index]);
         stabilizedThis.sort((a, b) => {
             const order = comparator(a[0], b[0]);
@@ -121,9 +119,8 @@ console.log("useTable::");
     }
 
     const recordsAfterPagingAndSorting = () => {
-        const filteredItems=filterFn.fn(records);
-        console.log("filteredItems::",filteredItems.length);
-        const sortedRecords = stableSort(filteredItems,getComparator(order,orderBy));
+        const filteredItems = filterFn ? filterFn.fn(records) : records;
+        const sortedRecords = stableSort(filteredItems, getComparator(order, orderBy));
         return sortedRecords.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
     }
 
@@ -152,7 +149,7 @@ console.log("useTable::");
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
             />
-      )
+        )
     }
     return {TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting}
 }

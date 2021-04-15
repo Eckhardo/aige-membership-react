@@ -7,16 +7,16 @@ const initialUserState = {
 
         PK: "",
         SK: "",
-        user_name: "Harro",
-        first_name: "Harro",
-        last_name: "Einfach",
-        city: "Hamburg",
-        address: "Meine Strasse 4",
-        zip:"22222",
-        mobil: "+49 2233445566",
-        phone: "+49 2233445566",
+        user_name: "",
+        first_name: "",
+        last_name: "",
+        city: "",
+        address: "",
+        zip:"",
+        mobil: "",
+        phone: "",
         admission_date: new Date(),
-        email: "harro@gmx.de",
+        email: "",
         is_active: true,
         is_admin: false
 
@@ -36,6 +36,10 @@ const UserForm = (props) => {
         }
     }, [recordForEdit])
 
+    // Build Form from template
+    const {values, setValues, errors, setErrors, handleInputChange, resetForm}
+        = useForm(initialUserState, true, validate);
+
 
     /**
      *
@@ -43,6 +47,7 @@ const UserForm = (props) => {
      * @returns {boolean}
      */
     const validate = (fieldValues = values) => {
+        console.log("validate::", fieldValues);
         let temp = {...errors};
         if ('user_name' in fieldValues) {
             temp.user_name = fieldValues.user_name ? "" : "This field is required";
@@ -67,16 +72,6 @@ const UserForm = (props) => {
         }
     }
 
-    // Build Form from template
-    const {values, setValues, errors, setErrors, handleInputChange, resetForm}
-        = useForm(initialUserState, true, validate);
-
-    /**
-     *
-     */
-    useEffect(() => {
-
-    }, [])
 
     /**
      *

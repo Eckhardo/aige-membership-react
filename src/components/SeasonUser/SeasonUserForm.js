@@ -11,26 +11,25 @@ const initialSeasonUserState = {
 
     PK: "",
     SK: "",
-    season_year: "",
+    season_year: new Date().getFullYear(),
     user_name: "",
     position_role: "",
     fees_paid: true,
     is_active: true
 
 };
-const positions= [
-    {id:"1. Vorsitzender", title:"1. Vorsitzender"},
-    {id:"2. Vorsitzender", title:"2. Vorsitzender"},
-    {id:"Gewaesserwart", title:"Gewaesserwart"},
-    {id:"Kassenwart", title:"Kassenwart"},
-    {id:"Schriftfuehrer", title:"Schriftfuehrer"},
+const positions = [
+    {id: "1. Vorsitzender", title: "1. Vorsitzender"},
+    {id: "2. Vorsitzender", title: "2. Vorsitzender"},
+    {id: "Gewaesserwart", title: "Gewaesserwart"},
+    {id: "Kassenwart", title: "Kassenwart"},
+    {id: "Schriftfuehrer", title: "Schriftfuehrer"},
 ]
 
 
 const SeasonUserForm = (props) => {
 
-    const {seasonUsers,addOrEdit, recordForEdit} = props;
-
+    const {seasonUsers, addOrEdit, recordForEdit} = props;
     const [activeMembers, setActiveMembers] = useState([]);
     const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 
@@ -63,17 +62,20 @@ const SeasonUserForm = (props) => {
      */
     useEffect(() => {
         console.log("SeasonUserForm#useEffect::");
-        setValues({...recordForEdit});
+        if (recordForEdit != null) {
+            setValues({...recordForEdit});
+        }
         console.log("values:", JSON.stringify(recordForEdit));
         retrieveActiveMembers();
 
-    }, [recordForEdit])
+    }, [recordForEdit,setValues])
     const retrieveActiveMembers = () => {
         UserService.getAll().then((response) => {
             let users = response.data;
             console.log("season users::", JSON.stringify(seasonUsers));
             const nonActiveMembers = _.intersection(users.map((member) => {
-                return member.user_name }), seasonUsers);
+                return member.user_name
+            }), seasonUsers);
             console.log("nonActiveMembers::", JSON.stringify(nonActiveMembers));
 
             const items = users.filter(member => !nonActiveMembers.includes(member.user_name));
@@ -138,18 +140,18 @@ const SeasonUserForm = (props) => {
 
                 <Grid item sm={6}>
                     <div style={{display: 'flex'}}>
-                    <Control.Checkbox
-                        color="primary"
-                        name ="fees_paid"
-                        checked ={values.fees_paid}
-                        label ="Fees paid"
-                        onChange={handleInputChange}/>
-                    <Control.Checkbox
-                        color="primary"
-                        name ="is_active"
-                        checked ={values.is_active}
-                        label ="Is active"
-                        onChange={handleInputChange}/>
+                        <Control.Checkbox
+                            color="primary"
+                            name="fees_paid"
+                            checked={values.fees_paid}
+                            label="Fees paid"
+                            onChange={handleInputChange}/>
+                        <Control.Checkbox
+                            color="primary"
+                            name="is_active"
+                            checked={values.is_active}
+                            label="Is active"
+                            onChange={handleInputChange}/>
                     </div>
                     <div>
 
@@ -171,7 +173,7 @@ const SeasonUserForm = (props) => {
         </Form>
 
 
-)
+    )
 
 }
 export default SeasonUserForm;

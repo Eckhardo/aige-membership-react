@@ -1,7 +1,7 @@
 import http from "./http-common";
+import UtilityService from "../util";
 
 const getAll = () => {
-    console.log('GET seasonALL:');
     return http.get("/season");
 };
 
@@ -11,8 +11,7 @@ const getAllWithChildren = (year) => {
 }
 
 const get = (seasonName) => {
-    console.log('GET seasonName:', seasonName);
-    return http.get(`/season/${seasonName}`);
+     return http.get(`/season/${seasonName}`);
 };
 
 const create = (data) => {
@@ -33,6 +32,21 @@ const removeAll = () => {
     return http.delete(`/season`);
 };
 
+const getSeasonYears =  () => {
+
+    const fetchYears = async api => {
+        let response = await getAll();
+        return UtilityService.extractYears(response.data);
+    };
+
+    fetchYears().then( (response =>{
+        return response;
+    })).catch( (err) =>{
+        console.log(err);
+    });
+
+
+}
 
 const SeasonService = {
     getAll,
@@ -41,7 +55,8 @@ const SeasonService = {
     update,
     remove,
     removeAll,
-    getAllWithChildren
+    getAllWithChildren,
+    getSeasonYears
 };
 
 export default SeasonService;

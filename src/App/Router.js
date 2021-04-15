@@ -1,27 +1,19 @@
 import './App.css';
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Users from "../components/Users/Users";
 import Events from "../components/Events/Events"
 import Seasons from "../components/Seasons/Seasons";
 import SeasonUsers from "../components/SeasonUser/SeasonUsers";
-import LoginForm from "../components/Login/LoginForm";
 import Nav from "./Nav";
+import Logout from "../components/Login/Logout";
+import Login from "../components/Login/Login";
 
 
 const Router = props => {
-    const [user, setUser] = useState();
 
+    const    [openPopup, setOpenPopup] = useState( true);
 
-    useEffect(() => {
-        console.log("Layout#useEffect#####################################################################");
-        const auth = JSON.parse(localStorage.getItem('user'));
-        console.log("local", auth);
-        console.log("local string", JSON.stringify(auth));
-        if (user) {
-            setUser(auth);
-        }
-    })
 
     return (
         <BrowserRouter>
@@ -38,7 +30,8 @@ const Router = props => {
                 <Route path="/seasons" component={Seasons}/>
                 <Route path="/seasonUsers" component={SeasonUsers}/>
                 <Route path="/seasonEvents" component={SeasonUsers}/>
-                <Route path="/login" component={LoginForm}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/logout" component= {() => <Logout  openPopup={openPopup} setOpenPopup={setOpenPopup} isOpen={true}/>}/>
 
             </Switch>
         </BrowserRouter>

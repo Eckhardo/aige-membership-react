@@ -7,8 +7,8 @@ const initialUserState = {
 
     PK: "",
     SK: "",
-    event_name: "Anangeln",
-    event_short: "A-1",
+    event_name: "",
+    event_short: "",
     comments: "",
 
 };
@@ -17,9 +17,7 @@ const initialUserState = {
 const EventForm = (props) => {
     const {recordForEdit, addOrEdit} = props;
 
-    /**
-     *
-     */
+
     useEffect(() => {
         console.log("EventForm#useEffect::");
         if (recordForEdit != null) {
