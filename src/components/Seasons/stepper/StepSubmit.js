@@ -4,10 +4,9 @@ import Controls from "../../controls/Controls";
 import {Form} from "../../useForm";
 
 const StepSubmit = props => {
-    const {values, errors,handleSubmit, resetForm, useStyles} = props;
+    const {values, errors, handleSubmit, resetForm, useStyles} = props;
     const classes = useStyles();
     return (
-
         <Form onSubmit={handleSubmit}>
             <Grid container className={classes.root} alignItems="center" justify="center">
                 <Grid item xs={6}>
@@ -35,7 +34,6 @@ const StepSubmit = props => {
                         }
                     </Paper>
                     <div>
-
                         <Controls.Button
                             text="Submit"
                             type="submit"
@@ -45,14 +43,10 @@ const StepSubmit = props => {
                             type="reset"
                             onClick={resetForm}
                         />
-
                     </div>
-
                 </Grid>
             </Grid>
-
         </Form>
-
     )
 }
 

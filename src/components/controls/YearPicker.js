@@ -23,8 +23,10 @@ const YearPicker = props => {
                         value={value}
                         format="yyyy"
                         color={color}
+                        defaultValue="2021"
                         openTo="year"
                         views={["year"]}
+                        v
                         helperText="Select year"
                         onChange={date => onChange(convertToDefEventParam(name, date))}>
 

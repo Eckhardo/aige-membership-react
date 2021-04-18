@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme => ({
 }))
 const headCells = [
     {id: 'season_name', label: 'Seasons Name'},
-    {id: 'season_date', label: 'Season year'},
+    {id: 'season_year', label: 'Season year'},
     {id: 'is_active', label: 'Is active'},
     {id: 'members', label: 'Members'},
     {id: 'events', label: 'Events'}
@@ -56,13 +56,14 @@ const Seasons = () => {
     /**
      *
      */
-    useEffect(() => {
+    useEffect( () => {
         console.log("Seasons#useEffect::");
-        retrieveSeasons();
+       retrieveSeasons();
+
     }, [])
 
 
-    const retrieveSeasons = () => {
+    const retrieveSeasons =   () => {
         SeasonService.getAll().then(response => {
             setRecords(response.data);
             console.log("SEASONS:", JSON.stringify(response.data));
@@ -70,12 +71,12 @@ const Seasons = () => {
             console.log(e);
         })
     }
-    const onDelete = season_date =>{
+    const onDelete = season_year =>{
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
-        SeasonService.remove(season_date).then( response =>{
+        SeasonService.remove(season_year).then( response =>{
             retrieveSeasons();
 
             setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
@@ -89,6 +90,9 @@ const Seasons = () => {
 
     const addOrEdit = (item, resetForm) => {
         if (item.PK) {
+            let year = item.season_date.getFullYear();
+            item.season_year=year;
+            delete item.season_date;
             SeasonService.update(item).then(response => {
                     resetForm();
                     setOpenPopup(false);
@@ -102,6 +106,11 @@ const Seasons = () => {
                 }
             )
         } else {
+            let date=item.season_date;
+            if(date instanceof Date) {
+               item.season_year=date.getFullYear();
+            }
+            delete item.season_date;
             SeasonService.create(item).then(response => {
                     resetForm();
                     setOpenPopup(false);
@@ -174,7 +183,7 @@ const Seasons = () => {
                             recordsAfterPagingAndSorting().map(item => (
                                 <TableRow key={item.season_name}>
                                     <TableCell>{item.season_name}</TableCell>
-                                    <TableCell>{new Date(item.season_date).getFullYear()}</TableCell>
+                                    <TableCell>{item.season_year}</TableCell>
                                     <TableCell>{item.is_active === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>
@@ -200,7 +209,7 @@ const Seasons = () => {
                                                 subTitle: "You can undo this operation",
 
                                                 onConfirm: () => {
-                                                    onDelete(item.season_date)
+                                                    onDelete(item.season_year)
                                                 }
                                             })}
                                         >

@@ -18,19 +18,15 @@ const StepMembers = (props) => {
     const getMembers = () => {
         UserService.getAll().then(response => {
             setMembers(response.data.map(member => member.user_name));
-
-            console.log("members::", response.data.map(member => member.user_name));
-        }).catch(err => {
+       }).catch(err => {
             console.log(err);
         });
     }
 
 
     return (
-        <Paper className={classes.pageContent}>
 
             <Form>
-
                 <Grid container className={classes.root} alignItems="center" justify="center">
                     <Grid item xs={6}>
                         <Controls.SelectMultipleChip
@@ -46,7 +42,7 @@ const StepMembers = (props) => {
                     </Grid>
                 </Grid>
             </Form>
-        </Paper>
+
     )
 }
 export default StepMembers;

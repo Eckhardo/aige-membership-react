@@ -35,7 +35,7 @@ const headCells = [
     {id: 'mobil', label: 'Mobile Phone'},
     {id: 'email', label: 'Email'},
     {id: 'city', label: 'City'},
-    {id: 'admission_date', label: 'Admission Date', disableSorting: true},
+    {id: 'admission_year', label: 'Admission Year', disableSorting: true},
     {id: 'actions', label: 'Actions', disableSorting: true}
 
 ]
@@ -94,6 +94,7 @@ const Users = () => {
     const retrieveUsers = () => {
         UserService.getAll()
             .then(response => {
+
                 setRecords(response.data);
             })
             .catch(e => {
@@ -105,8 +106,12 @@ const Users = () => {
     const addOrEdit = (user, resetForm) => {
 
         console.log("addOrEdit::", JSON.stringify(user));
-        if (!user.PK) {
 
+        if (!user.PK) {
+            let year = user.admission_date.getFullYear();
+            user.admission_year=year;
+            delete user.admission_date;
+            console.log("admission year::", JSON.stringify(user.admission_year));
             UserService.create(user)
                 .then(response => {
                     resetForm();
@@ -118,6 +123,11 @@ const Users = () => {
                     setNotify({isOpen: true, message: "Create new User failed", type: "error"});
                 });
         } else {
+            let date=user.admission_date;
+            if(date instanceof Date) {
+                user.admission_year=date.getFullYear();
+            }
+            delete user.admission_date;
             UserService.update(user)
                 .then(response => {
                     resetForm();
@@ -195,7 +205,7 @@ const Users = () => {
 
                                         <TableCell>{item.email} </TableCell>
                                         <TableCell>{item.city} </TableCell>
-                                        <TableCell>{item.admission_date} </TableCell>
+                                        <TableCell>{item.admission_year} </TableCell>
                                         {(context.currentUser.user_name===item.user_name  || context.currentUser.is_admin ) &&
                                         <TableCell>
 

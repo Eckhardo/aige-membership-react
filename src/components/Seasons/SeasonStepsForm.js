@@ -26,13 +26,14 @@ const useStylesSteps = makeStyles(theme => (
     {
         root: {
             margin: theme.spacing(1),
-            padding: theme.spacing(5),
+            padding: theme.spacing(2),
             borderStyle: 'solid',
-            borderWidth: '1px'
+            borderWidth: '1px',
+            borderColor: '#006400'
         },
         pageContent: {
             margin: theme.spacing(1),
-            padding: theme.spacing(5)
+            padding: theme.spacing(2)
         }
     }
 ));
@@ -41,6 +42,7 @@ const initialSeasonState = {
 
     PK: "",
     SK: "",
+    season_year: new Date().getFullYear(),
     season_date: new Date(),
     season_name: "",
     is_active: true,
@@ -59,6 +61,12 @@ const SeasonStepsForm = props => {
         console.log("SeasonStepsForm#useEffect::");
 
         if (recordForEdit != null) {
+            let year = parseInt(recordForEdit.season_year);
+            console.log("year::", year);
+            let date = new Date();
+            date.setFullYear(year);
+            recordForEdit.season_date = date;
+
             setValues({...recordForEdit});
         }
     }, [recordForEdit])
@@ -68,8 +76,8 @@ const SeasonStepsForm = props => {
         if ('season_name' in fieldValues) {
             temp.season_name = fieldValues.season_name ? "" : "This field is required";
         }
-        if ('season_date' in fieldValues) {
-            temp.season_date = fieldValues.season_date ? "" : "This field is required";
+        if ('season_year' in fieldValues) {
+            temp.season_year = fieldValues.season_year ? "" : "This field is required";
         }
 
         setErrors({
@@ -176,8 +184,8 @@ const SeasonStepsForm = props => {
     return (
         <div>
             <PageHeader
-                title="SeasonStepsForm list"
-                subTitle="AIGE SeasonStepsForm"
+                title="AIGE Seasons"
+                subTitle="Steps"
                 icon={<PeopleOutlined/>}/>
 
             <div className={classes.root}>

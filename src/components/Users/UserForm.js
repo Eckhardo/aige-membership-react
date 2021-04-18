@@ -5,42 +5,27 @@ import Controls from "../controls/Controls";
 
 const initialUserState = {
 
-        PK: "",
-        SK: "",
-        user_name: "",
-        first_name: "",
-        last_name: "",
-        city: "",
-        address: "",
-        zip:"",
-        mobil: "",
-        phone: "",
-        admission_date: new Date(),
-        email: "",
-        is_active: true,
-        is_admin: false
+    PK: "",
+    SK: "",
+    user_name: "",
+    first_name: "",
+    last_name: "",
+    city: "",
+    address: "",
+    zip: "",
+    mobil: "",
+    phone: "",
+    admission_year: new Date().getFullYear(),
+    admission_date: new Date(),
+    email: "",
+    is_active: true,
+    is_admin: false
 
 };
 
 
 const UserForm = (props) => {
-    const {recordForEdit,addOrEdit} = props;
-
-    /**
-     *
-     */
-    useEffect(() => {
-        console.log("UserForm#useEffect::");
-        if (recordForEdit!=null) {
-            setValues({...recordForEdit});
-        }
-    }, [recordForEdit])
-
-    // Build Form from template
-    const {values, setValues, errors, setErrors, handleInputChange, resetForm}
-        = useForm(initialUserState, true, validate);
-
-
+    const {recordForEdit, addOrEdit} = props;
     /**
      *
      * @param fieldValues
@@ -64,13 +49,32 @@ const UserForm = (props) => {
         if ('mobil' in fieldValues) {
             temp.mobil = fieldValues.mobil.length > 9 ? "" : "Minimum 10 number is required";
         }
-       setErrors({
+        setErrors({
             ...temp
         });
         if (fieldValues === values) {
             return Object.values(temp).every(val => val === "");
         }
     }
+
+    /**
+     *
+     */
+    useEffect(() => {
+        console.log("UserForm#useEffect::");
+        if (recordForEdit != null) {
+            let year = parseInt(recordForEdit.admission_year);
+            console.log("year::", year);
+            let date = new Date();
+            date.setFullYear(year);
+            recordForEdit.admission_date = date;
+            setValues({...recordForEdit});
+        }
+    }, [recordForEdit])
+
+    // Build Form from template
+    const {values, setValues, errors, setErrors, handleInputChange, resetForm}
+        = useForm(initialUserState, true, validate);
 
 
     /**
@@ -79,9 +83,10 @@ const UserForm = (props) => {
      */
     const handleSubmit = (e) => {
         e.preventDefault();
-       if( validate()) {
-           addOrEdit(values, resetForm);
-       };
+        if (validate()) {
+            addOrEdit(values, resetForm);
+        }
+        ;
     }
 
     return (
@@ -116,12 +121,7 @@ const UserForm = (props) => {
                         color="primary"
                         onChange={handleInputChange}/>
 
-                    <Controls.DatePicker
-                        name="admission_date"
-                        value={values.admission_date}
-                        label="Admission Date"
-                        color="primary"
-                        onChange={handleInputChange}/>
+
                     <Controls.YearPicker
                         name="admission_date"
                         value={values.admission_date}
