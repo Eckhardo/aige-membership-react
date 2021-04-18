@@ -11,8 +11,7 @@ const StepMembers = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        console.log("StepEvents#useEffect::");
-        getMembers();
+         getMembers();
     }, []);
 
     const getMembers = () => {
@@ -32,10 +31,13 @@ const StepMembers = (props) => {
                         <Controls.SelectMultipleChip
                             name="members"
                             value={values.members}
-                            label="Members"
+                            label="Possible Members"
                             color="primary"
                             onChange={handleInputChange}
                             options={members}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                             error={errors.members}
                         >
                         </Controls.SelectMultipleChip>

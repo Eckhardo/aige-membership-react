@@ -57,17 +57,14 @@ const Seasons = () => {
      *
      */
     useEffect( () => {
-        console.log("Seasons#useEffect::");
        retrieveSeasons();
-
     }, [])
 
 
     const retrieveSeasons =   () => {
         SeasonService.getAll().then(response => {
             setRecords(response.data);
-            console.log("SEASONS:", JSON.stringify(response.data));
-        }).catch(e => {
+         }).catch(e => {
             console.log(e);
         })
     }
@@ -78,9 +75,7 @@ const Seasons = () => {
         })
         SeasonService.remove(season_year).then( response =>{
             retrieveSeasons();
-
             setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
-
 
         }).catch( e =>{
             setNotify({isOpen: true, message: "Deletion of Season failed", type: "error"});
@@ -89,11 +84,13 @@ const Seasons = () => {
     }
 
     const addOrEdit = (item, resetForm) => {
+        let year = item.season_date.getFullYear();
+        item.season_year=year;
+        delete item.season_date;
+        delete item.members;
+        delete item.events;
         if (item.PK) {
-            let year = item.season_date.getFullYear();
-            item.season_year=year;
-            delete item.season_date;
-            SeasonService.update(item).then(response => {
+             SeasonService.update(item).then(response => {
                     resetForm();
                     setOpenPopup(false);
                     retrieveSeasons();
@@ -106,12 +103,7 @@ const Seasons = () => {
                 }
             )
         } else {
-            let date=item.season_date;
-            if(date instanceof Date) {
-               item.season_year=date.getFullYear();
-            }
-            delete item.season_date;
-            SeasonService.create(item).then(response => {
+             SeasonService.create(item).then(response => {
                     resetForm();
                     setOpenPopup(false);
                     retrieveSeasons();

@@ -1,5 +1,12 @@
 import React from "react";
-import {Checkbox as MuiCheckbox, FormControl, FormControlLabel, FormGroup, FormLabel} from "@material-ui/core";
+import {
+    Checkbox as MuiCheckbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
+    TextField
+} from "@material-ui/core";
 
 
 //To indicate that instead you want a single expression that happens to be an object,
@@ -12,13 +19,14 @@ const convertToDefEventParam = (name, value) => ( {
 });
 
 const Checkbox = props => {
-    const {color, name, checked, label, onChange} = props;
+    const {color, name, checked, label, onChange, InputProps} = props;
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">{label}</FormLabel>
             <FormGroup>
                 <FormControlLabel
                     control={<MuiCheckbox color={color} checked={checked}
+                                          InputProps={InputProps}
                                           onChange={e => onChange(convertToDefEventParam(name, e.target.checked))}
                                           name={name}/>}
 

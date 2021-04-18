@@ -36,7 +36,10 @@ const StepEvents = props => {
                         <Controls.SelectMultipleChip
                             name="events"
                             value={values.events}
-                            label="Events"
+                            label="Possible Events"
+                            InputProps={{
+                                readOnly: true,
+                            }}
                             color="primary"
                             onChange={handleInputChange}
                             options={events}

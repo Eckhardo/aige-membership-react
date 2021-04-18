@@ -123,7 +123,7 @@ const SeasonEventForm = props => {
                             readOnly: true,
                         }}
                         type="text"
-                        onChange={handleInputChange}/>
+                       />
                     {values.PK ?
                         <Controls.Input
                             label="Event  Name"

@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Checkbox as MuiCheckbox,
     Chip,
     FormControl,
     FormHelperText,
@@ -47,7 +48,7 @@ const MenuProps = {
 };
 const SelectMultipleChip = props => {
 
-    const {name, value, label, onChange, color, error = null, options} = props;
+    const {name, value, label, onChange, color, error = null, InputProps, options} = props;
 
     const classes = useStyles();
     const theme = useTheme();
@@ -64,6 +65,7 @@ const SelectMultipleChip = props => {
             <MuiSelect
                 multiple
                 input={<Input/>}
+                InputProps={InputProps}
                 renderValue={(selected) => (
                     <div className={classes.chips}>
                         {selected.map((value) => (
