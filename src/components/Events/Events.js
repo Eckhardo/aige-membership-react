@@ -12,6 +12,7 @@ import Popup from "../Popup";
 import EventForm from "./EventForm";
 import Notification from "../controls/Notification";
 import ConfirmDialog from "../controls/ConfirmDialog";
+import UserContext from "../../App/context/UserContext";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -37,6 +38,7 @@ const headCells = [
 
 
 const Events = props => {
+    const context = React.useContext(UserContext);
 
     const classes = useStyles();
     const [records, setRecords] = useState([]);
@@ -151,6 +153,8 @@ const Events = props => {
                 title="AIGE"
                 subTitle=" Events"
                 icon={<PeopleOutlined/>}/>
+            {context.currentUser &&
+
             <Paper className={classes.pageContent}>
 
                 <Toolbar>
@@ -167,6 +171,8 @@ const Events = props => {
                         onChange={handleSearch}
                     >
                     </Control.Input>
+                    {context.currentUser.is_admin &&
+
                     <Control.Button
                         className={classes.newButton}
                         text="Add new"
@@ -176,6 +182,7 @@ const Events = props => {
                             setOpenPopup(true);
                             setRecordForEdit(null)
                         }}/>
+                    }
                 </Toolbar>
                 <TblContainer>
                     <TblHead/>
@@ -186,7 +193,10 @@ const Events = props => {
                                     <TableCell>{item.event_name} </TableCell>
                                     <TableCell>{item.event_short} </TableCell>
                                     <TableCell>{item.comments} </TableCell>
+                                    {context.currentUser.is_admin &&
+
                                     <TableCell>
+
                                         <Control.ActionButton
                                             color="primary"
                                             onClick={() => openInPopup(item)}
@@ -207,6 +217,7 @@ const Events = props => {
                                             <CloseIcon fontSize="small"/>
                                         </Control.ActionButton>
                                     </TableCell>
+                                    }
                                 </TableRow>
                             ))
                         }
@@ -214,6 +225,7 @@ const Events = props => {
                 </TblContainer>
                 <TblPagination/>
             </Paper>
+            }
             <Popup title="Add Event" openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>
                 <EventForm recordForEdit={recordForEdit} addOrEdit={addOrEdit}/>

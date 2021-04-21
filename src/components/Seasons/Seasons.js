@@ -13,6 +13,7 @@ import Popup from "../Popup";
 import SeasonStepsForm from "./SeasonStepsForm";
 import Notification from "../controls/Notification";
 import ConfirmDialog from "../controls/ConfirmDialog";
+import UserContext from "../../App/context/UserContext";
 
 const useStyles = makeStyles(theme => ({
     pageContent: {
@@ -39,7 +40,9 @@ const headCells = [
 
 const Seasons = () => {
 
+    const userContext = React.useContext(UserContext);
     const classes = useStyles();
+
     const [records, setRecords] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
@@ -140,6 +143,8 @@ const Seasons = () => {
     return (
         <>
             <PageHeader elevation={3} icon={<PeopleOutlined/>} title="AIGE" subTitle="Seasons"/>
+            {userContext.currentUser &&
+
             <Paper className={classes.pageContent}>
 
                 <Toolbar>
@@ -157,6 +162,8 @@ const Seasons = () => {
                     >
 
                     </Control.Input>
+                    {userContext.currentUser.is_admin &&
+
                     <Control.Button
                         className={classes.newButton}
                         text="Add new"
@@ -166,6 +173,7 @@ const Seasons = () => {
                             setOpenPopup(true);
                             setRecordForEdit(null)
                         }}/>
+                    }
                 </Toolbar>
                 <TblContainer>
                     <TblHead/>
@@ -179,16 +187,19 @@ const Seasons = () => {
                                     <TableCell>{item.is_active === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>
-                                    {item.members.map( member => (
-                                       <div key={member}> {member}</div>
-                                    ))}
+                                        {item.members.map(member => (
+                                            <div key={member}> {member}</div>
+                                        ))}
                                     </TableCell>
                                     <TableCell>
-                                    {item.events.map( ev => (
-                                        <div key={ev}> {ev}</div>
-                                    ))}
-                                </TableCell>
+                                        {item.events.map(ev => (
+                                            <div key={ev}> {ev}</div>
+                                        ))}
+                                    </TableCell>
+                                    {userContext.currentUser.is_admin &&
                                     <TableCell>
+
+
                                         <Control.ActionButton
                                             color="primary"
                                             onClick={() => openInPopup(item)}>
@@ -207,7 +218,9 @@ const Seasons = () => {
                                         >
                                             <CloseIcon fontSize="small"/>
                                         </Control.ActionButton>
+
                                     </TableCell>
+                                    }
                                 </TableRow>
 
                             ))
@@ -217,6 +230,7 @@ const Seasons = () => {
                 </TblContainer>
                 <TblPagination/>
             </Paper>
+            }
             <Popup title="Update Season" openPopup={openPopup} setOpenPopup={setOpenPopup}>
                 <SeasonStepsForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} /></Popup>
             <Notification notify={notify} setNotify={setNotify}/>

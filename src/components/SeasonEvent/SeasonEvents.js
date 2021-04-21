@@ -27,6 +27,7 @@ import Notification from "../controls/Notification";
 import Popup from "../Popup";
 import SeasonEventForm from "./SeasonEventForm";
 import ConfirmDialog from "../controls/ConfirmDialog";
+import UserContext from "../../App/context/UserContext";
 
 const icon = <CheckBoxOutlineBlank fontSize="small"/>;
 const checkedIcon = <CheckBox fontSize="small"/>;
@@ -36,7 +37,7 @@ const headCells = [
     {id: 'event_name', label: 'Event Name'},
     {id: 'season_year', label: "Year"},
     {id: 'meeting_point', label: 'Meeting Point'},
-    {id: 'finished', label: 'Fees paid'},
+    {id: 'finished', label: 'Finished'},
     {id: 'start_date', label: 'Start'},
     {id: 'end_date', label: 'End'},
     {id: 'comments', label: 'Comments'},
@@ -72,8 +73,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SeasonEvents = props => {
+    const userContext = React.useContext(UserContext);
+
+    const isAdmin = userContext.currentUser.is_admin ? false : true;
+
     const [seasonEvents, setSeasonEvents] = useState([]);
-     const [seasonYears, setSeasonYears] = useState([]);
+    const [seasonYears, setSeasonYears] = useState([]);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [season, setSeason] = useState();
     const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
@@ -92,23 +97,34 @@ const SeasonEvents = props => {
         recordsAfterPagingAndSorting
     } = useTable(seasonEvents, headCells, null);
 
+
     useEffect(() => {
+        console.log("Seasons::useEffect()");
         retrieveSeasonYears();
-        retrieveSeason();
-        retrieveSeasonEvents();
+
+
     }, [])
+    useEffect(() => {
+        console.log("Season::useEffect()");
+        retrieveSeason();
+
+
+    }, [selectedYear])
+
 
     const retrieveSeasonYears = () => {
         SeasonService.getAll().then((response) => {
             setSeasonYears(UtilityService.extractYears(response.data));
+            retrieveSeason();
         }).catch(err => {
-            setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
+            setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
         })
     }
     const retrieveSeason = () => {
         SeasonService.get(selectedYear)
             .then((resp) => {
                 setSeason(resp.data);
+                retrieveSeasonEvents();
             }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Season failed", type: "error"});
         })
@@ -223,6 +239,7 @@ const SeasonEvents = props => {
                         className={classes.newButton}
                         text="Add new Season Event"
                         variant="outlined"
+                        disabled={isAdmin}
                         startIcon={<PersonAddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
@@ -250,20 +267,23 @@ const SeasonEvents = props => {
                                     <TableCell> {item.comments} </TableCell>
                                     <TableCell>
                                         <Control.ActionButton
-                                            color="primary"
+                                            color={!isAdmin ? "primary" : "default"}
+                                            disabled={isAdmin}
                                             onClick={() => openInPopup(item)}>
                                             <EditOutlinedIcon fontSize="small"/>
                                         </Control.ActionButton>
-                                        <Control.ActionButton color="secondary" onClick={() =>
-                                            setConfirmDialog({
-                                                isOpen: true,
-                                                title: "Sure to delete this item?",
-                                                subTitle: "You can undo this operation",
+                                        <Control.ActionButton color={!isAdmin ? "secondary" : "default"}
+                                                              disabled={isAdmin}
+                                                              onClick={() =>
+                                                                  setConfirmDialog({
+                                                                      isOpen: true,
+                                                                      title: "Sure to delete this item?",
+                                                                      subTitle: "You can undo this operation",
 
-                                                onConfirm: () => {
-                                                    onDelete(item.event_name)
-                                                }
-                                            })}
+                                                                      onConfirm: () => {
+                                                                          onDelete(item.event_name)
+                                                                      }
+                                                                  })}
                                         >
                                             <CloseIcon fontSize="small"/>
                                         </Control.ActionButton>

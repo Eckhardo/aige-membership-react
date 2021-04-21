@@ -3,11 +3,10 @@
 
 const extractYears= (seasons) =>{
 
-    let years= seasons.map(s => {
-        return {id: new Date(s.season_date).getFullYear(), title: new Date(s.season_date).getFullYear()}
+    return seasons.map(s => {
+        return {id: s.season_year, title:s.season_year}
     })
-    console.log("the years array::", JSON.stringify(years))
-    return years;
+
 }
 
 const UtilityService={extractYears};

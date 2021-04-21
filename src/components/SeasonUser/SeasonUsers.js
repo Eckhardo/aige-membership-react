@@ -29,6 +29,8 @@ import ConfirmDialog from "../controls/ConfirmDialog";
 import Popup from "../Popup";
 import SeasonUserForm from "./SeasonUserForm";
 import UtilityService from "../../util";
+import UserContext from "../../App/context/UserContext";
+import Controls from "../controls/Controls";
 
 const icon = <CheckBoxOutlineBlank fontSize="small"/>;
 const checkedIcon = <CheckBox fontSize="small"/>;
@@ -71,6 +73,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const SeasonUsers = () => {
+    const userContext = React.useContext(UserContext);
+
+    const isAdmin= userContext.currentUser.is_admin ? false:true;
 
     const classes = useStyles();
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -94,14 +99,13 @@ const SeasonUsers = () => {
     useEffect(() => {
         console.log("Seasons::useEffect()");
         retrieveSeasonYears();
-        retrieveSeason();
-        retrieveSeasonUsers();
+
 
     }, [])
     useEffect(() => {
         console.log("Season::useEffect()");
         retrieveSeason();
-        retrieveSeasonUsers();
+
 
     }, [selectedYear])
 
@@ -109,23 +113,27 @@ const SeasonUsers = () => {
         SeasonService.getAll().then((response) => {
             let myTuple=   UtilityService.extractYears(response.data);
             setSeasonYears(myTuple);
+            retrieveSeason();
         }).catch(err => {
-            setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
+            setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
         })
     }
     const retrieveSeason = () => {
+        console.log("retrieveSeason");
+
         SeasonService.get(selectedYear)
             .then((resp) => {
                 setSeason(resp.data);
+                retrieveSeasonUsers();
             }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Season failed", type: "error"});
         })
     }
 
     const retrieveSeasonUsers = () => {
+        console.log("retrieveSeasonUsers");
         SeasonUserService.getAll(selectedYear).then(response => {
             setSeasonUsers(response.data);
-            console.log("Season Users::", response.data);
 
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Season Users failed", type: "error"});
@@ -193,7 +201,10 @@ const SeasonUsers = () => {
         <>
             <PageHeader elevation={3} icon={< PeopleIcon/>} title="AIGE Members for Season"
                         subTitle={selectedYear}/>
+            {userContext.currentUser &&
+
             <Paper className={classes.pageContent}>
+
 
                 <Toolbar>
                     <Grid container>
@@ -203,17 +214,17 @@ const SeasonUsers = () => {
                                 label="Select Year"
                                 name="selectedYear"
                                 value={selectedYear}
+                                defaultValue={new Date().getFullYear()}
                                 onChange={handleInputChange}
                                 options={seasonYears}
                             />
                         </Grid>
                         <Grid item xs={5} style={{padding: 4, marginTop: 15}}>
                             <TextField
-                                id="filled-read-only-input"
                                 label="Season Name"
                                 value={season && season.season_name}
                                 InputProps={{
-                                    readOnly: true,
+                                    readOnly: true
                                 }}
                                 defaultValue="Season Name"
                                 variant="outlined"
@@ -227,6 +238,9 @@ const SeasonUsers = () => {
                                         <Checkbox icon={icon} color="primary"
                                                   disabled={true} checked={false}/>}
                                     label="Is active: "
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     labelPlacement="start"
                                 />
                             </FormControl>
@@ -238,6 +252,7 @@ const SeasonUsers = () => {
                         className={classes.newButton}
                         text="Add new Member"
                         variant="outlined"
+                        disabled={isAdmin}
                         startIcon={<PersonAddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
@@ -261,20 +276,23 @@ const SeasonUsers = () => {
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>
                                         <Control.ActionButton
-                                            color="primary"
+                                            color={!isAdmin ? "primary" : "default"}
+                                            disabled={isAdmin}
                                             onClick={() => openInPopup(item)}>
+
                                             <EditOutlinedIcon fontSize="small"/>
                                         </Control.ActionButton>
-                                        <Control.ActionButton color="secondary" onClick={() =>
-                                            setConfirmDialog({
-                                                isOpen: true,
-                                                title: "Sure to delete this item?",
-                                                subTitle: "You can undo this operation",
-
-                                                onConfirm: () => {
-                                                    onDelete(item.user_name)
-                                                }
-                                            })}
+                                        <Control.ActionButton color={!isAdmin ? "secondary" : "default"}
+                                                              disabled={isAdmin}
+                                                              onClick={() =>
+                                                                  setConfirmDialog({
+                                                                      isOpen: true,
+                                                                      title: "Sure to delete this item?",
+                                                                      subTitle: "You can undo this operation",
+                                                                      onConfirm: () => {
+                                                                          onDelete(item.user_name)
+                                                                      }
+                                                                  })}
                                         >
                                             <CloseIcon fontSize="small"/>
                                         </Control.ActionButton>
@@ -287,6 +305,7 @@ const SeasonUsers = () => {
                 </TblContainer>
                 <TblPagination/>
             </Paper>
+                    }
             <Notification notify={notify} setNotify={setNotify}/>
             <Popup title={recordForEdit ? "Update Season Member" : "Add Season Member"} openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>

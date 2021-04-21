@@ -11,6 +11,7 @@ const getAllWithChildren = (year) => {
 }
 
 const get = (seasonName) => {
+    console.log("seasob service::get::", seasonName);
      return http.get(`/season/${seasonName}`);
 };
 

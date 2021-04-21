@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, makeStyles} from '@material-ui/core';
+import {Button, makeStyles, TextField} from '@material-ui/core';
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,13 +23,16 @@ const useStyles = makeStyles(theme => ({
 
 const  ActionButton = (props) =>{
 
-    const { color, children, onClick } = props;
+    const { color, children, onClick, ...other} = props;
     const classes = useStyles();
 
     return (
         <Button
             className={`${classes.root} ${classes[color]}`}
-            onClick={onClick}>
+            color={color}
+            onClick={onClick}
+            {...other}
+        >
              {children}
         </Button>
     )
