@@ -4,7 +4,6 @@ import {Grid} from "@material-ui/core";
 import Controls from "../controls/Controls";
 import Control from "../controls/Controls";
 import Notification from "../controls/Notification";
-import _ from "underscore";
 import EventService from "../../services/EventService";
 import DatePicker from "../controls/DatePicker";
 import TextField from "@material-ui/core/TextField";

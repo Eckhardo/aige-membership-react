@@ -1,7 +1,6 @@
 import React from "react";
 import {Dialog, DialogContent, DialogTitle, makeStyles, Typography} from "@material-ui/core";
-import Controls from "../components/controls/Controls"
-import CloseIcon from '@material-ui/icons/Close';
+
 
 const SimplePopup = props => {
 

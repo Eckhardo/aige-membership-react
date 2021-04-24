@@ -19,8 +19,8 @@ import UtilityService from "../../util";
 import SeasonEventService from "../../services/SeasonEventService";
 import useTable from "../useTable";
 import Control from "../controls/Controls";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import {CheckBox, CheckBoxOutlineBlank} from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/LibraryAdd";
+import {CheckBox, CheckBoxOutlineBlank, Cloud} from "@material-ui/icons";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Notification from "../controls/Notification";
@@ -193,7 +193,7 @@ const SeasonEvents = props => {
     }
     return (
         <>
-            <PageHeader elevation={3} icon={< PeopleIcon/>} title="AIGE Events for Season"
+            <PageHeader elevation={3}  icon={<Cloud color="primary"/>} title="AIGE Events for Season"
                         subTitle={selectedYear}/>
             <Paper className={classes.pageContent}>
                 <Toolbar>
@@ -240,7 +240,7 @@ const SeasonEvents = props => {
                         text="Add new Season Event"
                         variant="outlined"
                         disabled={isAdmin}
-                        startIcon={<PersonAddIcon/>}
+                        startIcon={<AddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
                             setRecordForEdit(null);

@@ -1,9 +1,7 @@
-import React from "react";
-import { useEffect, useState} from "react";
-import {Grid, Paper} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {Grid} from "@material-ui/core";
 import Controls from "../../controls/Controls";
 import {Form} from "../../useForm";
-import _ from "underscore";
 import EventService from "../../../services/EventService";
 
 const StepEvents = props => {

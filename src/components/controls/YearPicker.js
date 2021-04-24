@@ -12,7 +12,7 @@ const convertToDefEventParam = (name, value) => ({
     }
 });
 const YearPicker = props => {
-    const {color, name, label, value, onChange} = props;
+    const {color, name, label, value, onChange, helperText, ...other} = props;
 
 
     return (
@@ -23,11 +23,10 @@ const YearPicker = props => {
                         value={value}
                         format="yyyy"
                         color={color}
-                        defaultValue="2021"
                         openTo="year"
                         views={["year"]}
-                        v
-                        helperText="Select year"
+                        {...other}
+                        helperText={helperText}
                         onChange={date => onChange(convertToDefEventParam(name, date))}>
 
             </DatePicker>

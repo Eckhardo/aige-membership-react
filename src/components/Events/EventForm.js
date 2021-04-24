@@ -68,6 +68,8 @@ const EventForm = (props) => {
             <Grid container>
                 <Grid item xs={6}>
                     <Controls.Input label="Event Name" name="event_name" value={values.event_name}
+                                    disabled ={values.PK }
+                                    helperText="Cannot be change later"
                                     onChange={handleInputChange} error={errors.event_name}/>
                     <Controls.Input label="Event Key" name="event_short" value={values.event_short}
                                     onChange={handleInputChange} error={errors.event_short}/>

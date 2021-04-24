@@ -1,7 +1,7 @@
 import './App.css';
 import {createMuiTheme, makeStyles, MuiThemeProvider} from '@material-ui/core/styles';
 import {CssBaseline} from "@material-ui/core";
-import React, {createContext, useState} from "react";
+import React, {useState} from "react";
 import Router from "./Router";
 import UserService from "../services/UserService";
 import LoginForm from "../components/Login/LoginForm";

@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid, Paper, Typography} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Controls from "../../controls/Controls";
 import {Form} from "../../useForm";
 
@@ -10,31 +10,35 @@ const StepBaseData = props => {
     const classes = useStyles();
     return (
 
-            <Form>
-                 <Grid container className={classes.root} alignItems="center" justify="center">
-                    <Grid item sm={6}>
-                        <Controls.Input label="Season Name" name="season_name" value={values.season_name}
-                                        onChange={handleInputChange} error={errors.season_name}/>
+        <Form>
+            <Grid container className={classes.root} alignItems="center" justify="center">
+                <Grid item sm={6}>
+                    <Controls.Input label="Season Name" name="season_name" value={values.season_name}
+                                    disabled={values.PK}
+                                    helperText="Cannot be change later" onChange={handleInputChange}
+                                    error={errors.season_name}/>
 
 
-                    </Grid>
-                     <Grid item sm={6}>
-                         <Controls.YearPicker
-                             name="season_date"
-                             value={values.season_date}
-                             label="Season Year"
-                             color="primary"
-                             onChange={handleInputChange}/>
-
-                         <Controls.Checkbox
-                             name="is_active"
-                             checked={values.is_active}
-                             label="Is active"
-                             color="primary"
-                             onChange={handleInputChange}/>
-                     </Grid>
                 </Grid>
-            </Form>
+                <Grid item sm={6}>
+                    <Controls.YearPicker
+                        name="season_date"
+                        value={values.season_date}
+                        label="Season Year"
+                        color="primary"
+                        disabled ={values.PK }
+                        helperText="Cannot be change later"
+                        onChange={handleInputChange}/>
+
+                    <Controls.Checkbox
+                        name="is_active"
+                        checked={values.is_active}
+                        label="Is active"
+                        color="primary"
+                        onChange={handleInputChange}/>
+                </Grid>
+            </Grid>
+        </Form>
 
     )
 }

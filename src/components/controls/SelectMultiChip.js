@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    Checkbox as MuiCheckbox,
     Chip,
     FormControl,
     FormHelperText,

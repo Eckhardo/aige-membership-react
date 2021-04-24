@@ -93,7 +93,10 @@ const UserForm = (props) => {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={6}>
+
                     <Controls.Input label="User Name" name="user_name" value={values.user_name}
+                         disabled ={values.PK }
+                                    helperText="Cannot be change later"
                                     onChange={handleInputChange} error={errors.user_name}/>
                     <Controls.Input label="First Name" name="first_name" value={values.first_name}
                                     onChange={handleInputChange} error={errors.first_name}/>

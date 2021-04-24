@@ -1,10 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import {AppBar, Tab, Tabs} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router";
 import UserContext from "./context/UserContext";
 
-const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents", "/login", "/logout"];
+const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents", "/userEvents","/login", "/logout"];
 
 
 const Nav = props => {
@@ -58,20 +58,27 @@ const Nav = props => {
                     component={Link}
                     to={routes[4]}
                 />}
-                {!context.currentUser &&
+                {context.currentUser &&
                 <Tab
                     value={routes[5]}
-                    label="Login"
+                    label="User Events"
                     component={Link}
                     to={routes[5]}
+                />}
+                {!context.currentUser &&
+                <Tab
+                    value={routes[6]}
+                    label="Login"
+                    component={Link}
+                    to={routes[6]}
                 />
                 }
                 {context.currentUser &&
                 <Tab
-                    value={routes[6]}
+                    value={routes[7]}
                     label="Logout"
                     component={Link}
-                    to={routes[6]}
+                    to={routes[7]}
                 />
                 }
             </Tabs>

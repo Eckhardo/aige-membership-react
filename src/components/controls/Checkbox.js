@@ -1,12 +1,5 @@
 import React from "react";
-import {
-    Checkbox as MuiCheckbox,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    TextField
-} from "@material-ui/core";
+import {Checkbox as MuiCheckbox, FormControl, FormControlLabel, FormGroup, FormLabel} from "@material-ui/core";
 
 
 //To indicate that instead you want a single expression that happens to be an object,

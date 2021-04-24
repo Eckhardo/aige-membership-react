@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 
 import Controls from "../controls/Controls";
 
-import {Form, useForm} from "../useForm";
+import {Form} from "../useForm";
 import Popup from "../Popup";
-import UserService from "../../services/UserService";
 import {useHistory} from "react-router";
 
 const initialUserState = {

@@ -3,9 +3,9 @@ import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolb
 import useTable from "../useTable";
 import EventService from "../../services/EventService";
 import PageHeader from "../PageHeader";
-import {PeopleOutlined, Search} from "@material-ui/icons";
+import {Cloud, Search} from "@material-ui/icons";
 import Control from "../controls/Controls";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@material-ui/icons/LibraryAdd";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 import Popup from "../Popup";
@@ -152,7 +152,7 @@ const Events = props => {
             <PageHeader
                 title="AIGE"
                 subTitle=" Events"
-                icon={<PeopleOutlined/>}/>
+                icon={<Cloud color="primary"/>}/>
             {context.currentUser &&
 
             <Paper className={classes.pageContent}>
@@ -175,7 +175,7 @@ const Events = props => {
 
                     <Control.Button
                         className={classes.newButton}
-                        text="Add new"
+                        text="Add Event"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {

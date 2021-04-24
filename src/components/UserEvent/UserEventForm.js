@@ -13,24 +13,16 @@ const initialSeasonUserState = {
     SK: "",
     season_year: new Date().getFullYear(),
     user_name: "",
-    position_role: "",
-    fees_paid: true,
-    is_active: true
+    event_name: "",
+    registered: true,
+    took_part: true
 
 };
-const positions = [
-    {id: "1. Vorsitzender", title: "1. Vorsitzender"},
-    {id: "2. Vorsitzender", title: "2. Vorsitzender"},
-    {id: "Gewaesserwart", title: "Gewaesserwart"},
-    {id: "Kassenwart", title: "Kassenwart"},
-    {id: "Schriftfuehrer", title: "Schriftfuehrer"},
-]
+
+const UserEventForm = (props) => {
 
 
-const SeasonUserForm = (props) => {
-
-
-    const {seasonUsers, addOrEdit, recordForEdit} = props;
+    const {currentUsers, addOrEdit, recordForEdit} = props;
     const [activeMembers, setActiveMembers] = useState([]);
     const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 
@@ -73,10 +65,10 @@ const SeasonUserForm = (props) => {
     const retrieveActiveMembers = () => {
         UserService.getAll().then((response) => {
             let users = response.data;
-            console.log("season users::", JSON.stringify(seasonUsers));
+            console.log("season users::", JSON.stringify(currentUsers));
             const nonActiveMembers = _.intersection(users.map((member) => {
                 return member.user_name
-            }), seasonUsers);
+            }), currentUsers);
             console.log("nonActiveMembers::", JSON.stringify(nonActiveMembers));
 
             const items = users.filter(member => !nonActiveMembers.includes(member.user_name));
@@ -102,7 +94,7 @@ const SeasonUserForm = (props) => {
             <Grid container>
                 <Grid item sm={6}>
                     <Controls.Input
-                        label="Season Year"
+                        label="Year"
                         name="season_year"
                         value={values.season_year}
                         InputProps={{
@@ -111,7 +103,7 @@ const SeasonUserForm = (props) => {
                         onChange={handleInputChange}/>
                     {values.PK ?
                         <Controls.Input
-                            label="Member  Name"
+                            label="Member"
                             name="user_name"
                             value={values.user_name}
                             InputProps={{
@@ -127,31 +119,29 @@ const SeasonUserForm = (props) => {
                             error={errors.user_name}
 
                         />}
-                    <Controls.Select
-                        label="Position"
-                        name="position_role"
-                        options={positions}
-                        value={values.position_role}
-                        onChange={handleInputChange}
-                        error={errors.position_role}
-
-                    />
-
-                </Grid>
+                 </Grid>
 
                 <Grid item sm={6}>
+                    <Controls.Input
+                        label="Event"
+                        name="event_name"
+                        value={values.event_name}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        onChange={handleInputChange}/>
                     <div style={{display: 'flex'}}>
                         <Control.Checkbox
                             color="primary"
-                            name="fees_paid"
-                            checked={values.fees_paid}
-                            label="Fees paid"
+                            name="registered"
+                            checked={values.registered}
+                            label="Registered"
                             onChange={handleInputChange}/>
                         <Control.Checkbox
                             color="primary"
-                            name="is_active"
-                            checked={values.is_active}
-                            label="Is active"
+                            name="took_part"
+                            checked={values.took_part}
+                            label="Took part"
                             onChange={handleInputChange}/>
                     </div>
                     <div>
@@ -177,4 +167,4 @@ const SeasonUserForm = (props) => {
     )
 
 }
-export default SeasonUserForm;
+export default UserEventForm;

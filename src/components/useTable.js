@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 const useTable = (records, headCells, filterFn) => {
 
     const classes = useStyles();
-    const pages = [3, 5, 10];
+    const pages = [5, 10, 20];
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
     const [order, setOrder] = useState();

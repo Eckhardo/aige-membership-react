@@ -1,8 +1,8 @@
 import React from "react";
-import {Grid, Paper} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Controls from "../../controls/Controls";
-import {Form} from "../../useForm";
 import Control from "../../controls/Controls";
+import {Form} from "../../useForm";
 
 const StepSubmit = props => {
     const {values, errors, handleSubmit,useStyles} = props;

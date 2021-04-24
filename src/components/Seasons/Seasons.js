@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar} from "@material-ui/core";
-import {PeopleOutlined, Search} from "@material-ui/icons";
+import {Cloud, PeopleOutlined, Search} from "@material-ui/icons";
 import useTable from "../useTable";
 import SeasonService from "../../services/SeasonService";
 import PageHeader from "../PageHeader";
 import Control from "../controls/Controls";
-import AddIcon from "@material-ui/icons/Add";
+import AddIcon from "@material-ui/icons/LibraryAdd";
 import Checkbox from "../controls/Checkbox";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
@@ -142,7 +142,7 @@ const Seasons = () => {
 
     return (
         <>
-            <PageHeader elevation={3} icon={<PeopleOutlined/>} title="AIGE" subTitle="Seasons"/>
+            <PageHeader elevation={3}    icon={<Cloud color="primary"/>} title="AIGE" subTitle="Seasons"/>
             {userContext.currentUser &&
 
             <Paper className={classes.pageContent}>
@@ -166,7 +166,7 @@ const Seasons = () => {
 
                     <Control.Button
                         className={classes.newButton}
-                        text="Add new"
+                        text="Add Season"
                         variant="outlined"
                         startIcon={<AddIcon/>}
                         onClick={() => {

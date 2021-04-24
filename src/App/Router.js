@@ -9,6 +9,7 @@ import Nav from "./Nav";
 import Logout from "../components/Login/Logout";
 import Login from "../components/Login/Login";
 import SeasonEvents from "../components/SeasonEvent/SeasonEvents";
+import UserEvents from "../components/UserEvent/UserEvents";
 
 
 const Router = props => {
@@ -31,6 +32,7 @@ const Router = props => {
                 <Route path="/seasons" component={Seasons}/>
                 <Route path="/seasonUsers" component={SeasonUsers}/>
                 <Route path="/seasonEvents" component={SeasonEvents}/>
+                <Route path="/userEvents" component={UserEvents}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/logout" component= {() => <Logout  openPopup={openPopup} setOpenPopup={setOpenPopup} isOpen={true}/>}/>
 

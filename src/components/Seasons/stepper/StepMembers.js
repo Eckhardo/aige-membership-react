@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Grid, Paper} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import Controls from "../../controls/Controls";
 import {Form} from "../../useForm";
 import UserService from "../../../services/UserService";

@@ -9,6 +9,14 @@ const extractYears= (seasons) =>{
 
 }
 
-const UtilityService={extractYears};
+const extractEvents= (userEvents) =>{
+
+    return userEvents.map(s => {
+        return {id: s.event_name, title:s.event_name}
+    })
+
+}
+
+const UtilityService={extractYears, extractEvents};
 
 export default UtilityService;
