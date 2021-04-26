@@ -24,11 +24,11 @@ const Popup = props => {
         <Dialog open={openPopup} maxWidth="md" classes={{paper: classes.dialogWrapper}}>
             <DialogTitle className={classes.dialogTitle}>
                 <div style={{display: 'flex'}}>
-                    <Typography variant="h6" component="div" style={{flexGrow: 1}}>
+                    <Typography variant="h6" component="div" style={{flexGrow: 1}} color="primary">
                         {title}
                     </Typography>
                     <Controls.ActionButton
-                        color="secondary"
+                        color="primary"
                         onClick={()=>{setOpenPopup(false)}}>
                         <CloseIcon />
                     </Controls.ActionButton>

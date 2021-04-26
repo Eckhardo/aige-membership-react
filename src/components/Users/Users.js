@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PageHeader from "../PageHeader";
-import {Cloud, PeopleOutlined, Search} from "@material-ui/icons";
+import {Cloud, Search} from "@material-ui/icons";
 import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar} from "@material-ui/core";
 import UserService from "../../services/UserService";
 import useTable from "../useTable";

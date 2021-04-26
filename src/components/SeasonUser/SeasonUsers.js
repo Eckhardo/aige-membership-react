@@ -24,7 +24,6 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import CloseIcon from "@material-ui/icons/Close";
 
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PeopleIcon from '@material-ui/icons/People';
 import ConfirmDialog from "../controls/ConfirmDialog";
 import Popup from "../Popup";
 import SeasonUserForm from "./SeasonUserForm";

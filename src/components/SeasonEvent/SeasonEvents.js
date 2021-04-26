@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import PageHeader from "../PageHeader";
-import PeopleIcon from "@material-ui/icons/People";
 import {
     Checkbox,
     FormControl,

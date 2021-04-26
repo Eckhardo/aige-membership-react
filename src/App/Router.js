@@ -10,6 +10,7 @@ import Logout from "../components/Login/Logout";
 import Login from "../components/Login/Login";
 import SeasonEvents from "../components/SeasonEvent/SeasonEvents";
 import UserEvents from "../components/UserEvent/UserEvents";
+import Admin from "../components/Admin/Admin";
 
 
 const Router = props => {
@@ -35,7 +36,7 @@ const Router = props => {
                 <Route path="/userEvents" component={UserEvents}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/logout" component= {() => <Logout  openPopup={openPopup} setOpenPopup={setOpenPopup} isOpen={true}/>}/>
-
+                <Route path="/admin" component={Admin}/>
             </Switch>
         </BrowserRouter>
 

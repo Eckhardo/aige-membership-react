@@ -6,6 +6,8 @@ import Router from "./Router";
 import UserService from "../services/UserService";
 import LoginForm from "../components/Login/LoginForm";
 import UserContext from "./context/UserContext";
+import SimplePopup from "../components/SimplePopup";
+import Popup from "../components/Popup";
 
 const useStyles = makeStyles(theme => ({
     appMain: {
@@ -60,33 +62,32 @@ const initialUserState = {
 
 };
 const App = props => {
-    const context = React.useContext(UserContext);
-
-
-
+    const limit = 3;
     const classes = useStyles();
     const [currentUser, setCurrentUser] = useState();
-    const [authenticated, setAuthenticated] = useState(currentUser===null);
-
+    const [authenticated, setAuthenticated] = useState(currentUser === null);
+    const [counter, setCounter] = useState(0);
     const [openPopup, setOpenPopup] = useState(true);
-    const [values, setValues] = useState(initialUserState);
-    const [isLoggedIn,setIsLoggedIn] = useState(false)
+     const [values, setValues] = useState(initialUserState);
 
-
-    const login =  (e) => {
-      e.preventDefault();
+    const login = (e) => {
+        e.preventDefault();
         UserService.checkLogin(values).then(response => {
-            console.log("isLoggedIn",authenticated);
+                console.log("isLoggedIn", authenticated);
                 if (response) {
-                    console.log("response");
                     setCurrentUser(response.data);
                     setAuthenticated(true);
                     setOpenPopup(false);
 
+                } else {
+                    if (counter >= limit) {
+                        setOpenPopup(false);
+                    }
                 }
             }
         ).catch(err => {
-
+            console.log("ERROR in Login");
+            setCounter(prevState => prevState + 1);
         })
     }
 
@@ -96,14 +97,24 @@ const App = props => {
 
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline/>
-                <UserContext.Provider value={{ currentUser: currentUser, setCurrentUser:setCurrentUser}}>
+                <UserContext.Provider value={{currentUser: currentUser, setCurrentUser: setCurrentUser}}>
+                    {counter <= limit &&
                     <div className={classes.appMain}>
                         {authenticated ? <Router/> : <LoginForm onSubmit={login}
                                                                 openPopup={openPopup}
                                                                 setOpenPopup={setOpenPopup}
+                                                                counter={counter}
                                                                 values={values}
                                                                 setValues={setValues}/>}
                     </div>
+                    }
+                    {counter === limit &&
+                    <div>
+                        <Popup title="You tried more than 2 times: Isch over!" openPopup={openPopup}  setOpenPopup={setOpenPopup}
+                        />
+
+                    </div>
+                    }
                 </UserContext.Provider>
             </MuiThemeProvider>
 

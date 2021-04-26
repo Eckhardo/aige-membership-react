@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {InputAdornment, makeStyles, Paper, TableBody, TableCell, TableRow, Toolbar} from "@material-ui/core";
-import {Cloud, PeopleOutlined, Search} from "@material-ui/icons";
+import {Cloud, Search} from "@material-ui/icons";
 import useTable from "../useTable";
 import SeasonService from "../../services/SeasonService";
 import PageHeader from "../PageHeader";

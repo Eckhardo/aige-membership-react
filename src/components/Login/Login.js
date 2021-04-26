@@ -59,7 +59,6 @@ const Login = props => {
             console.log("valid");
             UserService.checkLogin(values).then(response => {
                     setUser(response.data);
-                    localStorage.setItem('user', JSON.stringify(response.data));
                     const user = JSON.parse(localStorage.getItem('user'));
                     console.log("user::", user);
                     setOpenPopup(false);
@@ -67,7 +66,7 @@ const Login = props => {
                     history.push("/");
                 }
             ).catch(err => {
-
+                 console.log("ERROR in Login")
             })
         }
     }
