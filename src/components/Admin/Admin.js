@@ -10,12 +10,6 @@ import SeasonEventService from "../../services/SeasonEventService";
 import Notification from "../controls/Notification";
 
 
-const initialAdminState = {
-    user_name: "",
-    event_name: ""
-
-};
-
 const useStyles = makeStyles(theme => ({
     root: {
         '& .MuiFormControl-root': {
@@ -24,6 +18,8 @@ const useStyles = makeStyles(theme => ({
         }
     }
 }))
+
+
 const Admin = () => {
     const classes = useStyles();
 
@@ -52,14 +48,13 @@ const Admin = () => {
     const retrieveCurrentEvents = () => {
         SeasonEventService.getAll(selectedYear).then((response) => {
             let eventNames = retrieveEvents(response.data);
-            console.log(" event names ::", JSON.stringify(eventNames));
             setActiveEvents(eventNames);
-            setSelectedEvent(eventNames[0].id);
-            console.log("default event ::", JSON.stringify(eventNames[0].id));
-
-
+            if (eventNames.length > 0) {
+                setSelectedMember(eventNames[0].id);
+            }
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve current events failed", type: "error"});
+            console.error("Retrieve current events failed", err);
+            setNotify({isOpen: true, message: `Retrieve current events failed: ${err}`, type: "error"});
         })
     }
 
@@ -68,41 +63,36 @@ const Admin = () => {
         UserEventService.getUsers(selectedYear).then((response) => {
             retrieveMembers(response.data);
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve current users failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve current users failed: ${err}`, type: "error"});
         })
     }
 
     const retrieveMembers = (userEvents) => {
-
         UserService.getAll().then((response) => {
             let userNames = retrieveNonDuplicateUsers(response.data, userEvents);
-            console.log(" user names ::", JSON.stringify(userNames));
             setActiveMembers(userNames);
-            console.log("setActiveMembers ::");
-
             if (userNames.length > 0) {
-                console.log("default user ::", JSON.stringify(userNames[0].id));
                 setSelectedMember(userNames[0].id);
             }
-
-
-        }).catch(err => {
+       }).catch(err => {
             console.log(" ERR ::", JSON.stringify(err));
-            setNotify({isOpen: true, message: "Retrieve members failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve members failed: ${err}`, type: "error"});
         })
     }
 
     function retrieveEvents(events) {
-
         let eventNames = [];
         events.forEach((myEvent, index) => {
             eventNames[index] = {
                 event_name: myEvent.event_name
             }
         })
-        let myTuple = [] = eventNames.map(s => {
-            return {id: s.event_name, title: s.event_name}
-        })
+        let myTuple = [];
+        if (eventNames.length >= 0) {
+            myTuple = eventNames.map(s => {
+                return {id: s.event_name, title: s.event_name}
+            })
+        }
         return myTuple;
     }
 
@@ -114,7 +104,7 @@ const Admin = () => {
                 user_name: user.user_name
             }
         })
-
+         // splice duplicates
         for (let i = userNames.length - 1; i >= 0; i--) {
             for (let j = 0; j < userEvents.length; j++) {
                 if (userNames[i] && (userNames[i].user_name === userEvents[j].user_name)) {
@@ -133,11 +123,9 @@ const Admin = () => {
 
     const handleInputChangeEvent = (e) => {
         setSelectedEvent(e.target.value)
-
     }
     const handleInputChangeUser = (e) => {
         setSelectedMember(e.target.value)
-
     }
 
 
@@ -151,9 +139,10 @@ const Admin = () => {
     const handleUserSubmit = (e) => {
         e.preventDefault();
         UserEventService.assembleUsers(selectedYear, selectedMember).then(response => {
+
             setNotify({isOpen: true, message: "Assemble users succeeded", type: "info"});
         }).catch(err => {
-            setNotify({isOpen: true, message: "Assemble users failed", type: "error"});
+            setNotify({isOpen: true, message: `Assemble users failed: ${err}`, type: "error"});
         })
         console.log("handleUserSubmit::");
     }

@@ -6,7 +6,7 @@ import EventService from "../../../services/EventService";
 
 const StepEvents = props => {
 
-    const {values, setValues, errors, handleInputChange, resetForm, validate, useStyles} = props;
+    const {values,  errors, handleInputChange,  useStyles} = props;
     const [events, setEvents] = useState([])
     const classes = useStyles();
 

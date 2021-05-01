@@ -42,7 +42,6 @@ const Seasons = () => {
 
     const userContext = React.useContext(UserContext);
     const classes = useStyles();
-
     const [records, setRecords] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
@@ -81,14 +80,14 @@ const Seasons = () => {
             setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
 
         }).catch( e =>{
-            setNotify({isOpen: true, message: "Deletion of Season failed", type: "error"});
+            setNotify({isOpen: true, message: `Deletion of Season failed: ${e}`, type: "error"});
 
         })
     }
 
     const addOrEdit = (item, resetForm) => {
-        let year = item.season_date.getFullYear();
-        item.season_year=year;
+
+        item.season_year=item.season_date.getFullYear();
         delete item.season_date;
         delete item.members;
         delete item.events;

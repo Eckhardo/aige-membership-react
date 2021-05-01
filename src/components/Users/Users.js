@@ -43,7 +43,6 @@ const Users = () => {
     const context = React.useContext(UserContext);
 
     const classes = useStyles();
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [records, setRecords] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
@@ -108,8 +107,7 @@ const Users = () => {
         console.log("addOrEdit::", JSON.stringify(user));
 
         if (!user.PK) {
-            let year = user.admission_date.getFullYear();
-            user.admission_year = year;
+             user.admission_year = user.admission_date.getFullYear();
             delete user.admission_date;
             console.log("admission year::", JSON.stringify(user.admission_year));
             UserService.create(user)
@@ -119,8 +117,8 @@ const Users = () => {
                     setOpenPopup(false);
                     setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
                 })
-                .catch((e) => {
-                    setNotify({isOpen: true, message: "Create new User failed", type: "error"});
+                .catch((err) => {
+                    setNotify({isOpen: true, message: `Create user failed: ${err}`, type: "error"});
                 });
         } else {
             let date = user.admission_date;
@@ -135,8 +133,8 @@ const Users = () => {
                     setOpenPopup(false);
                     setRecordForEdit(null);
                 })
-                .catch((e) => {
-                    setNotify({isOpen: true, message: "Update failed", type: "error"});
+                .catch((err) => {
+                    setNotify({isOpen: true, message: `Update user failed: ${err}`, type: "error"});
                 });
         }
     }
@@ -154,7 +152,7 @@ const Users = () => {
 
             })
             .catch((e) => {
-                setNotify({isOpen: true, message: "Delete failed", type: "error"});
+                setNotify({isOpen: true, message: `Delete user failed: ${e}`, type: "error"});
             });
 
     }

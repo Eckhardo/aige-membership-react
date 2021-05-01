@@ -4,7 +4,6 @@ import Controls from "../controls/Controls";
 
 import {Form} from "../useForm";
 import Popup from "../Popup";
-import {useHistory} from "react-router";
 import {Typography} from "@material-ui/core";
 
 const initialUserState = {
@@ -15,7 +14,6 @@ const initialUserState = {
 const LoginForm = props => {
 
     const {onSubmit, openPopup, setOpenPopup, counter, values, setValues} = props;
-    const history = useHistory();
 
     const handleInputChange = event => {
         const {value, name} = event.target;

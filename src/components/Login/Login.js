@@ -13,12 +13,10 @@ const initialUserState = {
     password: "abc"
 
 };
-const Login = props => {
+const Login = () => {
 
     const context = React.useContext(UserContext);
 
-
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
     const [openPopup, setOpenPopup] = useState(true);
     const history = useHistory();
@@ -58,10 +56,6 @@ const Login = props => {
         if (validate()) {
             console.log("valid");
             UserService.checkLogin(values).then(response => {
-                    setUser(response.data);
-                    const user = JSON.parse(localStorage.getItem('user'));
-                    console.log("user::", user);
-                    setOpenPopup(false);
                     context.setCurrentUser(response.data)
                     history.push("/");
                 }

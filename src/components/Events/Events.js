@@ -37,7 +37,7 @@ const headCells = [
 ]
 
 
-const Events = props => {
+const Events = () => {
     const context = React.useContext(UserContext);
 
     const classes = useStyles();
@@ -112,8 +112,8 @@ const Events = props => {
                     setOpenPopup(false);
                     setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
                 })
-                .catch((e) => {
-                    setNotify({isOpen: true, message: "Create new User failed", type: "error"});
+                .catch((err) => {
+                    setNotify({isOpen: true, message: `Create event failed: ${err}`, type: "error"});
                 });
         } else {
             EventService.update(theEvent)
@@ -124,7 +124,7 @@ const Events = props => {
                     setRecordForEdit(null);
                 })
                 .catch((e) => {
-                    setNotify({isOpen: true, message: "Update failed", type: "error"});
+                    setNotify({isOpen: true, message: `Update event failed: ${e}`, type: "error"});
                 });
         }
     }
@@ -142,7 +142,7 @@ const Events = props => {
 
             })
             .catch((e) => {
-                setNotify({isOpen: true, message: "Delete failed", type: "error"});
+                setNotify({isOpen: true, message: `Delete event failed: ${e}`, type: "error"});
             });
 
     }

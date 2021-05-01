@@ -86,7 +86,7 @@ const SeasonUserForm = (props) => {
 
 
         }).catch(err => {
-            setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve failed: ${err}`, type: "error"});
         })
     }
 

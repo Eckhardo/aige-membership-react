@@ -1,8 +1,6 @@
 import React, {useEffect} from "react";
 
 import Controls from "../controls/Controls";
-
-import {Form} from "../useForm";
 import {useHistory} from "react-router";
 import UserContext from "../../App/context/UserContext";
 import SimplePopup from "../SimplePopup";

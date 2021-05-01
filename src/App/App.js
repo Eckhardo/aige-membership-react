@@ -6,7 +6,6 @@ import Router from "./Router";
 import UserService from "../services/UserService";
 import LoginForm from "../components/Login/LoginForm";
 import UserContext from "./context/UserContext";
-import SimplePopup from "../components/SimplePopup";
 import Popup from "../components/Popup";
 
 const useStyles = makeStyles(theme => ({

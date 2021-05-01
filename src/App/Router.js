@@ -13,7 +13,7 @@ import UserEvents from "../components/UserEvent/UserEvents";
 import Admin from "../components/Admin/Admin";
 
 
-const Router = props => {
+const Router = () => {
 
     const    [openPopup, setOpenPopup] = useState( true);
 

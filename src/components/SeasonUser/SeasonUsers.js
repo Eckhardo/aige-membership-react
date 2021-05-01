@@ -73,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 const SeasonUsers = () => {
     const userContext = React.useContext(UserContext);
 
-    const isAdmin= userContext.currentUser && userContext.currentUser.is_admin ? false:true;
+    const isAdmin= !(userContext.currentUser && userContext.currentUser.is_admin);
 
     const classes = useStyles();
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -110,7 +110,7 @@ const SeasonUsers = () => {
                 setSeasonYears(myTuple);
                 retrieveSeason();
             }).catch(err => {
-                setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
+                setNotify({isOpen: true, message: `Retrieve seasons failed: ${err}`, type: "error"});
             })
         }
         else{
@@ -125,7 +125,7 @@ const SeasonUsers = () => {
                 setSeason(resp.data);
                 retrieveSeasonUsers();
             }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Season failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve season failed: ${err}`, type: "error"});
         })
     }
 
@@ -135,7 +135,7 @@ const SeasonUsers = () => {
             setSeasonUsers(response.data);
 
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Season Users failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve season users failed: ${err}`, type: "error"});
 
         })
     }
@@ -153,19 +153,16 @@ const SeasonUsers = () => {
                 setOpenPopup(false);
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
-                console.log("Error=", JSON.stringify(err));
-                setNotify({isOpen: true, message: "Update Season User failed", type: "error"});
+                setNotify({isOpen: true, message: `Update season user failed: ${err}`, type: "error"});
             })
         } else {
             SeasonUserService.create(item).then(response => {
-                console.log("Response=", JSON.stringify(response));
                 resetForm();
                 retrieveSeasonUsers();
                 setOpenPopup(false);
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
-                console.log("Error=", JSON.stringify(err.message));
-                setNotify({isOpen: true, message: "Create Season User failed", type: "error"});
+                setNotify({isOpen: true, message: `Create season user failed: ${err}`, type: "error"});
             })
         }
     }
@@ -181,8 +178,8 @@ const SeasonUsers = () => {
                 setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
 
             })
-            .catch((e) => {
-                setNotify({isOpen: true, message: "Delete failed", type: "error"});
+            .catch((err) => {
+                setNotify({isOpen: true, message: `Delete season user failed: ${err}`, type: "error"});
             });
 
     }
@@ -191,8 +188,6 @@ const SeasonUsers = () => {
      * @param event the event object
      */
     const handleInputChange = event => {
-        console.log("name::", event.target.name);
-        console.log("value::", event.target.value);
         setSelectedYear(event.target.value);
 
     }
@@ -201,12 +196,9 @@ const SeasonUsers = () => {
             <PageHeader elevation={3} icon={<Cloud color="primary"/>}
                         title={userContext.currentUser ? "AIGE Season Members" : "You are not authenticated:"}
                         subTitle={userContext.currentUser ? selectedYear : "Please login"}
-
             />
             {userContext.currentUser &&
-
             <Paper className={classes.pageContent}>
-
                 <Toolbar>
                     <Grid container>
                         <Grid item xs={3}>

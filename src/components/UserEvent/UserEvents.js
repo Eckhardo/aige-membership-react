@@ -30,8 +30,6 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import UserEventForm from "./UserEventForm";
 
-const icon = <CheckBoxOutlineBlank fontSize="small"/>;
-const checkedIcon = <CheckBox fontSize="small"/>;
 const headCells = [
     {id: 'user_name', label: 'User Name'},
     {id: 'registered', label: 'Registered'},
@@ -67,11 +65,11 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-const UserEvents = props => {
+const UserEvents = () => {
 
     const userContext = useContext(UserContext);
 
-    const isAdmin= userContext.currentUser && userContext.currentUser.is_admin ? false:true;
+    const isAdmin= !(userContext.currentUser && userContext.currentUser.is_admin);
     const classes = useStyles();
     const [userEvents, setUserEvents] = useState([]);
     const [seasonYears, setSeasonYears] = useState([]);
@@ -106,7 +104,7 @@ const UserEvents = props => {
                 setSeasonYears(myTuple);
                 retrieveSeason();
             }).catch(err => {
-                setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
+                setNotify({isOpen: true, message: `Retrieve seasons failed: ${err}`, type: "error"});
             })
         } else {
             retrieveSeason();
@@ -120,7 +118,7 @@ const UserEvents = props => {
                 setSeason(resp.data);
                 retrieveEvents();
             }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Season failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve season failed: ${err}`, type: "error"});
         })
     }
 
@@ -137,7 +135,7 @@ const UserEvents = props => {
             }
             retrieveUserEvents(myTuple[0].id);
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve User Events failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve  events failed: ${err}`, type: "error"});
 
         })
     }
@@ -146,7 +144,7 @@ const UserEvents = props => {
         UserEventService.getAll(selectedYear,myEvent).then(response => {
             setUserEvents(response.data);
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve User Events failed", type: "error"});
+            setNotify({isOpen: true, message: `Retrieve user events failed: ${err}`, type: "error"});
 
         })
     }
@@ -160,7 +158,7 @@ const UserEvents = props => {
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
                 console.log("Error=", JSON.stringify(err));
-                setNotify({isOpen: true, message: "Update User Event failed", type: "error"});
+                setNotify({isOpen: true, message: `Update failed: ${err}`, type: "error"});
             })
         } else {
             UserEventService.create(item).then(response => {
@@ -171,7 +169,7 @@ const UserEvents = props => {
                 setNotify({isOpen: true, message: "Submitted successfully", type: "success"});
             }).catch(err => {
                 console.log("Error=", JSON.stringify(err.message));
-                setNotify({isOpen: true, message: "Create  User Event failed", type: "error"});
+                setNotify({isOpen: true, message: `Create failed: ${err}`, type: "error"});
                 setOpenPopup(false);
             })
         }
@@ -200,8 +198,8 @@ const UserEvents = props => {
                 setNotify({isOpen: true, message: "Deleted successfully", type: "success"});
 
             })
-            .catch((e) => {
-                setNotify({isOpen: true, message: "Delete failed", type: "error"});
+            .catch((err) => {
+                setNotify({isOpen: true, message: `Delete failed: ${err}`, type: "error"});
             });
 
     }
@@ -210,10 +208,7 @@ const UserEvents = props => {
             <PageHeader elevation={3} icon={<Cloud color="primary"/>} title="AIGE User Events for Season"
                         subTitle={selectedYear}/>
             {userContext.currentUser &&
-
             <Paper className={classes.pageContent}>
-
-
                 <Toolbar>
                     <Grid container>
                         <Grid item xs={2}>
