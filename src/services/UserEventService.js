@@ -1,9 +1,7 @@
 import http from "./http-common";
 
 const getAll = (year, event_name) => {
-    console.log("getAll::", year);
-    console.log("getAll::", event_name);
-    return http.get(`/userEvent/${year}/${event_name}`);
+     return http.get(`/userEvent/${year}/${event_name}`);
 };
 
 const get = (year,event_name, user_name) => {
@@ -39,6 +37,7 @@ const assembleUsers = (year,user_name) =>{
 
 
 const assembleEvents = (year,event_name) =>{
+    console.log("assembleEvents::", event_name);
     return http.get(`/assembleEvent/${year}/${event_name}`);
 }
 

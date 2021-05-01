@@ -101,11 +101,9 @@ const UserEvents = props => {
 
     const retrieveSeasonYears = () => {
         if (seasonYears.length === 0) {
-            console.log("retrieveSeasonYears");
             SeasonService.getAll().then((response) => {
                 let myTuple = UtilityService.extractYears(response.data);
                 setSeasonYears(myTuple);
-                console.log("selected year::", selectedYear);
                 retrieveSeason();
             }).catch(err => {
                 setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
@@ -116,7 +114,6 @@ const UserEvents = props => {
     }
 
     const retrieveSeason = () => {
-        console.log("retrieveSeason");
 
         SeasonService.get(selectedYear)
             .then((resp) => {
@@ -129,12 +126,10 @@ const UserEvents = props => {
 
 
     const retrieveEvents = () => {
-        console.log("retrieveEvents");
         SeasonEventService.getAll(selectedYear).then(response => {
             setEvents(response.data);
 
             let myTuple = UtilityService.extractEvents(response.data);
-            console.log("retrieveEvents:: Result", JSON.stringify(myTuple));
             if (myTuple && myTuple.length > 0) {
                 if (selectedEvent !== '') {
                     setSelectedEvent(myTuple[0].id);
@@ -148,11 +143,8 @@ const UserEvents = props => {
     }
 
     const retrieveUserEvents = (myEvent) => {
-        console.log("retrieveUserEvents");
         UserEventService.getAll(selectedYear,myEvent).then(response => {
             setUserEvents(response.data);
-            console.log("selected user events::", JSON.stringify(response.data));
-
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve User Events failed", type: "error"});
 

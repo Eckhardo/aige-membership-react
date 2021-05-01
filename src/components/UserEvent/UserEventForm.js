@@ -54,11 +54,9 @@ const UserEventForm = (props) => {
      *
      */
     useEffect(() => {
-        console.log("SeasonUserForm#useEffect::");
         if (recordForEdit != null) {
             setValues({...recordForEdit});
         }
-        console.log("values:", JSON.stringify(recordForEdit));
         retrieveActiveMembers();
 
     }, [recordForEdit,setValues])
@@ -67,14 +65,11 @@ const UserEventForm = (props) => {
     const retrieveActiveMembers = () => {
         UserService.getAll().then((response) => {
             let users = response.data;
-            console.log("season users::", JSON.stringify(currentUsers));
             const nonActiveMembers = _.intersection(users.map((member) => {
                 return member.user_name
             }), currentUsers);
-            console.log("nonActiveMembers::", JSON.stringify(nonActiveMembers));
 
             const items = users.filter(member => !nonActiveMembers.includes(member.user_name));
-            console.log("items::", JSON.stringify(items));
             let myTuple = users.map(s => {
                 return {id: s.user_name, title: s.user_name}
             })

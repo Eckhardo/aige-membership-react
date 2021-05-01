@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import PageHeader from "../PageHeader";
 import {Cloud} from "@material-ui/icons";
-import {Grid, makeStyles} from "@material-ui/core";
+import {Grid, makeStyles, Paper} from "@material-ui/core";
 import UserContext from "../../App/context/UserContext";
 import Controls from "../controls/Controls";
 import UserService from "../../services/UserService";
-import EventService from "../../services/EventService";
 import UserEventService from "../../services/UserEventService";
+import SeasonEventService from "../../services/SeasonEventService";
+import Notification from "../controls/Notification";
 
 
 const initialAdminState = {
@@ -31,8 +32,8 @@ const Admin = () => {
     const [activeEvents, setActiveEvents] = useState([]);
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [selectedMember, setSelectedMember] = useState();
-    const [selectedEvent, setSelectedEvent] = useState();
+    const [selectedMember, setSelectedMember] = useState('');
+    const [selectedEvent, setSelectedEvent] = useState('');
     const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 
 
@@ -49,10 +50,13 @@ const Admin = () => {
     }, [])
 
     const retrieveCurrentEvents = () => {
-        UserEventService.getEvents(2021).then((response) => {
+        SeasonEventService.getAll(selectedYear).then((response) => {
+            let eventNames = retrieveEvents(response.data);
+            console.log(" event names ::", JSON.stringify(eventNames));
+            setActiveEvents(eventNames);
+            setSelectedEvent(eventNames[0].id);
+            console.log("default event ::", JSON.stringify(eventNames[0].id));
 
-            console.log("current events::", JSON.stringify(response.data));
-            retrieveEvents(response.data);
 
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve current events failed", type: "error"});
@@ -60,54 +64,35 @@ const Admin = () => {
     }
 
 
-    const retrieveEvents = (userEvents) => {
-        EventService.getAll().then((response) => {
-            let eventNames = [] = retrieveNonDuplicateEvents(response.data, userEvents);
-
-            console.log("non-duplicate event names ::", JSON.stringify(eventNames));
-
-            let myTuple = eventNames.map(s => {
-                return {id: s.event_name, title: s.event_name}
-            })
-            setActiveEvents(myTuple);
-            setSelectedEvent(myTuple[0].id);
-            console.log("default event ::", JSON.stringify(myTuple[0].id));
-
-
-        }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve users failed", type: "error"});
-        })
-    }
     const retrieveCurrentUsers = () => {
-        UserEventService.getUsers(2021).then((response) => {
-            console.log("current users::", JSON.stringify(response.data));
+        UserEventService.getUsers(selectedYear).then((response) => {
             retrieveMembers(response.data);
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve current events failed", type: "error"});
+            setNotify({isOpen: true, message: "Retrieve current users failed", type: "error"});
         })
     }
 
     const retrieveMembers = (userEvents) => {
 
         UserService.getAll().then((response) => {
+            let userNames = retrieveNonDuplicateUsers(response.data, userEvents);
+            console.log(" user names ::", JSON.stringify(userNames));
+            setActiveMembers(userNames);
+            console.log("setActiveMembers ::");
 
-            let userNames = [] = retrieveNonDuplicateUsers(response.data, userEvents);
+            if (userNames.length > 0) {
+                console.log("default user ::", JSON.stringify(userNames[0].id));
+                setSelectedMember(userNames[0].id);
+            }
 
-            console.log("non-duplicate event names ::", JSON.stringify(userNames));
-
-            let myTuple = userNames.map(s => {
-                return {id: s.user_name, title: s.user_name}
-            })
-            setActiveMembers(myTuple);
-            setSelectedMember(myTuple[0].id);
-            console.log("default user ::", JSON.stringify(myTuple[0].id));
 
         }).catch(err => {
-            setNotify({isOpen: true, message: "Retreive events failed", type: "error"});
+            console.log(" ERR ::", JSON.stringify(err));
+            setNotify({isOpen: true, message: "Retrieve members failed", type: "error"});
         })
     }
 
-    function retrieveNonDuplicateEvents(events, userEvents) {
+    function retrieveEvents(events) {
 
         let eventNames = [];
         events.forEach((myEvent, index) => {
@@ -115,14 +100,10 @@ const Admin = () => {
                 event_name: myEvent.event_name
             }
         })
-        for (let i = eventNames.length - 1; i >= 0; i--) {
-            for (let j = 0; j < userEvents.length; j++) {
-                if (eventNames[i] && (eventNames[i].event_name === userEvents[j].event_name)) {
-                    eventNames.splice(i, 1);
-                }
-            }
-        }
-        return eventNames;
+        let myTuple = [] = eventNames.map(s => {
+            return {id: s.event_name, title: s.event_name}
+        })
+        return myTuple;
     }
 
 
@@ -133,6 +114,7 @@ const Admin = () => {
                 user_name: user.user_name
             }
         })
+
         for (let i = userNames.length - 1; i >= 0; i--) {
             for (let j = 0; j < userEvents.length; j++) {
                 if (userNames[i] && (userNames[i].user_name === userEvents[j].user_name)) {
@@ -140,7 +122,13 @@ const Admin = () => {
                 }
             }
         }
-        return userNames;
+        let myTuple = [];
+        if (userNames.length >= 0) {
+            myTuple = userNames.map(s => {
+                return {id: s.user_name, title: s.user_name}
+            })
+        }
+        return myTuple;
     }
 
     const handleInputChangeEvent = (e) => {
@@ -163,15 +151,20 @@ const Admin = () => {
     const handleUserSubmit = (e) => {
         e.preventDefault();
         UserEventService.assembleUsers(selectedYear, selectedMember).then(response => {
-
+            setNotify({isOpen: true, message: "Assemble users succeeded", type: "info"});
         }).catch(err => {
             setNotify({isOpen: true, message: "Assemble users failed", type: "error"});
         })
         console.log("handleUserSubmit::");
     }
     const handleEventSubmit = (e) => {
-        e.preventDefault();
         console.log("handleEventSubmit::");
+        e.preventDefault();
+        UserEventService.assembleEvents(selectedYear, selectedEvent).then(response => {
+            setNotify({isOpen: true, message: "Assemble events succeeded", type: "info"});
+        }).catch(err => {
+            setNotify({isOpen: true, message: "Assemble events failed", type: "error"});
+        })
     }
 
     return (
@@ -180,48 +173,63 @@ const Admin = () => {
                 title="AIGE"
                 subTitle=" Admin Page"
                 icon={<Cloud color="primary"/>}/>
-            {
-                context.currentUser &&
-                <form className={classes.root} autoComplete="off">
-                    <Grid container>
-                        <Grid item sm={3}>
-                            <Controls.Select
-                                label="Member"
-                                name="user_name"
-                                options={activeMembers}
-                                value={selectedMember}
-                                onChange={handleInputChangeUser}
-                            />
+            <Paper className={classes.pageContent}>
+                {
+
+
+                    context.currentUser &&
+                    <form className={classes.root} autoComplete="off">
+                        <Grid container>
+                            <Grid item sm={3}>
+                                <Controls.Select
+                                    label="Member"
+                                    name="user_name"
+                                    disabled={activeMembers.length === 0}
+                                    options={activeMembers}
+                                    value={selectedMember}
+                                    onChange={handleInputChangeUser}
+                                />
+                            </Grid>
+                            <Grid item sm={3}>
+                                <Controls.Select
+                                    label="Event"
+                                    name="event_name"
+                                    disabled={activeEvents.length === 0}
+                                    options={activeEvents}
+                                    value={selectedEvent}
+                                    onChange={handleInputChangeEvent}
+                                />
+
+                            </Grid>
                         </Grid>
-                        <Grid item sm={3}>
-                            <Controls.Select
-                                label="Event"
-                                name="event_name"
-                                options={activeEvents}
-                                value={selectedEvent}
-                                onChange={handleInputChangeEvent}
+                        <div>
+                            <Controls.Button onClick={handleUserSubmit} text="   Save new Users"
+                                             disabled={activeMembers.length === 0}
+                                             type="submit">
+
+                            </Controls.Button>
+                            <Controls.Button onClick={handleEventSubmit}
+                                             disabled={activeEvents.length === 0}
+                                             text="Save new Events"
+                                             type="submit">
+
+                            </Controls.Button>
+
+                            <Controls.Button
+                                text="Reset"
+                                type="reset"
+                                onClick={resetForm}
                             />
+                        </div>
+                    </form>
 
-                        </Grid>
-                    </Grid>
-                    <div>
-                        <Controls.Button onClick={handleUserSubmit} text="   Save new Users"
-                                         type="submit">
 
-                        </Controls.Button>
-                        <Controls.Button onClick={handleEventSubmit} text="   Save new Events"
-                                         type="submit">
+                }
+                <Notification notify={notify} setNotify={setNotify}/>
 
-                        </Controls.Button>
+            </Paper>
 
-                        <Controls.Button
-                            text="Reset"
-                            type="reset"
-                            onClick={resetForm}
-                        />
-                    </div>
-                </form>
-            }
+
         </>
     )
 }
