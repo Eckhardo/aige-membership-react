@@ -150,8 +150,9 @@ const Events = props => {
     return (
         <>
             <PageHeader
-                title="AIGE"
-                subTitle=" Events"
+                title={context.currentUser ? "AIGE" : "You are not authenticated:"}
+                subTitle={context.currentUser ? "Events" : "Please login"}
+
                 icon={<Cloud color="primary"/>}/>
             {context.currentUser &&
 

@@ -20,29 +20,24 @@ const Logout = props => {
         setOpenPopup(true);
     }, [])
 
-    const logout = () => {
+    const logout = (setCurrentUser) => {
         setOpenPopup(false);
-        context.setCurrentUser(null);
-        history.push("/users");
+        setCurrentUser(null);
+        history.push("/");
     }
     return (
         <SimplePopup title={title} openPopup={openPopup}
         >
-
-            {context.currentUser &&
-
-            <Form>
-                <div>
-
+            <UserContext.Consumer>
+                {({ currentUser, setCurrentUser }) => (
                     <Controls.Button
-                        text="Logout"
                         type="reset"
-                        onClick={logout}
+                        onClick={() => logout(setCurrentUser)}
+                       text="Logout"
                     />
+                )}
 
-                </div>
-            </Form>
-            }
+            </UserContext.Consumer>
         </SimplePopup>
     )
 

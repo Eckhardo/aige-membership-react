@@ -1,19 +1,23 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AppBar, Tab, Tabs} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {useHistory} from "react-router";
 import UserContext from "./context/UserContext";
 
-const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents", "/userEvents","/login", "/logout", "admin"];
+const routes = ["/users", "/events", "/seasons", "/seasonUsers", "/seasonEvents", "/userEvents", "/login", "/logout", "/admin"];
 
 
 const Nav = props => {
     const context = React.useContext(UserContext);
 
-    const [isLoggedIn,setIsLoggedIn] =useState(context!== null !==null);
 
     const history = useHistory();
 
+    useEffect(() => {
+        console.log("Nav#useEffect::");
+
+        console.log("context", JSON.stringify(context));
+    }, [context])
 
     return (
         <AppBar>
@@ -24,50 +28,50 @@ const Nav = props => {
                 }
             >
                 {console.log(history.location.pathname)}
-
+                {context.currentUser &&
                 <Tab
                     value={routes[0]}
                     label="Members"
                     component={Link}
                     to={routes[0]}
                 />
-
-                {isLoggedIn &&
+                }
+                {context.currentUser &&
                 <Tab
                     value={routes[1]}
                     label="Events"
                     component={Link}
                     to={routes[1]}
                 />}
-                {isLoggedIn &&
+                {context.currentUser &&
                 <Tab
                     value={routes[2]}
                     label="Seasons"
                     component={Link}
                     to={routes[2]}
                 />}
-                {isLoggedIn &&
+                {context.currentUser &&
                 <Tab
                     value={routes[3]}
                     label="Season Members"
                     component={Link}
                     to={routes[3]}
                 />}
-                {isLoggedIn &&
+                {context.currentUser &&
                 <Tab
                     value={routes[4]}
                     label="Season Events"
                     component={Link}
                     to={routes[4]}
                 />}
-                {isLoggedIn &&
+                {context.currentUser &&
                 <Tab
                     value={routes[5]}
                     label="User Events"
                     component={Link}
                     to={routes[5]}
                 />}
-                {!isLoggedIn &&
+                { ! context.currentUser &&
                 <Tab
                     value={routes[6]}
                     label="Login"
@@ -75,7 +79,7 @@ const Nav = props => {
                     to={routes[6]}
                 />
                 }
-                {isLoggedIn &&
+                {context.currentUser &&
                 <Tab
                     value={routes[7]}
                     label="Logout"
@@ -83,7 +87,7 @@ const Nav = props => {
                     to={routes[7]}
                 />
                 }
-                {context.currentUser.is_admin &&
+                {context.currentUser &&
                 <Tab
                     value={routes[8]}
                     label="Admin"

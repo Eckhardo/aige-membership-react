@@ -1,6 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
 import UserContext from "../../App/context/UserContext";
-import {Checkbox, Grid, makeStyles, Paper, TableBody, TableCell, TableRow, TextField, Toolbar} from "@material-ui/core";
+import {
+    Checkbox,
+    Grid,
+    makeStyles,
+    Paper,
+    TableBody,
+    TableCell,
+    TableRow,
+    TextField,
+    Toolbar,
+    Typography
+} from "@material-ui/core";
 import useTable from "../useTable";
 import PageHeader from "../PageHeader";
 import Notification from "../controls/Notification";
@@ -59,7 +70,8 @@ const useStyles = makeStyles(theme => ({
 const UserEvents = props => {
 
     const userContext = useContext(UserContext);
-    const {isAdmin, setIsAdmin} = useState(userContext.currentUser.is_admin);
+
+    const isAdmin= userContext.currentUser && userContext.currentUser.is_admin ? false:true;
     const classes = useStyles();
     const [userEvents, setUserEvents] = useState([]);
     const [seasonYears, setSeasonYears] = useState([]);
@@ -74,20 +86,9 @@ const UserEvents = props => {
     const [confirmDialog, setConfirmDialog] = useState({isOpen: false, title: "", subTitle: ""});
 
     useEffect(() => {
-        console.log("Seasons::retrieveSeasonYears()");
+        console.log("selectedYear::useEffect");
         retrieveSeasonYears();
-
-
-    }, []);
-    useEffect(() => {
-        console.log("Season::retrieveSeason()");
-        retrieveSeason();
     }, [selectedYear]);
-
-    useEffect(() => {
-        console.log("Season::retrieveSeason()");
-        retrieveUserEvents();
-    }, [selectedEvent]);
 
 
     const {
@@ -99,16 +100,19 @@ const UserEvents = props => {
 
 
     const retrieveSeasonYears = () => {
-
-        console.log("retrieveSeasonYears");
-        SeasonService.getAll().then((response) => {
-            let myTuple = UtilityService.extractYears(response.data);
-            setSeasonYears(myTuple);
-            console.log("selected year::", selectedYear);
+        if (seasonYears.length === 0) {
+            console.log("retrieveSeasonYears");
+            SeasonService.getAll().then((response) => {
+                let myTuple = UtilityService.extractYears(response.data);
+                setSeasonYears(myTuple);
+                console.log("selected year::", selectedYear);
+                retrieveSeason();
+            }).catch(err => {
+                setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
+            })
+        } else {
             retrieveSeason();
-        }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
-        })
+        }
     }
 
     const retrieveSeason = () => {
@@ -128,22 +132,24 @@ const UserEvents = props => {
         console.log("retrieveEvents");
         SeasonEventService.getAll(selectedYear).then(response => {
             setEvents(response.data);
+
             let myTuple = UtilityService.extractEvents(response.data);
-               if (myTuple && myTuple.length > 0) {
-                if(selectedEvent !=='') {
+            console.log("retrieveEvents:: Result", JSON.stringify(myTuple));
+            if (myTuple && myTuple.length > 0) {
+                if (selectedEvent !== '') {
                     setSelectedEvent(myTuple[0].id);
                 }
             }
-            retrieveUserEvents();
+            retrieveUserEvents(myTuple[0].id);
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve User Events failed", type: "error"});
 
         })
     }
 
-    const retrieveUserEvents = () => {
+    const retrieveUserEvents = (myEvent) => {
         console.log("retrieveUserEvents");
-        UserEventService.getAll(selectedYear, selectedEvent).then(response => {
+        UserEventService.getAll(selectedYear,myEvent).then(response => {
             setUserEvents(response.data);
             console.log("selected user events::", JSON.stringify(response.data));
 
@@ -174,6 +180,7 @@ const UserEvents = props => {
             }).catch(err => {
                 console.log("Error=", JSON.stringify(err.message));
                 setNotify({isOpen: true, message: "Create  User Event failed", type: "error"});
+                setOpenPopup(false);
             })
         }
     }
@@ -183,6 +190,7 @@ const UserEvents = props => {
     }
     const handleEventChange = event => {
         setSelectedEvent(event.target.value);
+        retrieveUserEvents(event.target.value);
     }
     const openInPopup = (item) => {
         setRecordForEdit(item);
@@ -255,7 +263,7 @@ const UserEvents = props => {
                         className={classes.newButton}
                         text="Add User Event"
                         variant="outlined"
-                        disabled={isAdmin}
+                        disabled
                         startIcon={<PersonAddIcon/>}
                         onClick={() => {
                             setOpenPopup(true);
@@ -265,12 +273,14 @@ const UserEvents = props => {
                 </Toolbar>
 
                 <TblContainer>
+
                     <TblHead/>
+                    { recordsAfterPagingAndSorting().length>0  ?
                     <TableBody>
                         {
-                            recordsAfterPagingAndSorting().map(item => (
+                             recordsAfterPagingAndSorting().map(item => (
                                 <TableRow key={item.user_name}>
-                                     <TableCell>{item.user_name} </TableCell>
+                                    <TableCell>{item.user_name} </TableCell>
                                     <TableCell>{item.registered === true ? <Checkbox checked={true}/> :
                                         <Checkbox checked={false}/>}</TableCell>
                                     <TableCell>{item.took_part === true ? <Checkbox checked={true}/> :
@@ -303,7 +313,11 @@ const UserEvents = props => {
                             ))
                         }
                     </TableBody>
-
+                    :
+                    <TableBody>
+                        <Typography component={'div'} className={classes.pageContent}>No result found</Typography>
+                    </TableBody>
+                }
                 </TblContainer>
                 <TblPagination/>
 
@@ -313,7 +327,7 @@ const UserEvents = props => {
             <Popup title={recordForEdit ? "Update User Event" : "Add User Event"} openPopup={openPopup}
                    setOpenPopup={setOpenPopup}>
                 <UserEventForm currentUsers={userEvents.map(s => s.user_name)} recordForEdit={recordForEdit}
-                                addOrEdit={addOrEdit}/>
+                               addOrEdit={addOrEdit}/>
             </Popup>
             <ConfirmDialog
                 confirmDialog={confirmDialog}

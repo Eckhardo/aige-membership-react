@@ -13,7 +13,7 @@ const convertToDefEventParam = (name, value) => ({
 });
 
 const DatePicker = props => {
-    const {color, name, label, value, onChange} = props;
+    const {color, name, label, value, onChange, disabled=false} = props;
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -23,6 +23,7 @@ const DatePicker = props => {
                                 name={name}
                                 value={value}
                                 color={color}
+                                disabled={disabled}
                                 onChange={date => onChange(convertToDefEventParam(name, date))}>
 
             </KeyboardDatePicker>

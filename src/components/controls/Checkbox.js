@@ -12,12 +12,13 @@ const convertToDefEventParam = (name, value) => ( {
 });
 
 const Checkbox = props => {
-    const {color, name, checked, label, onChange, InputProps} = props;
+    const {color, name, checked, label, onChange, InputProps, disabled=false} = props;
     return (
         <FormControl component="fieldset">
             <FormLabel component="legend">{label}</FormLabel>
             <FormGroup>
                 <FormControlLabel
+                    disabled={disabled}
                     control={<MuiCheckbox color={color} checked={checked}
                                           InputProps={InputProps}
                                           onChange={e => onChange(convertToDefEventParam(name, e.target.checked))}

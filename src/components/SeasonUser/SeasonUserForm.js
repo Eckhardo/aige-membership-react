@@ -5,14 +5,13 @@ import Controls from "../controls/Controls";
 import Control from "../controls/Controls";
 import UserService from "../../services/UserService";
 import Notification from "../controls/Notification";
-import _ from "underscore";
 
 const initialSeasonUserState = {
 
-    PK: "",
-    SK: "",
+    PK: null,
+    SK: null,
     season_year: new Date().getFullYear(),
-    user_name: "",
+    user_name: " ",
     position_role: "",
     fees_paid: true,
     is_active: true
@@ -30,10 +29,6 @@ const positions = [
 const SeasonUserForm = (props) => {
 
 
-    const {seasonUsers, addOrEdit, recordForEdit} = props;
-    const [activeMembers, setActiveMembers] = useState([]);
-    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
-
     /**
      *
      * @param fieldValues
@@ -45,7 +40,7 @@ const SeasonUserForm = (props) => {
             temp.season_year = fieldValues.season_year ? "" : "This field is required";
         }
         if ('user_name' in fieldValues) {
-            temp.user_name = fieldValues.user_name ? "" : "This field is required";
+            temp.user_name = fieldValues.user_name ? "" : "No member available";
         }
 
         setErrors({
@@ -58,6 +53,12 @@ const SeasonUserForm = (props) => {
 
 
     const {errors, setErrors, values, setValues, handleInputChange, resetForm} = useForm(initialSeasonUserState, true, validate)
+
+    const {seasonUsers, addOrEdit, recordForEdit} = props;
+    const [activeMembers, setActiveMembers] = useState([]);
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
+
+
     /**
      *
      */
@@ -66,32 +67,51 @@ const SeasonUserForm = (props) => {
         if (recordForEdit != null) {
             setValues({...recordForEdit});
         }
-        console.log("values:", JSON.stringify(recordForEdit));
+
+        console.log("useEffect::values:", JSON.stringify(values));
+        console.log("useEffect::recordForEdit:", JSON.stringify(recordForEdit));
         retrieveActiveMembers();
 
-    }, [recordForEdit,setValues])
+    }, [recordForEdit, setValues])
     const retrieveActiveMembers = () => {
         UserService.getAll().then((response) => {
-            let users = response.data;
-            console.log("season users::", JSON.stringify(seasonUsers));
-            const nonActiveMembers = _.intersection(users.map((member) => {
-                return member.user_name
-            }), seasonUsers);
-            console.log("nonActiveMembers::", JSON.stringify(nonActiveMembers));
+            console.log("retrieveActiveMembers values:", JSON.stringify(values));
+            let users = retrieveNonDuplicateUsers(response.data, seasonUsers);
 
-            const items = users.filter(member => !nonActiveMembers.includes(member.user_name));
-            console.log("items::", JSON.stringify(items));
+            console.log("active users:", JSON.stringify(users));
             let myTuple = users.map(s => {
-                return {id: s.user_name, title: s.user_name}
+                return {id: s, title: s}
             })
             setActiveMembers(myTuple);
+
+
         }).catch(err => {
             setNotify({isOpen: true, message: "Create new Season failed", type: "error"});
         })
     }
+
+    function retrieveNonDuplicateUsers(users, seasonUsers) {
+        let userNames = [];
+        users.forEach((user, index) => {
+            userNames[index] = user.user_name
+        })
+        console.log("all users:", JSON.stringify(userNames));
+        console.log("season users:", JSON.stringify(seasonUsers));
+        for (let i = userNames.length - 1; i >= 0; i--) {
+            for (let j = 0; j < seasonUsers.length; j++) {
+                if (userNames[i] === seasonUsers[j]) {
+                    userNames.splice(i, 1);
+                }
+            }
+        }
+        return userNames;
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("Form#submit::", JSON.stringify(values));
         if (validate()) {
+            console.log("Is valid::");
             addOrEdit(values, resetForm);
         }
         ;
@@ -111,7 +131,7 @@ const SeasonUserForm = (props) => {
                         onChange={handleInputChange}/>
                     {values.PK ?
                         <Controls.Input
-                            label="Member  Name"
+                            label="Member Name"
                             name="user_name"
                             value={values.user_name}
                             InputProps={{
@@ -124,6 +144,7 @@ const SeasonUserForm = (props) => {
                             options={activeMembers}
                             value={values.user_name}
                             onChange={handleInputChange}
+                            disabled={activeMembers.length === 0 && !values.PK}
                             error={errors.user_name}
 
                         />}
@@ -131,6 +152,7 @@ const SeasonUserForm = (props) => {
                         label="Position"
                         name="position_role"
                         options={positions}
+                        disabled={activeMembers.length === 0 && !values.PK}
                         value={values.position_role}
                         onChange={handleInputChange}
                         error={errors.position_role}
@@ -146,12 +168,14 @@ const SeasonUserForm = (props) => {
                             name="fees_paid"
                             checked={values.fees_paid}
                             label="Fees paid"
+                            disabled={activeMembers.length === 0 && !values.PK}
                             onChange={handleInputChange}/>
                         <Control.Checkbox
                             color="primary"
                             name="is_active"
                             checked={values.is_active}
                             label="Is active"
+                            disabled={activeMembers.length === 0 && !values.PK}
                             onChange={handleInputChange}/>
                     </div>
                     <div>
@@ -159,14 +183,14 @@ const SeasonUserForm = (props) => {
                         <Controls.Button
                             text="Submit"
                             type="submit"
+                            disabled={activeMembers.length === 0 && !values.PK}
                         />
-
                         <Controls.Button
                             text="Reset"
                             type="reset"
+                            disabled={activeMembers.length === 0 && !values.PK}
                             onClick={resetForm}
                         />
-
                     </div>
                 </Grid>
             </Grid>

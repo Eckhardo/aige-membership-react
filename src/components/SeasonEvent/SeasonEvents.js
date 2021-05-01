@@ -74,7 +74,8 @@ const useStyles = makeStyles(theme => ({
 const SeasonEvents = props => {
     const userContext = React.useContext(UserContext);
 
-    const isAdmin = userContext.currentUser.is_admin ? false : true;
+
+    const isAdmin = userContext.currentUser && userContext.currentUser.is_admin ? false : true;
 
     const [seasonEvents, setSeasonEvents] = useState([]);
     const [seasonYears, setSeasonYears] = useState([]);
@@ -98,26 +99,25 @@ const SeasonEvents = props => {
 
 
     useEffect(() => {
-        console.log("Seasons::useEffect()");
-        retrieveSeasonYears();
-
-
-    }, [])
-    useEffect(() => {
         console.log("Season::useEffect()");
-        retrieveSeason();
+        retrieveSeasonYears();
 
 
     }, [selectedYear])
 
 
     const retrieveSeasonYears = () => {
-        SeasonService.getAll().then((response) => {
-            setSeasonYears(UtilityService.extractYears(response.data));
+        if (seasonYears.length === 0) {
+            console.log("retrieveSeasonYears");
+            SeasonService.getAll().then((response) => {
+                setSeasonYears(UtilityService.extractYears(response.data));
+                retrieveSeason();
+            }).catch(err => {
+                setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
+            })
+        } else {
             retrieveSeason();
-        }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
-        })
+        }
     }
     const retrieveSeason = () => {
         SeasonService.get(selectedYear)
@@ -132,6 +132,8 @@ const SeasonEvents = props => {
     const retrieveSeasonEvents = () => {
         SeasonEventService.getAll(selectedYear).then(response => {
             setSeasonEvents(response.data);
+
+            console.log("season events::", JSON.stringify(response.data.map(s => s.event_name)));
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Season Users failed", type: "error"});
 
@@ -170,6 +172,7 @@ const SeasonEvents = props => {
             }).catch(err => {
                 console.error("Create process failed!", err);
                 setNotify({isOpen: true, message: "Create Season Event failed", type: "error"});
+                setOpenPopup(false);
             })
         }
     }
@@ -192,8 +195,12 @@ const SeasonEvents = props => {
     }
     return (
         <>
-            <PageHeader elevation={3}  icon={<Cloud color="primary"/>} title="AIGE Events for Season"
-                        subTitle={selectedYear}/>
+            <PageHeader elevation={3} icon={<Cloud color="primary"/>}
+                        title={userContext.currentUser ? "AIGE Season Events" : "You are not authenticated:"}
+                        subTitle={userContext.currentUser ? selectedYear : "Please login"}
+            />
+            {userContext.currentUser &&
+
             <Paper className={classes.pageContent}>
                 <Toolbar>
                     <Grid container>
@@ -298,15 +305,18 @@ const SeasonEvents = props => {
                 <Notification notify={notify} setNotify={setNotify}/>
                 <Popup title={recordForEdit ? "Update Season Event" : "Add Season Event"} openPopup={openPopup}
                        setOpenPopup={setOpenPopup}>
-                    <SeasonEventForm recordForEdit={recordForEdit}
-                                     addOrEdit={addOrEdit}
-                                     selectedYear={selectedYear}/>
+                    <SeasonEventForm
+                        seasonEvents={seasonEvents.map(s => s.event_name)}
+                        recordForEdit={recordForEdit}
+                        addOrEdit={addOrEdit}
+                        selectedYear={selectedYear}/>
                 </Popup>
                 <ConfirmDialog
                     confirmDialog={confirmDialog}
                     setConfirmDialog={setConfirmDialog}>
                 </ConfirmDialog>
             </Paper>
+            }
         </>
     )
 }

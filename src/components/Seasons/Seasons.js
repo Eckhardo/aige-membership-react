@@ -142,7 +142,10 @@ const Seasons = () => {
 
     return (
         <>
-            <PageHeader elevation={3}    icon={<Cloud color="primary"/>} title="AIGE" subTitle="Seasons"/>
+            <PageHeader elevation={3}    icon={<Cloud color="primary"/>}
+                        title={userContext.currentUser ? "AIGE" : "You are not authenticated:"}
+                        subTitle={userContext.currentUser ? "Seasons" : "Please login"}
+            />
             {userContext.currentUser &&
 
             <Paper className={classes.pageContent}>

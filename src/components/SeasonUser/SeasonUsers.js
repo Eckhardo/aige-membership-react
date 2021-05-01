@@ -73,12 +73,12 @@ const useStyles = makeStyles(theme => ({
 const SeasonUsers = () => {
     const userContext = React.useContext(UserContext);
 
-    const isAdmin= userContext.currentUser.is_admin ? false:true;
+    const isAdmin= userContext.currentUser && userContext.currentUser.is_admin ? false:true;
 
     const classes = useStyles();
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [seasonYears, setSeasonYears] = useState([]);
-    const [season, setSeason] = useState();
+    const [season, setSeason] = useState({});
     const [seasonUsers, setSeasonUsers] = useState([]);
     const [recordForEdit, setRecordForEdit] = useState({});
     const [openPopup, setOpenPopup] = useState(false);
@@ -95,26 +95,27 @@ const SeasonUsers = () => {
     } = useTable(seasonUsers, headCells, null);
 
     useEffect(() => {
-        console.log("Seasons::useEffect()");
-        retrieveSeasonYears();
-
-
-    }, [])
-    useEffect(() => {
         console.log("Season::useEffect()");
-        retrieveSeason();
+        retrieveSeasonYears();
 
 
     }, [selectedYear])
 
     const retrieveSeasonYears = () => {
-        SeasonService.getAll().then((response) => {
-            let myTuple=   UtilityService.extractYears(response.data);
-            setSeasonYears(myTuple);
+        if(seasonYears.length===0) {
+            console.log("retrieveSeasonYears");
+
+            SeasonService.getAll().then((response) => {
+                let myTuple = UtilityService.extractYears(response.data);
+                setSeasonYears(myTuple);
+                retrieveSeason();
+            }).catch(err => {
+                setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
+            })
+        }
+        else{
             retrieveSeason();
-        }).catch(err => {
-            setNotify({isOpen: true, message: "Retrieve Seasons failed", type: "error"});
-        })
+        }
     }
     const retrieveSeason = () => {
         console.log("retrieveSeason");
@@ -197,8 +198,11 @@ const SeasonUsers = () => {
     }
     return (
         <>
-            <PageHeader elevation={3} icon={<Cloud color="primary"/>} title="AIGE Members for Season"
-                        subTitle={selectedYear}/>
+            <PageHeader elevation={3} icon={<Cloud color="primary"/>}
+                        title={userContext.currentUser ? "AIGE Season Members" : "You are not authenticated:"}
+                        subTitle={userContext.currentUser ? selectedYear : "Please login"}
+
+            />
             {userContext.currentUser &&
 
             <Paper className={classes.pageContent}>
@@ -211,7 +215,6 @@ const SeasonUsers = () => {
                                 label="Select Year"
                                 name="selectedYear"
                                 value={selectedYear}
-                                defaultValue={new Date().getFullYear()}
                                 onChange={handleInputChange}
                                 options={seasonYears}
                             />

@@ -84,7 +84,7 @@ const Users = () => {
     useEffect(() => {
         console.log("Users#useEffect::");
         retrieveUsers();
-        console.log("conztext", JSON.stringify(context));
+        console.log("context", JSON.stringify(context));
     }, [])
 
     /**

@@ -62,6 +62,8 @@ const UserEventForm = (props) => {
         retrieveActiveMembers();
 
     }, [recordForEdit,setValues])
+
+
     const retrieveActiveMembers = () => {
         UserService.getAll().then((response) => {
             let users = response.data;

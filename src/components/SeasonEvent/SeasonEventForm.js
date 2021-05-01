@@ -11,26 +11,23 @@ import TextField from "@material-ui/core/TextField";
 
 const initialSeasonEventState = {
 
-    PK: "",
+    PK: null,
     SK: "",
     season_year: new Date().getFullYear(),
     event_name: "",
     meeting_point: "",
     finished: false,
     starting_date: new Date(),
-    starting_time:"08:00",
+    starting_time: "08:00",
     ending_date: new Date(),
-    ending_time:"12:00",
-    comments:""
+    ending_time: "12:00",
+    comments: ""
 };
 
 
 const SeasonEventForm = props => {
-    const {selectedYear, addOrEdit, recordForEdit} = props;
 
-    const [activeEvents, setActiveEvents] = useState([]);
-    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
-
+    const {seasonEvents, selectedYear, addOrEdit, recordForEdit} = props;
 
 
     /**
@@ -38,11 +35,11 @@ const SeasonEventForm = props => {
      */
     useEffect(() => {
         console.log("SeasonEventForm#useEffect::");
-        if (recordForEdit !=null) {
+        if (recordForEdit != null) {
             setValues({...recordForEdit});
+
         }
 
-        console.log("SeasonEventForm:values:", JSON.stringify(values));
         retrieveActiveEvents();
 
     }, [recordForEdit])
@@ -86,26 +83,49 @@ const SeasonEventForm = props => {
     const {values, setValues, errors, setErrors, handleInputChange, resetForm}
         = useForm(initialSeasonEventState, true, validate);
 
-   console.log("values:seasonEventForm::", JSON.stringify(values));
+
+    const [activeEvents, setActiveEvents] = useState([]);
+
+    const [notify, setNotify] = useState({isOpen: false, message: "", type: ""});
 
     const retrieveActiveEvents = () => {
         EventService.getAll().then((response) => {
-            let events = response.data;
+            let events = retrieveNonDuplicateEvents(response.data, seasonEvents);
 
-            console.log("items::", JSON.stringify(events));
+            console.log("active events:", JSON.stringify(events));
             let myTuple = events.map(s => {
-                return {id: s.event_name, title: s.event_name}
+                return {id: s, title: s}
             })
             setActiveEvents(myTuple);
+
         }).catch(err => {
             setNotify({isOpen: true, message: "Retrieve Event failed", type: "error"});
         })
+    }
+
+    function retrieveNonDuplicateEvents(events, seasonEvents) {
+
+        let eventNames = [];
+        events.forEach((user, index) => {
+            eventNames[index] = user.event_name
+        })
+        console.log("all events:", JSON.stringify(eventNames));
+        console.log("season events:", JSON.stringify(seasonEvents));
+        for (let i = eventNames.length - 1; i >= 0; i--) {
+            for (let j = 0; j < seasonEvents.length; j++) {
+                if (eventNames[i] === seasonEvents[j]) {
+                    eventNames.splice(i, 1);
+                }
+            }
+        }
+        return eventNames;
     }
 
     const handleSubmitForm = (e) => {
         console.log("Form#submit::", JSON.stringify(values));
         e.preventDefault();
         if (validate()) {
+            console.log("Is valid::");
             addOrEdit(values, resetForm);
         }
         ;
@@ -122,7 +142,7 @@ const SeasonEventForm = props => {
                             readOnly: true,
                         }}
                         type="text"
-                       />
+                    />
                     {values.PK ?
                         <Controls.Input
                             label="Event  Name"
@@ -135,6 +155,7 @@ const SeasonEventForm = props => {
                         : <Controls.Select
                             label="Event"
                             name="event_name"
+                            disabled={activeEvents.length === 0 && !values.PK}
                             options={activeEvents}
                             value={values.event_name}
                             onChange={handleInputChange}
@@ -145,6 +166,7 @@ const SeasonEventForm = props => {
                     <Controls.Input
                         label="Meeting Point"
                         name="meeting_point"
+                        disabled={activeEvents.length === 0 && !values.PK}
                         value={values.meeting_point}
                         onChange={handleInputChange}
                         error={errors.meeting_point}
@@ -155,6 +177,7 @@ const SeasonEventForm = props => {
                         name="comments"
                         multiline
                         rows={3}
+                        disabled={activeEvents.length === 0 && !values.PK}
                         value={values.comments}
                         onChange={handleInputChange}/>
 
@@ -163,36 +186,38 @@ const SeasonEventForm = props => {
                         name="finished"
                         checked={values.finished}
                         label="Event finished"
+                        disabled={activeEvents.length === 0 && !values.PK}
                         onChange={handleInputChange}
                         error={errors.finished}/>
 
                 </Grid>
 
                 <Grid item sm={6}>
-                        <DatePicker
-                            label="Start Date"
-                            name="starting_date"
-                            value={values.starting_date}
-
-                            color="primary"
-                            onChange={handleInputChange}
-                            error={errors.starting_date}/>
-                        <TextField
-                            variant="outlined"
-                            label="Start Time"
-                            type="time"
-                            color="primary"
-                            name="starting_time"
-                            value={values.starting_time}
-                            defaultValue="08:00"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                step: 300, // 5 min
-                            }}
-                            onChange={handleInputChange}
-                            error={errors.starting_time}/>
+                    <DatePicker
+                        label="Start Date"
+                        name="starting_date"
+                        value={values.starting_date}
+                        color="primary"
+                        disabled={activeEvents.length === 0 && !values.PK}
+                        onChange={handleInputChange}
+                        error={errors.starting_date}/>
+                    <TextField
+                        variant="outlined"
+                        label="Start Time"
+                        type="time"
+                        color="primary"
+                        name="starting_time"
+                        value={values.starting_time}
+                        defaultValue="08:00"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        inputProps={{
+                            step: 300, // 5 min
+                        }}
+                        disabled={activeEvents.length === 0 && !values.PK}
+                        onChange={handleInputChange}
+                        error={errors.starting_time}/>
 
 
                     <DatePicker
@@ -200,6 +225,7 @@ const SeasonEventForm = props => {
                         name="ending_date"
                         value={values.ending_date}
                         color="primary"
+                        disabled={activeEvents.length === 0 && !values.PK}
                         onChange={handleInputChange}
                         error={errors.ending_date}/>
                     <TextField
@@ -210,14 +236,12 @@ const SeasonEventForm = props => {
                         name="ending_time"
                         value={values.ending_time}
                         defaultValue="12:00"
-                         InputLabelProps={{
+                        InputLabelProps={{
                             shrink: true,
                         }}
-
+                        disabled={activeEvents.length === 0 && !values.PK}
                         onChange={handleInputChange}
                         error={errors.ending_time}/>
-
-
 
 
                     <div>
@@ -225,11 +249,12 @@ const SeasonEventForm = props => {
                         <Controls.Button
                             text="Submit"
                             type="submit"
+                            disabled={activeEvents.length === 0 && !values.PK}
                         />
-
                         <Controls.Button
                             text="Reset"
                             type="reset"
+                            disabled={activeEvents.length === 0 && !values.PK}
                             onClick={resetForm}
                         />
 
